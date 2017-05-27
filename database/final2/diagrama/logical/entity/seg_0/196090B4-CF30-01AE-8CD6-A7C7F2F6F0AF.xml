@@ -1,0 +1,68 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="196090B4-CF30-01AE-8CD6-A7C7F2F6F0AF" name="PAIS">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-05 05:46:17 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="id" id="C9DD9B77-3186-EFCF-2751-D5CB722ED7C3">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-05 05:46:21 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="abreviatura" id="B9CA93D5-D242-E153-3AF7-35A76B0E57D5">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-05 05:46:29 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="nombre" id="A4CB7F6C-20B9-A9D0-EC9F-B723A1380388">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-05 05:46:35 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="8CF944E3-9D5D-7F40-D251-1D4159396B48" name="PAIS PK">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-05 05:46:28 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>C9DD9B77-3186-EFCF-2751-D5CB722ED7C3</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

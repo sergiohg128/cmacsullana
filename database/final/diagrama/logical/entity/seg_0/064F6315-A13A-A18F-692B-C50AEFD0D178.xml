@@ -1,0 +1,209 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="064F6315-A13A-A18F-692B-C50AEFD0D178" name="PROVEEDOR">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-05 05:29:38 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="id" id="86962D96-15FE-CA57-B04F-00D15E0F424C">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-05 05:29:43 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="razon" id="0384C719-7EBF-C9DC-D6F3-E896CFE7B8DE">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-05 05:29:53 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="ruc" id="702A8033-D40D-C822-D466-2AE3E2C5300A">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-05 05:49:01 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="tipo" id="532ADF60-0B20-7C13-5AB7-DF27402B4CF2">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-05 05:30:06 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="direccion" id="84F8F9DA-EB93-37BB-314A-31A03F100398">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-05 05:30:10 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="contacto" id="9CDD48EC-14DB-3E9B-D0B7-CDEE78843C9E">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-05 05:29:45 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="fijo" id="29209001-68F1-9745-6530-A0D187AACB3F">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-05 05:30:14 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="celular" id="0D1749C6-5B85-7633-99B6-8F445100205C">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-05 05:30:18 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="correo" id="4BBB95D8-6C11-5DDC-D6D9-6A8AD50F356C">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-05 05:30:22 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="pagina" id="82848FDC-548C-BF40-DB0D-F2D88DD0915B">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-05 05:30:29 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="codigopostal" id="57A770CB-F1D2-CF19-66AC-916C6B9C7F6C">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-05 05:49:07 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="id2" id="5DC1C637-966F-1ED6-4237-318FDB55CC16">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-05 05:58:46 UTC</createdTime>
+<generatorID>CFB24C32-3E8D-EB4B-92A9-48F1D1412333</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<referedAttribute>C9DD9B77-3186-EFCF-2751-D5CB722ED7C3</referedAttribute>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="id1" id="F1DD77F8-9517-09A7-7DB8-B067C4A8DA43">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-06 05:05:08 UTC</createdTime>
+<generatorID>B4746CC7-EABC-7F92-6460-50C3C1810D5B</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<referedAttribute>88F6B7AF-73E1-1D2A-37EF-03C0CE1E5C3C</referedAttribute>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="permisotecnicos" id="A7134DE6-2343-3502-D5AF-EE8BACEC459B">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-13 15:23:47 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="permisousuarios" id="F4C15B17-ABE6-D529-A07C-0760D7EC943B">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-13 15:23:57 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="12687E32-206B-F997-7BFE-8EEEA0DAB392" name="PROVEEDOR PK">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-05 05:29:45 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>86962D96-15FE-CA57-B04F-00D15E0F424C</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

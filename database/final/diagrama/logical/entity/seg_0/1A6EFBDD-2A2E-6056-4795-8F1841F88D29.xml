@@ -1,0 +1,104 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="1A6EFBDD-2A2E-6056-4795-8F1841F88D29" name="EMPRESA">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-08 15:51:15 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="id" id="411FCEBF-AD50-2337-814D-4C3B2B8C388C">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-08 15:51:21 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="nombre" id="15E2068B-7E00-4190-741A-B2991D03F3F2">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-08 15:51:24 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="ruc" id="4C2DA0BF-5AA1-B536-53EA-15829F0F76F4">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-08 15:51:29 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="direccion" id="9D18E1C5-7390-BEE5-01AF-C92934BC67A3">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-08 15:51:31 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="telefono" id="8F90B023-BC4A-DC22-AC2F-AE46608B819D">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-08 15:51:37 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="domicilio" id="54243B6A-D726-4C70-DE5A-53BC6DFD6670">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-08 15:51:40 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="2B0C0AAA-5C9B-B44A-187E-65C640419364" name="EMPRESA PK">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-08 15:51:23 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>411FCEBF-AD50-2337-814D-4C3B2B8C388C</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

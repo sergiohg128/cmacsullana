@@ -1,0 +1,105 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="542491E8-7813-63ED-7746-3219A62C7616" name="TRANSLADO">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-06 16:14:32 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="id" id="8A3F36C4-8F0C-865F-41EC-EDCF869D1C1F">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-06 16:14:39 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="fecha" id="7257A262-DD36-5B8E-6719-CB7F7AFC583D">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-06 16:14:41 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="descripcion" id="1DB0BF0F-8A97-DE78-81D9-13BC6A28375B">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-06 16:14:48 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="id1" id="B44BB8D3-8042-55B4-B1F4-B80D6AAEA81C">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-06 16:41:18 UTC</createdTime>
+<generatorID>8BCF6C57-4E23-7344-C85B-763A9DA78AA9</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<referedAttribute>DC7E49B8-ADA1-3719-2718-635935878481</referedAttribute>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="id2" id="6CC862FE-544B-8E70-DA73-9401E14725F3">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-06 16:41:29 UTC</createdTime>
+<generatorID>FCCFA801-98C4-CC88-9553-AAA6257DB22F</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<referedAttribute>DC7E49B8-ADA1-3719-2718-635935878481</referedAttribute>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="id3" id="EB9A2C5C-A198-E2FD-30A2-72943547E808">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-06 16:45:31 UTC</createdTime>
+<generatorID>BDA9EF76-BA01-8B9B-1A30-BB3180E65439</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<referedAttribute>F010B024-B01F-5AEC-85FD-10D2D1322E66</referedAttribute>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="79A49A96-B464-B265-92E9-E07140367DE9" name="TRANSLADO PK">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-06 16:14:44 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>8A3F36C4-8F0C-865F-41EC-EDCF869D1C1F</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

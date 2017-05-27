@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="2">
+        <file>
+            <url>resources/views/verpedido.blade.php</url>
+            <bookmark id="2">
+                <name/>
+                <line>69</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>resources/views/personal/registro-papeletas-administrativas.blade.php</url>
+            <bookmark id="1">
+                <name/>
+                <line>246</line>
+                <key/>
+            </bookmark>
+        </file>
+    </editor-bookmarks>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group name="SATIPO">
+            <file>file:/C:/xampp/htdocs/transito/app/Reportes.php</file>
+            <file>file:/C:/xampp/htdocs/transito/app/Http/Controllers/ControladorPersonal.php</file>
+            <file>file:/C:/xampp/htdocs/transito/app/Movimiento.php</file>
+            <file>file:/C:/xampp/htdocs/transito/app/Ingreso.php</file>
+            <file>file:/C:/xampp/htdocs/transito/resources/views/personal/licencias.blade.php</file>
+            <file>file:/C:/xampp/htdocs/transito/resources/views/cajero/cajachica.blade.php</file>
+            <file>file:/C:/xampp/htdocs/transito/app/Http/Controllers/ControladorCaja.php</file>
+            <file>file:/C:/xampp/htdocs/transito/routes/web.php</file>
+            <file>file:/C:/xampp/htdocs/transito/app/Tramite.php</file>
+            <file>file:/C:/xampp/htdocs/transito/resources/views/personal/nueva-licencia.blade.php</file>
+            <file>file:/C:/xampp/htdocs/transito/app/FaseTramite.php</file>
+            <file>file:/C:/xampp/htdocs/transito/app/Http/Controllers/ControladorGeneral.php</file>
+            <file>file:/C:/xampp/htdocs/transito/app/Concesion.php</file>
+        </group>
+        <group>
+            <file>file:/C:/xampp/htdocs/siec/app/Http/Controllers/ControladorContratos.php</file>
+            <file>file:/C:/xampp/htdocs/siec/app/Http/Controllers/Controlador.php</file>
+            <file>file:/C:/xampp/htdocs/siec/app/Reportes.php</file>
+            <file>file:/C:/xampp/htdocs/siec/resources/views/reportes.blade.php</file>
+            <file>file:/C:/xampp/htdocs/siec/resources/views/contratos.blade.php</file>
+            <file>file:/C:/xampp/htdocs/siec/routes/web.php</file>
+            <file>file:/C:/xampp/htdocs/siec/app/Http/Controllers/ControladorEmpresa.php</file>
+            <file>file:/C:/xampp/htdocs/siec/public/js/scripts.js</file>
+        </group>
+    </open-files>
+</project-private>

@@ -1,0 +1,141 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="4E55A543-9F24-97D1-B55E-B22CB4B811B4" name="SUCURSAL">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-05 05:35:39 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="id" id="DC7E49B8-ADA1-3719-2718-635935878481">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-05 05:35:47 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="nombre" id="038CBFFF-0F77-EFB7-7F46-370AF5C3BAA2">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-05 05:36:04 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="direccion" id="C3AF0B99-855D-B22B-EDCB-3D1C506C7816">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-05 05:36:12 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="telefono1" id="D9661AFC-5A6C-4A25-522A-74D1D8A4B4D7">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-05 05:36:21 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="telefono2" id="05DA768F-7B4B-4116-D531-519A759579C9">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-05 05:36:27 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="id2" id="D289A5E8-6491-8CCE-E7F2-6CC1F573C4F4">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-05 05:51:02 UTC</createdTime>
+<generatorID>39A8834B-B92C-FD2D-1DBB-F53AB7DBB65D</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<referedAttribute>BCB50104-1BED-BF1A-1183-944DFB91AEAB</referedAttribute>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="id1" id="D36D4D0D-5BB1-89B8-414B-DB6E68B98AF7">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-06 05:05:08 UTC</createdTime>
+<generatorID>5353C7C8-3215-6E3D-49AF-E4C6D5AEECA7</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<referedAttribute>88F6B7AF-73E1-1D2A-37EF-03C0CE1E5C3C</referedAttribute>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="id3" id="D24D7939-09B0-747F-3399-42D2CAD94590">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-13 15:23:03 UTC</createdTime>
+<generatorID>97504695-43AF-A443-269E-0E1CDA798E22</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<referedAttribute>C2DA5396-9390-5783-FB28-AB3EFE2D41A4</referedAttribute>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="id4" id="C0C470EE-4E66-008F-760D-B815A45F9009">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-13 15:23:07 UTC</createdTime>
+<generatorID>B35D1059-1711-2262-5353-86DBDEF316EA</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<referedAttribute>EC8FDFD6-CFDB-E788-73A7-80AFB169411E</referedAttribute>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="E38D806B-57C6-9D1B-1721-568A164222CB" name="SUCURSAL PK">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-05 05:36:03 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>DC7E49B8-ADA1-3719-2718-635935878481</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

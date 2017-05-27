@@ -1,0 +1,67 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="01334B55-45AE-91BF-3C77-5A0A670E91A3" name="SLA">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-13 16:16:22 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="horas" id="BBBBBA32-28C2-CFF7-C723-17DDA9C045AE">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-13 16:16:37 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="id" id="1787D3C0-EE27-C38E-4090-CC231C19DE5C">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-13 16:16:55 UTC</createdTime>
+<generatorID>5DC930FF-1B34-374F-9C3D-3C3FDFF2D200</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<referedAttribute>8C0046A2-E7DE-23B3-44ED-3BBA5F444765</referedAttribute>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="id1" id="6595AC08-BBB7-D8DB-ACC2-8C787FB3B7FC">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-13 16:17:05 UTC</createdTime>
+<generatorID>896636EA-4419-06AB-58C5-0C5507F55E82</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<referedAttribute>F01E8BAE-01AE-0822-D83F-7049BDADEB12</referedAttribute>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="id2" id="369CBB55-96F4-F4CC-CC69-9E1E441DA1FA">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-13 16:18:16 UTC</createdTime>
+<generatorID>3A0565CC-4505-BAC7-E106-426C20254DF8</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<referedAttribute>EC8FDFD6-CFDB-E788-73A7-80AFB169411E</referedAttribute>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+</Entity>

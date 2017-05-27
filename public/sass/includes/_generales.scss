@@ -1,0 +1,145 @@
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px #fff inset !important;
+}
+input:-webkit-autofill {
+    -webkit-text-fill-color: #000 !important;
+}
+
+.cuerpo{
+	min-height: 100vh;
+}
+
+.brand-logo img{
+	width: 60px;
+}
+
+.row.titulo *{
+	margin-top: 0;
+	padding-top: 0;
+	color: white;
+	padding-top: 5px;
+}
+.row.titulo{
+	background-color: #1E88E5;
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+}
+
+.svg-icon{
+	margin: 0;
+}
+
+img{
+	display: block;
+}
+
+.clickable-row{
+	cursor: pointer;
+	&:hover{
+		background: rgba(grey,0.2) !important;
+	}
+}
+
+table{
+	td{
+		min-width: 90px;
+	}
+	tr{
+		td:nth-child(1){
+				min-width: 60px;
+				text-align: center;
+		}
+	}
+}
+
+.btn-floating{
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	&.left{
+		left: 20px;
+	}
+}
+
+
+.cardsinpadding{
+	padding-bottom: 5px !important;
+}
+
+pre {
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
+	text-align: left;
+	font-family: "Roboto", sans-serif;
+	text-align: justify;
+    label{
+	    position: absolute;
+	    left: 0px;
+	    text-align: left;
+	    padding: 0;
+	    margin: 0;
+    }
+}
+
+input[type=date],input[type=time]{
+	margin: 0 !important;
+}
+
+.fullcol{
+	padding-right: 0 !important;
+	padding-left: 0 !important;
+	&>.input-field{
+		padding: 0 15px !important;
+		label{
+			padding-left: 4px;
+		}
+	}
+}
+
+
+#modal-mensaje-botones{
+	button{
+		margin: 20px;
+	}
+}
+
+table,button,h1,h2,h3,h4,h5{
+	text-transform: uppercase !important;
+}
+
+.select2-container{
+	margin-top: 10px !important;
+}
+
+.estadoserie,.filanumero{
+	min-width: 30px !important;
+	max-width: 30px !important;
+}
+
+.card{
+	p{
+		margin: 0;
+	}
+}
+
+td{
+	padding: 6px 5px;
+	.select-dropdown{
+		margin-bottom: 0 !important;
+	}
+}
+
+.pagination{
+	li{
+		&.active{
+			span{
+				color:white;
+				padding: 6px;
+			}
+			padding-top: 3px;
+			border-radius: 5px !important;
+		}
+	}
+}

@@ -1,0 +1,23 @@
+doctype html
+html(lang="es")
+	head
+		title Bodega
+		include includes/head
+	body
+
+		//Cuerpo
+		.row.cuerpo.login.valign-wrapper.center
+			.col.s12.m8.offset-m2.l4.offset-l4.valing.center
+				.row.card
+					.row.titulo.center
+						h5 INGRESAR
+					.row
+						form(action="" method="POST")
+							.input-field.col.s12
+								input#user(type="text" name="user")
+								label(for="user") Usuario
+							.input-field.col.s12
+								input#pass(type="password" name="pass")
+								label(for="pass") Contraseña
+							.col.s12.center
+								button.btn INGRESAR

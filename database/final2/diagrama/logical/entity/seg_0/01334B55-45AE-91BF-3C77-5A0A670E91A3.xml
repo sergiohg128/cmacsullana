@@ -1,0 +1,93 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="01334B55-45AE-91BF-3C77-5A0A670E91A3" name="SLA">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-13 16:16:22 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="id" id="205A5344-2A60-273C-DC34-95B3FC891004">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-14 00:33:12 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="horas" id="BBBBBA32-28C2-CFF7-C723-17DDA9C045AE">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-13 16:16:37 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="id1" id="CD394180-8CB8-8C81-DCDC-0A501787561C">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-14 00:33:33 UTC</createdTime>
+<generatorID>13E29CCA-A618-7F58-7FF6-C824CF580C40</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<referedAttribute>8C0046A2-E7DE-23B3-44ED-3BBA5F444765</referedAttribute>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="id2" id="C585C567-EBC4-2D16-5FF8-90C73B3A640E">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-14 00:33:41 UTC</createdTime>
+<generatorID>B7B48A65-7BBE-9477-352C-EE79E904C31A</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<referedAttribute>EC8FDFD6-CFDB-E788-73A7-80AFB169411E</referedAttribute>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="id3" id="E5224B60-367B-9CAC-C3DD-F2E735DC651A">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-14 00:43:10 UTC</createdTime>
+<generatorID>0DD23FC6-3F21-7415-F89E-5DDAE5A09314</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<referedAttribute>F01E8BAE-01AE-0822-D83F-7049BDADEB12</referedAttribute>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="789E8637-A9B1-EF70-AEFD-320F5B6717C9" name="SLA PK">
+<createdBy>sergi</createdBy>
+<createdTime>2017-05-14 00:33:14 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="97EF517A-50F2-CEE7-04B7-CA72F0F50F59" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>205A5344-2A60-273C-DC34-95B3FC891004</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>
