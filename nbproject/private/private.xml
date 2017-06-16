@@ -34,15 +34,6 @@
             <file>file:/C:/xampp/htdocs/transito/app/Http/Controllers/ControladorGeneral.php</file>
             <file>file:/C:/xampp/htdocs/transito/app/Concesion.php</file>
         </group>
-        <group>
-            <file>file:/C:/xampp/htdocs/siec/app/Http/Controllers/ControladorContratos.php</file>
-            <file>file:/C:/xampp/htdocs/siec/app/Http/Controllers/Controlador.php</file>
-            <file>file:/C:/xampp/htdocs/siec/app/Reportes.php</file>
-            <file>file:/C:/xampp/htdocs/siec/resources/views/reportes.blade.php</file>
-            <file>file:/C:/xampp/htdocs/siec/resources/views/contratos.blade.php</file>
-            <file>file:/C:/xampp/htdocs/siec/routes/web.php</file>
-            <file>file:/C:/xampp/htdocs/siec/app/Http/Controllers/ControladorEmpresa.php</file>
-            <file>file:/C:/xampp/htdocs/siec/public/js/scripts.js</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

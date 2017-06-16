@@ -20,25 +20,31 @@
                       </div>
                       <p class="center">{{$traslado->sucursalrecibe()->nombre}}</p>
                   </div>
-                  <div class="col s12 m4 offset-m1 card fullcol">
+                <div class="col s12 m4 offset-m1 card fullcol">
+                      <div class="row titulo center">
+                          <h5>NÚMERO INTERNO</h5>
+                      </div>
+                      <p class="center">{{$traslado->interno}}</p>
+                  </div>
+                  <div class="col s12 m4 offset-m2 card fullcol">
                       <div class="row titulo center">
                           <h5>GUIA DE REMISION</h5>                
                       </div>
                       <p class="center">{{$traslado->remision}}</p>
                   </div>
-                  <div class="col s12 m4 offset-m2 card fullcol">
+                  <div class="col s12 m4 offset-m1 card fullcol">
                       <div class="row titulo center">
                           <h5>FECHA</h5>
                       </div>
                       <p class="center">{{date('d/m/Y',strtotime($traslado->fecha))}}</p>
                   </div>
-                    <div class="col s12 m4 offset-m1 card fullcol">
+                    <div class="col s12 m4 offset-m2 card fullcol">
                       <div class="row titulo center">
                           <h5>MOTIVO</h5>                
                       </div>
                       <p class="center">{{$traslado->motivotraslado()->nombre}}</p>
                   </div>
-                    <div class="col s12 m4 offset-m2 card fullcol">
+                    <div class="col s10 offset-s1 card fullcol">
                         <div class="row titulo center">
                             <h5>DESCRIPCIÓN</h5>                
                         </div>
@@ -70,6 +76,29 @@
               </table>
             </div>
         </div>
+      <div class="row">
+            <div class="col s10 offset-s1">
+                <div class="titulo row center">
+                    <h5>FORMATO GENERADO</h5>
+                </div>
+                <div class="row center">
+                    <form id="reporte7" method="POST">
+                        {{ csrf_field() }}
+                        <input type="hidden" name="id" value="7">
+                        <input type="hidden" name="traslado" value="{{$traslado->id}}">
+                        <div class="col s10 offset-s1 m6 offset-m3 l2 offset-l5">
+                            <select name="reporte" id="reporte7" style="width: 100%;">
+                              <option value="E">EXCEL</option>
+                              <option value="P">PDF</option>
+                            </select>
+                        </div>
+                        <div class="col s12">
+                            <a onclick="reporte(7)" class="btn">GENERAR</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+      </div>
       <div class="row">
             <div class="col s10 offset-s1">
                 <div class="titulo row center">

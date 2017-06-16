@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use App\Area;
 use App\AreaSucursal;
+use App\Bitacora;
 use App\Caso;
 use App\Contrato;
 use App\Departamento;
@@ -136,6 +137,7 @@ class ControladorProveedor extends Controller
                             $proveedor->id_distrito = $distrito;
                             $proveedor->codigopostal = $codigopostal;
                             $proveedor->save();
+                            new Bitacora("proveedor","nuevo",$razon,$usuario->id);
                         }
                         DB::commit();
                         $request->session()->put("mensaje","Guardado correctamente");

@@ -136,6 +136,15 @@
                     <p class="center">{{$caso->tipocaso()->nombre}}</p>
                 </div>
             @endif
+            @if($caso->casomarca!=null)
+                <div class="col s10 offset-s1 card fullcol">
+                    <div class="row titulo center green">
+                        <h5>NÚMERO DE CASO DE MARCA</h5>                
+                    </div>
+                    <p class="center">Fecha: {{date('d/m/Y H:i',strtotime($caso->fechad))}}</p>
+                    <p class="center">{{$caso->casomarca}}</p>
+                </div>
+            @endif
             @if($caso->id_tipo_solucion!=null)
                 <div class="col s10 offset-s1 card fullcol">
                     <div class="row titulo center green">
@@ -228,14 +237,6 @@
                         <input type="hidden" name="producto" id="id-producto">
                         <input type="hidden" id="sucursal-solicitar" name="sucursal" value="0">
                         <div class="col s10 offset-s1 input-field">
-                            <input type="text" name="analisis" id="analisis">
-                            <label for="analisis">ANÁLISIS</label> 
-                        </div>
-                        <div class="col s10 offset-s1 input-field">
-                            <input type="text" name="conclusion" id="conclusion">
-                            <label for="conclusion">CONCLUSIÓN</label> 
-                        </div>
-                        <div class="col s10 offset-s1 input-field">
                             <select name="tipocaso" id="tipocaso" required onchange="elegirtipocaso()">
                                 <option value="0">ELIJA UN TIPO DE CASO</option>
                                 @foreach($tiposcaso as $tipocaso)
@@ -243,6 +244,10 @@
                                 @endforeach
                             </select>
                             <label for="tipocaso">TIPO DE CASO</label>
+                        </div>
+                        <div class="col s10 offset-s1 input-field" id="divcasomarca">
+                            <input type="text" name="casomarca" id="casomarca">
+                            <label for="casomarca">NÚMERO DE CASO DE MARCA</label>
                         </div>
                         <div class="col s10 offset-s1 input-field" id="divsolucion">
                             <select name="tiposolucion" id="tiposolucion" required onchange="elegirtiposolucion()">
@@ -286,7 +291,13 @@
                                 <label for="txtsucursalsolicitar" id="lblsucursalsolicitar">SUCURSAL A SOLICITAR</label> 
                             </div>
                         </div>
-                        <div class="col s10 offset-s1 card" id="info-producto" style="padding-top: 10px;">
+                        <div class="col s10 offset-s1 input-field">
+                            <input type="text" name="analisis" id="analisis">
+                            <label for="analisis">ANÁLISIS</label> 
+                        </div>
+                        <div class="col s10 offset-s1 input-field">
+                            <input type="text" name="conclusion" id="conclusion">
+                            <label for="conclusion">CONCLUSIÓN</label> 
                         </div>
                         <div class="col s12 center input-field" id="divbtnregistrar">
                             <a onclick="detallecaso()" class="btn">GUARDAR</a>
@@ -395,6 +406,8 @@
         $('#marcas').select2();
         $('#modelos').select2();
         $('#series').select2();
+        
+        $('#divcasomarca').hide();
     </script>
     
     

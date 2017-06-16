@@ -95,7 +95,7 @@
           </tbody>
         </table>
         <div class="row center">
-            {{$contratos->links()}}
+            {{$contratos->appends(['id_proveedor'=>$idproveedor,'desde'=>$desde,'hasta'=>$hasta])->links()}}
         </div>
       </div>
     </div>

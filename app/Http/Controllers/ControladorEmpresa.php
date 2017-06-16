@@ -8,17 +8,21 @@ use Illuminate\Support\Facades\DB;
 use App\Archivo;
 use App\Area;
 use App\AreaSucursal;
+use App\Bitacora;
+use App\BitacoraListar;
 use App\Caso;
 use App\Contrato;
 use App\Departamento;
 use App\DetalleCaso;
 use App\DetalleContrato;
+use App\DetalleGuiaBaja;
 use App\DetalleTraslado;
 use App\Distrito;
 use App\Documento;
 use App\Empresa;
 use App\Grupo;
 use App\Guia;
+use App\GuiaBaja;
 use App\Marca;
 use App\Menu;
 use App\Modelo;
@@ -144,6 +148,7 @@ class ControladorEmpresa extends Controller
                     $obj->id_tipo_territorio = $request->input("tipoterritorio");
                     $obj->id_tipo_sucursal = $request->input("tiposucursal");
                     $obj->save();
+                    new Bitacora("sucursal","nuevo",$obj->nombre,$usuario->id);
                     $request->session()->put("mensaje","Guardado correctamente");
                 }
                 DB::commit();
@@ -163,7 +168,7 @@ class ControladorEmpresa extends Controller
     public function Sucursal(Request $request,  Response $response) {
         $usuario = $request->session()->get('usuario');
         if($this->ComprobarUsuario($usuario)){
-            $menuid = 22;
+            $menuid = 17;
             if($this->ComprobarPermiso($usuario, $menuid)){
                 $id = $request->input('id');
                 $sucursal = Sucursal::find($id);
@@ -199,7 +204,7 @@ class ControladorEmpresa extends Controller
     public function Stock(Request $request,  Response $response) {
         $usuario = $request->session()->get('usuario');
         if($this->ComprobarUsuario($usuario)){
-            $menuid = 23;
+            $menuid = 17;
             if($this->ComprobarPermiso($usuario, $menuid)){
                 $modeloid = $request->input('m');
                 $sucursalid = $request->input('s');
@@ -214,6 +219,7 @@ class ControladorEmpresa extends Controller
                         ->select('producto.id_detalle_contrato','producto.id_sucursal','producto.id_modelo','proveedor.razon','contrato.numero','contrato.fecha','contrato.inicio','contrato.fin','contrato.tipo as tipocontrato',DB::raw('count(producto.id) as total'))
                         ->where('producto.id_modelo',$modeloid)
                         ->where('producto.id_sucursal',$sucursalid)
+                        ->where("producto.estado","N")
                         ->groupBy('producto.id_detalle_contrato','producto.id_sucursal','producto.id_modelo','detalle_contrato.id','proveedor.razon','contrato.numero','contrato.fecha','contrato.inicio','contrato.fin','contrato.tipo')
                         ->get();
                 $mensaje = $request->session()->get('mensaje');
@@ -298,7 +304,7 @@ class ControladorEmpresa extends Controller
                     return json_encode(["ok"=>false,"error"=>$ex->getMessage()]);
                 }
             }else{
-                $menuid = 24;
+                $menuid = 17;
                 if($this->ComprobarPermiso($usuario, $menuid)){
                     $detalleid = $request->input('d');
                     $sucursalid = $request->input('s');
@@ -321,14 +327,10 @@ class ControladorEmpresa extends Controller
                     $productos = Producto::
                             where('producto.id_detalle_contrato',$detalleid)
                             ->where('producto.id_sucursal',$sucursalid)
+                            ->where("producto.estado","N")
                             ->orderBy("serie")
                             ->get();
 
-                    $detalles = Producto::
-                            select(DB::raw("count(*) as restantes"))
-                            ->where('producto.id_detalle_contrato',$detalleid)
-                            ->whereNull("serie")
-                            ->first();
                     $areas = AreaSucursal::
                             join("area","area_sucursal.id_area","area.id")->
                             select("area_sucursal.id","area.nombre")->
@@ -342,7 +344,6 @@ class ControladorEmpresa extends Controller
                         'sucursal' =>$sucursal,
                         'detalle'=>$detalle,
                         'areas'=>$areas,
-                        'detalles'=>$detalles,
                         'w'=>0
                     ]);
                 }else{
@@ -355,11 +356,10 @@ class ControladorEmpresa extends Controller
         }
     }
     
-    
     public function Traslados(Request $request,  Response $response) {
         $usuario = $request->session()->get('usuario');
         if($this->ComprobarUsuario($usuario)){
-            $menuid = 16;
+            $menuid = 32;
             if($this->ComprobarPermiso($usuario, $menuid)){
                 $mensaje = $request->session()->get('mensaje');
                 $request->session()->forget('mensaje');
@@ -386,7 +386,7 @@ class ControladorEmpresa extends Controller
                 }else{
                     $hasta = $hoy;
                 }
-                $traslados = $traslados->orderBy("traslado.fecha","desc")->get();
+                $traslados = $traslados->orderBy("traslado.fecha","desc")->orderBy("traslado.id","desc")->paginate(20);
                 return view('/traslados',[
                     'usuario'=>$usuario,
                     'mensaje'=>$mensaje,
@@ -410,7 +410,7 @@ class ControladorEmpresa extends Controller
     public function TrasladoNuevo(Request $request,  Response $response) {
         $usuario = $request->session()->get('usuario');
         if($this->ComprobarUsuario($usuario)){
-            $menuid = 19;
+            $menuid = 16;
             if($this->ComprobarPermiso($usuario, $menuid)){
                 $mensaje = $request->session()->get('mensaje');
                 $request->session()->forget('mensaje');
@@ -471,21 +471,25 @@ class ControladorEmpresa extends Controller
                                     join("marca","modelo.id_marca","marca.id")->
                                     join("tipo_equipo","modelo.id_tipo_equipo","tipo_equipo.id")->
                                     join("sucursal","producto.id_sucursal","sucursal.id")->
-                                    select("producto.id","producto.id_modelo","producto.id_sucursal","modelo.nombre as nombremodelo","marca.nombre as nombremarca","tipo_equipo.nombre as nombretipoequipo","sucursal.nombre as nombresucursal")->
-                                    where("serie",$serie)->first();
+                                    select("producto.id","producto.id_modelo","producto.id_sucursal","producto.estado","modelo.nombre as nombremodelo","marca.nombre as nombremarca","tipo_equipo.nombre as nombretipoequipo","sucursal.nombre as nombresucursal")->
+                                    where("serie",$serie)->orderBy("id","desc")->first();
                             if($existe!=null){
-                                if($existe->id_sucursal==$idorigen){
-                                    if(!array_key_exists($existe->id_modelo, $modelos)){
-                                        $modelos[$existe->id_modelo][0] = [];
-                                        $modelos[$existe->id_modelo][1] = $existe->nombretipoequipo.' '.$existe->nombremarca.' '.$existe->nombremodelo;
-                                        $modelos[$existe->id_modelo][2] = 0;
+                                if($existe->estado=="N"){
+                                    if($existe->id_sucursal==$idorigen){
+                                        if(!array_key_exists($existe->id_modelo, $modelos)){
+                                            $modelos[$existe->id_modelo][0] = [];
+                                            $modelos[$existe->id_modelo][1] = $existe->nombretipoequipo.' '.$existe->nombremarca.' '.$existe->nombremodelo;
+                                            $modelos[$existe->id_modelo][2] = 0;
+                                        }
+                                        if(!array_key_exists($existe->id, $modelos[$existe->id_modelo][0])){
+                                            $modelos[$existe->id_modelo][2] = $modelos[$existe->id_modelo][2]+1;
+                                        }
+                                        $modelos[$existe->id_modelo][0][$existe->id] = $serie;
+                                    }else{
+                                        $errores[$serie] = "La serie se encuentra en la sucursal: ".$existe->nombresucursal;
                                     }
-                                    if(!array_key_exists($existe->id, $modelos[$existe->id_modelo][0])){
-                                        $modelos[$existe->id_modelo][2] = $modelos[$existe->id_modelo][2]+1;
-                                    }
-                                    $modelos[$existe->id_modelo][0][$existe->id] = $serie;
                                 }else{
-                                    $errores[$serie] = "La serie se encuentra en la sucursal: ".$existe->nombresucursal;
+                                    $errores[$serie] = "La serie se ha dado de baja";
                                 }
                             }else{
                                 $errores[$serie] = "La serie no se ha registrado en ninguna sucursal";
@@ -499,21 +503,25 @@ class ControladorEmpresa extends Controller
                             join("marca","modelo.id_marca","marca.id")->
                             join("tipo_equipo","modelo.id_tipo_equipo","tipo_equipo.id")->
                             join("sucursal","producto.id_sucursal","sucursal.id")->
-                            select("producto.id","producto.id_modelo","producto.id_sucursal","modelo.nombre as nombremodelo","marca.nombre as nombremarca","tipo_equipo.nombre as nombretipoequipo","sucursal.nombre as nombresucursal")->
-                            where("serie",$serie)->first();
+                            select("producto.id","producto.id_modelo","producto.id_sucursal","producto.estado","modelo.nombre as nombremodelo","marca.nombre as nombremarca","tipo_equipo.nombre as nombretipoequipo","sucursal.nombre as nombresucursal")->
+                            where("serie",$serie)->orderBy("id","desc")->first();
                     if($existe!=null){
-                        if($existe->id_sucursal==$idorigen){
-                            if(!array_key_exists($existe->id_modelo, $modelos)){
-                                $modelos[$existe->id_modelo][0] = [];
-                                $modelos[$existe->id_modelo][1] = $existe->nombretipo.' '.$existe->nombremarca.' '.$existe->nombremodelo;
-                                $modelos[$existe->id_modelo][2] = 0;
+                        if($existe->estado=="N"){
+                            if($existe->id_sucursal==$idorigen){
+                                if(!array_key_exists($existe->id_modelo, $modelos)){
+                                    $modelos[$existe->id_modelo][0] = [];
+                                    $modelos[$existe->id_modelo][1] = $existe->nombretipo.' '.$existe->nombremarca.' '.$existe->nombremodelo;
+                                    $modelos[$existe->id_modelo][2] = 0;
+                                }
+                                if(!array_key_exists($existe->id, $modelos[$existe->id_modelo][0])){
+                                    $modelos[$existe->id_modelo][2] = $modelos[$existe->id_modelo][2]+1;
+                                }
+                                $modelos[$existe->id_modelo][0][$existe->id] = $serie;
+                            }else{
+                                $errores[$serie] = "La serie se encuentra en la sucursal: ".$existe->nombresucursal;
                             }
-                            if(!array_key_exists($existe->id, $modelos[$existe->id_modelo][0])){
-                                $modelos[$existe->id_modelo][2] = $modelos[$existe->id_modelo][2]+1;
-                            }
-                            $modelos[$existe->id_modelo][0][$existe->id] = $serie;
                         }else{
-                            $errores[$serie] = "La serie se encuentra en la sucursal: ".$existe->nombresucursal;
+                            $errores[$serie] = "La serie se ha dado de baja";
                         }
                     }else{
                         $errores[$serie] = "La serie no se ha registrado en ninguna sucursal";
@@ -525,21 +533,25 @@ class ControladorEmpresa extends Controller
                             join("marca","modelo.id_marca","marca.id")->
                             join("tipo_equipo","modelo.id_tipo_equipo","tipo_equipo.id")->
                             join("sucursal","producto.id_sucursal","sucursal.id")->
-                            select("producto.id","producto.serie","producto.id_modelo","producto.id_sucursal","modelo.nombre as nombremodelo","marca.nombre as nombremarca","tipo_equipo.nombre as nombretipoequipo","sucursal.nombre as nombresucursal")->
-                            where("producto.id",$idproducto)->first();
+                            select("producto.id","producto.serie","producto.id_modelo","producto.id_sucursal","producto.estado","modelo.nombre as nombremodelo","marca.nombre as nombremarca","tipo_equipo.nombre as nombretipoequipo","sucursal.nombre as nombresucursal")->
+                            where("producto.id",$idproducto)->orderBy("id","desc")->first();
                     if($existe!=null){
-                        if($existe->id_sucursal==$idorigen){
-                            if(!array_key_exists($existe->id_modelo, $modelos)){
-                                $modelos[$existe->id_modelo][0] = [];
-                                $modelos[$existe->id_modelo][1] = $existe->nombretipo.' '.$existe->nombremarca.' '.$existe->nombremodelo;
-                                $modelos[$existe->id_modelo][2] = 0;
+                        if($existe->estado=="N"){
+                            if($existe->id_sucursal==$idorigen){
+                                if(!array_key_exists($existe->id_modelo, $modelos)){
+                                    $modelos[$existe->id_modelo][0] = [];
+                                    $modelos[$existe->id_modelo][1] = $existe->nombretipo.' '.$existe->nombremarca.' '.$existe->nombremodelo;
+                                    $modelos[$existe->id_modelo][2] = 0;
+                                }
+                                if(!array_key_exists($existe->id, $modelos[$existe->id_modelo][0])){
+                                    $modelos[$existe->id_modelo][2] = $modelos[$existe->id_modelo][2]+1;
+                                }
+                                $modelos[$existe->id_modelo][0][$existe->id] = $existe->serie;
+                            }else{
+                                $errores[$existe->serie] = "La serie se encuentra en la sucursal: ".$existe->nombresucursal;
                             }
-                            if(!array_key_exists($existe->id, $modelos[$existe->id_modelo][0])){
-                                $modelos[$existe->id_modelo][2] = $modelos[$existe->id_modelo][2]+1;
-                            }
-                            $modelos[$existe->id_modelo][0][$existe->id] = $existe->serie;
                         }else{
-                            $errores[$existe->serie] = "La serie se encuentra en la sucursal: ".$existe->nombresucursal;
+                            $errores[$existe->serie] = "La serie se ha dado de baja";
                         }
                     }else{
                         $errores[$existe->serie] = "La serie no se ha registrado en ninguna sucursal";
@@ -574,6 +586,7 @@ class ControladorEmpresa extends Controller
         $usuario = $request->session()->get('usuario');
         if($this->ComprobarUsuario($usuario)){
             $numero = $request->input("numero");
+            $interno = $request->input("interno");
             $idorigen = $request->input('origen');
             $iddestino = $request->input('sucursal');
             $fecha = $request->input("fecha");
@@ -602,6 +615,7 @@ class ControladorEmpresa extends Controller
 
                     $traslado = new Traslado();
                     $traslado->remision = $numero;
+                    $traslado->interno = $interno;
                     $traslado->numero = $documento->codigo.$anio.$codigo;
                     $traslado->id_origen = $idorigen;
                     $traslado->id_destino = $iddestino;
@@ -613,21 +627,29 @@ class ControladorEmpresa extends Controller
                         $productos = $modelo[0];
                         foreach ($productos as $idproducto =>$serie){
                             $producto = Producto::find($idproducto);
-                            if($producto->id_sucursal==$traslado->id_origen){
-                                $detalle = new DetalleTraslado();
-                                $detalle->id_producto = $producto->id;
-                                $detalle->id_traslado = $traslado->id;
-                                $producto->id_sucursal = $traslado->id_destino;
-                                $producto->id_area_sucursal = null;
-                                $producto->save();
-                                $detalle->save();
+                            if($producto->estado=="N"){
+                                if($producto->id_sucursal==$traslado->id_origen){
+                                    $detalle = new DetalleTraslado();
+                                    $detalle->id_producto = $producto->id;
+                                    $detalle->id_traslado = $traslado->id;
+                                    $producto->id_sucursal = $traslado->id_destino;
+                                    $producto->id_area_sucursal = null;
+                                    $producto->save();
+                                    $detalle->save();
+                                }else{
+                                    DB::rollback();
+                                    $sucursal = Sucursal::find($producto->id_sucursal);
+                                    return json_encode(["ok"=>false,"error"=>"La serie ".$producto->serie." se encuentra en otra sucursal: ".$sucursal->nombre]);
+                                }
                             }else{
                                 DB::rollback();
-                                $sucursal = Sucursal::find($producto->id_sucursal);
-                                return json_encode(["ok"=>false,"error"=>"La serie se encuentra en otra sucursal: ".$sucursal->nombre]);
+                                return json_encode(["ok"=>false,"error"=>"La serie ".$producto->serie." se ha dado de baja"]);
                             }
                         }
                     }
+                    $documento->siguiente = $siguiente+1;
+                    $documento->save();
+                    new Bitacora("traslado","nuevo",$traslado->numero,$usuario->id);
                     DB::commit();
                     $request->session()->put("mensaje","Guardado correctamente");
                     return json_encode(["ok"=>true,"traslado"=>$traslado->id]);
@@ -686,7 +708,7 @@ class ControladorEmpresa extends Controller
     public function TrasladoSeries(Request $request,  Response $response) {
         $usuario = $request->session()->get('usuario');
         if($this->ComprobarUsuario($usuario)){
-            $menuid = 26;
+            $menuid = 20;
             if($this->ComprobarPermiso($usuario, $menuid)){
                 $mensaje = $request->session()->get('mensaje');
                 $request->session()->forget('mensaje');
@@ -727,34 +749,45 @@ class ControladorEmpresa extends Controller
     public function AreasSucursal(Request $request,  Response $response) {
         $usuario = $request->session()->get('usuario');
         if($this->ComprobarUsuario($usuario)){
-            $menuid = 27;
-            if($this->ComprobarPermiso($usuario, $menuid)){
-                $mensaje = $request->session()->get('mensaje');
-                $request->session()->forget('mensaje');
-                $id = $request->input("id");
-                $areassucursal = AreaSucursal::join("area","area_sucursal.id_area","area.id")
-                        ->select("area_sucursal.*","area.nombre")
-                        ->where("area_sucursal.id_sucursal",$id)
-                        ->where("area_sucursal.estado","N")
-                        ->orderBy("area.nombre")
-                        ->get();
-                $areas = Area::where('area.estado','N')
-                        ->whereNotIn('area.id', function($query) use ($id){
-                    $query->select('id_area')->from('area_sucursal')->where('id_sucursal',$id)->where('estado','N');
-                })->orderBy("area.nombre")->get();
-                
-                $sucursal = Sucursal::find($id);
-                return view('/areas-sucursal',[
-                    'usuario'=>$usuario,
-                    'mensaje'=>$mensaje,
-                    'areassucursal'=>$areassucursal,
-                    'sucursal'=>$sucursal,
-                    'areas'=>$areas,
-                    'w'=>0
-                ]);
+            $modo = $request->input("modo");
+            if($modo=="ajax"){
+                $sucursal = $request->input("sucursal");
+                $areas = AreaSucursal::join("area","area_sucursal.id_area","area.id")
+                        ->select("area.id","area.nombre");
+                if($sucursal>0){
+                    $areas = $areas->where("area_sucursal.id_sucursal",$sucursal);
+                }
+                $areas = $areas->groupBy("area.id","area.nombre")->orderBy("area.nombre")->get();
+                return json_encode(["ok"=>true,"obj"=>$areas]);
             }else{
-                $request->session()->put("mensaje","NO TIENE ACCESO AL MENÚ ".Menu::find($menuid)->nombre);
-                return redirect ("/inicio");
+                $menuid = 27;
+                if($this->ComprobarPermiso($usuario, $menuid)){
+                    $mensaje = $request->session()->get('mensaje');
+                    $request->session()->forget('mensaje');
+                    $id = $request->input("id");
+                    $areassucursal = AreaSucursal::join("area","area_sucursal.id_area","area.id")
+                            ->select("area_sucursal.*","area.nombre")
+                            ->where("area_sucursal.id_sucursal",$id)
+                            ->where("area_sucursal.estado","N")
+                            ->orderBy("area.nombre")
+                            ->get();
+                    $areas = Area::where('area.estado','N')
+                            ->whereNotIn('area.id', function($query) use ($id){
+                        $query->select('id_area')->from('area_sucursal')->where('id_sucursal',$id)->where('estado','N');
+                    })->orderBy("area.nombre")->get();
+                    $sucursal = Sucursal::find($id);
+                    return view('/areas-sucursal',[
+                        'usuario'=>$usuario,
+                        'mensaje'=>$mensaje,
+                        'areassucursal'=>$areassucursal,
+                        'sucursal'=>$sucursal,
+                        'areas'=>$areas,
+                        'w'=>0
+                    ]);
+                }else{
+                    $request->session()->put("mensaje","NO TIENE ACCESO AL MENÚ ".Menu::find($menuid)->nombre);
+                    return redirect ("/inicio");
+                }
             }
         }else{
             return redirect("/index");
@@ -771,12 +804,17 @@ class ControladorEmpresa extends Controller
                     $areasucursal = new AreaSucursal();
                     $areasucursal->id_area = $request->input("area");
                     $areasucursal->id_sucursal = $request->input("sucursal");
-                    $areasucursal->save();
+                    $area = Area::find($request->input("area"));
+                    $sucursal = Sucursal::find($request->input("sucursal"));
                     $request->session()->put("mensaje","Guardado correctamente");
+                    new Bitacora("area","nuevo","Se agregó el área ".$area->nombre." a la sucursal ".$sucursal->nombre,$usuario->id);
                 }else if($modo=="eliminar"){
                     $areasucursal = AreaSucursal::find($request->input("id"));
                     $areasucursal->estado = "A";
                     $request->session()->put("mensaje","Eliminado correctamente");
+                    $area = Area::find($areasucursal->id_area);
+                    $sucursal = Sucursal::find($areasucursal->id_sucursal);
+                    new Bitacora("area","eliminar","Se eliminó el área ".$area->nombre." a la sucursal ".$sucursal->nombre,$usuario->id);
                 }
                 $areasucursal->save();
                 DB::commit();
@@ -828,16 +866,14 @@ class ControladorEmpresa extends Controller
     public function Productos(Request $request,  Response $response) {
         $usuario = $request->session()->get('usuario');
         if($this->ComprobarUsuario($usuario)){
-            $menuid = 12;
+            $menuid = 35;
             if($this->ComprobarPermiso($usuario, $menuid)){
                 $mensaje = $request->session()->get('mensaje');
                 $request->session()->forget('mensaje');
-                $proveedores = Proveedor::where('estado','N')->orderBy('razon')->get();
                 $marcas = Marca::where("estado","N")->orderBy("nombre")->get();
                 $tiposequipo = TipoEquipo::where("estado","N")->orderBy("nombre")->get();
                 $sucursales = Sucursal::where("estado","N")->orderBy("nombre")->get();
                 
-                $idproveedor = $request->input("id_proveedor");
                 $idmarca = $request->input("id_marca");
                 $idmodelo = $request->input("id_modelo");
                 $idtipoequipo = $request->input("id_tipo_equipo");
@@ -851,10 +887,8 @@ class ControladorEmpresa extends Controller
                             ->join("marca","modelo.id_marca","marca.id")
                             ->join("tipo_equipo","modelo.id_tipo_equipo","tipo_equipo.id")
                             ->join("sucursal","producto.id_sucursal","sucursal.id")
-                            ->join("detalle_contrato","producto.id_detalle_contrato","detalle_contrato.id")
-                            ->join("contrato","detalle_contrato.id_contrato","contrato.id")
-                            ->leftJoin("proveedor","contrato.id_proveedor","proveedor.id")
-                            ->select("modelo.nombre as nombremodelo","marca.nombre as nombremarca","tipo_equipo.nombre as nombretipoequipo","sucursal.nombre as nombresucursal","proveedor.razon as nombreproveedor",DB::raw("count(*) as cantidad"));
+                            ->select("modelo.nombre as nombremodelo","marca.nombre as nombremarca","tipo_equipo.nombre as nombretipoequipo","sucursal.nombre as nombresucursal",DB::raw("count(*) as cantidad"),"producto.id_sucursal","producto.id_modelo")
+                            ->where("producto.estado","N");
 
                     if($idsucursal>0){
                         $productos = $productos->where("producto.id_sucursal",$idsucursal);
@@ -883,25 +917,16 @@ class ControladorEmpresa extends Controller
                         $idmodelo = 0;
                         $productos = $productos->orderBy("modelo.nombre");
                     }
-
-                    if($idproveedor=="0"){
-                        $productos = $productos->whereNull("contrato.id_proveedor");
-                    }else if($idproveedor>0){
-                        $productos = $productos->where("contrato.id_proveedor",$idproveedor);
-                    }else{
-                        $idproveedor = "x";
-                        $productos = $productos->orderBy('proveedor.razon');
-                    }
-
                     $productos = $productos
                             ->groupBy("sucursal.nombre")
                             ->groupBy("tipo_equipo.nombre")
-                            ->groupBy("proveedor.razon")
                             ->groupBy("modelo.nombre")
                             ->groupBy("marca.nombre")
-                            ->paginate(50);
+                            ->groupBy("producto.id_sucursal")
+                            ->groupBy("producto.id_modelo")
+                            ->paginate(20);
                 }else{
-                    $productos = Producto::where("id",0)->paginate(50);
+                    $productos = Producto::where("id",0)->paginate(20);
                 }
                 return view('/productos',[
                     'usuario'=>$usuario,
@@ -909,13 +934,12 @@ class ControladorEmpresa extends Controller
                     'sucursales'=>$sucursales,
                     'productos'=>$productos,
                     'marcas'=>$marcas,
-                    'proveedores'=>$proveedores,
                     'tiposequipo'=>$tiposequipo,
-                    'idproveedor'=>$idproveedor,
                     'idmarca'=>$idmarca,
                     'idmodelo'=>$idmodelo,
                     'idtipoequipo'=>$idtipoequipo,
                     'idsucursal'=>$idsucursal,
+                    'listar'=>$listar,
                     'w'=>0
                 ]);
             }else{
@@ -974,6 +998,444 @@ class ControladorEmpresa extends Controller
                 DB::rollback();
                 $error = $e->getMessage();
                 return json_encode(["ok"=>false,"error"=>$error.'-linea:'.$e->getLine()]);
+            }
+        }else{
+            return redirect("/index");
+        }
+    }
+    
+    public function Bitacora(Request $request,  Response $response) {
+        $usuario = $request->session()->get('usuario');
+        if($this->ComprobarUsuario($usuario)){
+            $menuid = 36;
+            if($this->ComprobarPermiso($usuario, $menuid)){
+                $mensaje = $request->session()->get('mensaje');
+                $request->session()->forget('mensaje');
+                $desde = $request->input("desde");
+                $hasta = $request->Input("hasta");
+                $hoy = date('Y-m-d');
+                $bitacoras = BitacoraListar::join("usuario","bitacora.id_usuario","usuario.id")
+                        ->select("bitacora.*","usuario.apellidos","usuario.nombre");
+                $tabla = $request->input("tabla");
+                
+                if(empty($tabla)){
+                    $tabla = "usuario";
+                }
+                $bitacoras = $bitacoras->where("tabla",$tabla);
+                
+                if(empty($desde)){
+                    $desde = new DateTime('-1 week');
+                    $desde = $desde->format('Y-m-d');
+                }
+                $bitacoras = $bitacoras->where("fecha",">=",$desde);
+                
+                
+                if(empty($hasta)){
+                    $hasta = $hoy;
+                }
+                $bitacoras = $bitacoras->where("fecha","<=",$hasta.' 23:59:59');
+                
+                $bitacoras = $bitacoras->orderBy("fecha","desc")->paginate(20);
+                return view('/bitacora',[
+                    'usuario'=>$usuario,
+                    'mensaje'=>$mensaje,
+                    'bitacoras'=>$bitacoras,
+                    'desde'=>$desde,
+                    'hasta'=>$hasta,
+                    'tabla'=>$tabla,
+                    'w'=>0
+                ]);
+            }else{
+                $request->session()->put("mensaje","NO TIENE ACCESO AL MENÚ ".Menu::find($menuid)->nombre);
+                return redirect ("/inicio");
+            }
+        }
+        else{
+            return redirect("/index");
+        }
+    }
+    
+    
+    //BAJAS
+    
+    public function Bajas(Request $request,  Response $response) {
+        $usuario = $request->session()->get('usuario');
+        if($this->ComprobarUsuario($usuario)){
+            $menuid = 38;
+            if($this->ComprobarPermiso($usuario, $menuid)){
+                $mensaje = $request->session()->get('mensaje');
+                $request->session()->forget('mensaje');
+                $idsucursal = $request->input("sucursal");
+                $desde = $request->input("desde");
+                $hasta = $request->input("hasta");
+                $bajas = GuiaBaja::whereNotNull("id");
+                $hoy = date('Y-m-d');
+                $sucursales = Sucursal::where('estado','N')->orderBy('nombre')->get();
+                if(empty($idsucursal)){
+                    $idsucursal = "0";
+                }
+                if($idsucursal!="0"){
+                    $bajas = $bajas->where("id_sucursal",$idsucursal);
+                }
+                if(!empty($desde)){
+                    $bajas = $bajas->where("guiabaja.fecha",">=",$desde);
+                }else{
+                    $desde = new DateTime('-1 week');
+                    $desde = $desde->format('Y-m-d');
+                }
+                if(!empty($hasta)){
+                    $bajas = $bajas->where("guiabaja.fecha","<=",$hasta.' 23:59:59');
+                }else{
+                    $hasta = $hoy;
+                }
+                $bajas = $bajas->orderBy("guiabaja.fecha","desc")->orderBy("guiabaja.id","desc")->paginate(20);
+                return view('/bajas',[
+                    'usuario'=>$usuario,
+                    'mensaje'=>$mensaje,
+                    'bajas'=>$bajas,
+                    'desde'=>$desde,
+                    'hasta'=>$hasta,
+                    'idsucursal'=>$idsucursal,
+                    'sucursales'=>$sucursales,
+                    'w'=>0
+                ]);
+            }else{
+                $request->session()->put("mensaje","NO TIENE ACCESO AL MENÚ ".Menu::find($menuid)->nombre);
+                return redirect ("/inicio");
+            }
+        }
+        else{
+            return redirect("/index");
+        }
+    }
+    
+    public function BajaNueva(Request $request,  Response $response) {
+        $usuario = $request->session()->get('usuario');
+        if($this->ComprobarUsuario($usuario)){
+            $menuid = 37;
+            if($this->ComprobarPermiso($usuario, $menuid)){
+                $mensaje = $request->session()->get('mensaje');
+                $request->session()->forget('mensaje');
+                $id = $request->input("id");
+
+                $sucursal = Sucursal::find($id);
+                
+                $tiposequipo = TipoEquipo::where("estado","N")->orderBy("nombre")->get();
+                $marcas = Marca::where("estado","N")->orderBy("nombre")->get();
+                
+                $hoy = date('Y-m-d');
+                
+                $modelos = [];
+                $request->session()->put("seriesbaja", $modelos);
+                return view('/baja-nueva',[
+                    'usuario'=>$usuario,
+                    'mensaje'=>$mensaje,
+                    'sucursal'=>$sucursal,
+                    'marcas'=>$marcas,
+                    'tiposequipo'=>$tiposequipo,
+                    'hoy'=>$hoy,
+                    'w'=>0
+                ]);
+            }else{
+                $request->session()->put("mensaje","NO TIENE ACCESO A LA VISTA ".Menu::find($menuid)->nombre);
+                return redirect ("/inicio");
+            }
+        }
+        else{
+            return redirect("/index");
+        }
+    }
+    
+    public function BajaDetalle(Request $request,  Response $response) {
+        $usuario = $request->session()->get('usuario');
+        if($this->ComprobarUsuario($usuario)){
+            try{
+                $idorigen = $request->input("origen");
+                $tipo = $request->input("tipo");
+                $modelos = $request->session()->get("seriesbaja");
+                if(empty($modelos)){
+                    $modelos = [];
+                }
+                $errores = [];
+                if($tipo==1){
+                    $ruta =Input::file("excel")->getRealPath();
+                    $archivo = \PHPExcel_IOFactory::createReader('Excel2007');
+                    $objPHPExcel = $archivo->load($ruta);
+                    $sheet = $objPHPExcel->getSheet(0);
+                    for ($w = 1; $w <= $sheet->getHighestRow(); $w++) {
+                        $serie = $sheet->getCell("A".$w)->getFormattedValue();
+                        if(strlen(trim($serie))>0){
+                            $existe = Producto::
+                                    join("modelo","producto.id_modelo","modelo.id")->
+                                    join("marca","modelo.id_marca","marca.id")->
+                                    join("tipo_equipo","modelo.id_tipo_equipo","tipo_equipo.id")->
+                                    join("sucursal","producto.id_sucursal","sucursal.id")->
+                                    select("producto.id","producto.id_modelo","producto.id_sucursal","producto.estado","modelo.nombre as nombremodelo","marca.nombre as nombremarca","tipo_equipo.nombre as nombretipoequipo","sucursal.nombre as nombresucursal")->
+                                    where("serie",$serie)->orderBy("id","desc")->first();
+                            if($existe!=null){
+                                if($existe->estado=="N"){
+                                    if($existe->id_sucursal==$idorigen){
+                                        if(!array_key_exists($existe->id_modelo, $modelos)){
+                                            $modelos[$existe->id_modelo][0] = [];
+                                            $modelos[$existe->id_modelo][1] = $existe->nombretipoequipo.' '.$existe->nombremarca.' '.$existe->nombremodelo;
+                                            $modelos[$existe->id_modelo][2] = 0;
+                                        }
+                                        if(!array_key_exists($existe->id, $modelos[$existe->id_modelo][0])){
+                                            $modelos[$existe->id_modelo][2] = $modelos[$existe->id_modelo][2]+1;
+                                        }
+                                        $modelos[$existe->id_modelo][0][$existe->id] = $serie;
+                                    }else{
+                                        $errores[$serie] = "La serie se encuentra en la sucursal: ".$existe->nombresucursal;
+                                    }
+                                }else{
+                                    $errores[$serie] = "La serie se ha dado de baja";
+                                }
+                            }else{
+                                $errores[$serie] = "La serie no se ha registrado en ninguna sucursal";
+                            }
+                        }
+                    }
+                }else if($tipo==2){
+                    $serie = $request->input("serie");
+                    $existe = Producto::
+                            join("modelo","producto.id_modelo","modelo.id")->
+                            join("marca","modelo.id_marca","marca.id")->
+                            join("tipo_equipo","modelo.id_tipo_equipo","tipo_equipo.id")->
+                            join("sucursal","producto.id_sucursal","sucursal.id")->
+                            select("producto.id","producto.id_modelo","producto.id_sucursal","producto.estado","modelo.nombre as nombremodelo","marca.nombre as nombremarca","tipo_equipo.nombre as nombretipoequipo","sucursal.nombre as nombresucursal")->
+                            where("serie",$serie)->orderBy("id","desc")->first();
+                    if($existe!=null){
+                        if($existe->estado=="N"){
+                            if($existe->id_sucursal==$idorigen){
+                                if(!array_key_exists($existe->id_modelo, $modelos)){
+                                    $modelos[$existe->id_modelo][0] = [];
+                                    $modelos[$existe->id_modelo][1] = $existe->nombretipo.' '.$existe->nombremarca.' '.$existe->nombremodelo;
+                                    $modelos[$existe->id_modelo][2] = 0;
+                                }
+                                if(!array_key_exists($existe->id, $modelos[$existe->id_modelo][0])){
+                                    $modelos[$existe->id_modelo][2] = $modelos[$existe->id_modelo][2]+1;
+                                }
+                                $modelos[$existe->id_modelo][0][$existe->id] = $serie;
+                            }else{
+                                $errores[$serie] = "La serie se encuentra en la sucursal: ".$existe->nombresucursal;
+                            }
+                        }else{
+                            $errores[$serie] = "La serie se ha dado de baja";
+                        }
+                    }else{
+                        $errores[$serie] = "La serie no se ha registrado en ninguna sucursal";
+                    }
+                }else if($tipo==3){
+                    $idproducto = $request->input("id_producto");
+                    $existe = Producto::
+                            join("modelo","producto.id_modelo","modelo.id")->
+                            join("marca","modelo.id_marca","marca.id")->
+                            join("tipo_equipo","modelo.id_tipo_equipo","tipo_equipo.id")->
+                            join("sucursal","producto.id_sucursal","sucursal.id")->
+                            select("producto.id","producto.serie","producto.id_modelo","producto.id_sucursal","producto.estado","modelo.nombre as nombremodelo","marca.nombre as nombremarca","tipo_equipo.nombre as nombretipoequipo","sucursal.nombre as nombresucursal")->
+                            where("producto.id",$idproducto)->orderBy("id","desc")->first();
+                    if($existe!=null){
+                        if($existe->estado=="N"){
+                            if($existe->id_sucursal==$idorigen){
+                                if(!array_key_exists($existe->id_modelo, $modelos)){
+                                    $modelos[$existe->id_modelo][0] = [];
+                                    $modelos[$existe->id_modelo][1] = $existe->nombretipo.' '.$existe->nombremarca.' '.$existe->nombremodelo;
+                                    $modelos[$existe->id_modelo][2] = 0;
+                                }
+                                if(!array_key_exists($existe->id, $modelos[$existe->id_modelo][0])){
+                                    $modelos[$existe->id_modelo][2] = $modelos[$existe->id_modelo][2]+1;
+                                }
+                                $modelos[$existe->id_modelo][0][$existe->id] = $existe->serie;
+                            }else{
+                                $errores[$existe->serie] = "La serie se encuentra en la sucursal: ".$existe->nombresucursal;
+                            }
+                        }else{
+                            $errores[$existe->serie] = "La serie se ha dado de baja";
+                        }
+                    }else{
+                        $errores[$existe->serie] = "La serie no se ha registrado en ninguna sucursal";
+                    }
+                }else if($tipo==4){
+                    $modelo = $request->input("modelo");
+                    unset($modelos[$modelo]);
+                }else if($tipo==5){
+                    $modelo = $request->input("modelo");
+                    $producto = $request->input("producto");
+                    if(array_key_exists($producto, $modelos[$modelo][0])){
+                        unset($modelos[$modelo][0][$producto]);
+                        $modelos[$modelo][2] = $modelos[$modelo][2]-1;
+                    }
+                }
+                if(count($errores)>0){
+                    return json_encode(["ok"=>false,"errores"=>$errores]);
+                }else{
+                    $request->session()->put("seriesbaja", $modelos);
+                    return json_encode(["ok"=>true,"lista"=>$modelos]);
+                }
+            } catch (Exception $ex) {
+                return json_encode(["ok"=>false,"error"=>$ex->getMessage()]);
+            }
+        }
+        else{
+            return json_encode(["ok"=>false,"url"=>"index"]);
+        }
+    }
+    
+    public function BajaPost(Request $request,  Response $response) {
+        $usuario = $request->session()->get('usuario');
+        if($this->ComprobarUsuario($usuario)){
+            $numero = $request->input("numero");
+            $interno = $request->input("interno");
+            $idsucursal = $request->input('origen');
+            $fecha = $request->input("fecha");
+            $descripcion = $request->input("descripcion");
+            $modelos = $request->session()->get("seriesbaja");
+            if(count($modelos)>0){
+                DB::beginTransaction();
+                try{
+                    $ultimo = GuiaBaja::orderBy("id","desc")->first();
+                    $anio = date("Y");
+                    $documento = Documento::find(3);
+                    if($ultimo!=null){
+                        $anioanterior = substr($ultimo->numero, 2,4);
+                        if($anioanterior!=$anio){
+                            $documento->siguiente = 1;
+                            $documento->save();
+                        }
+                    }
+
+                    $siguiente = $documento->siguiente;
+                    $codigo = strval($siguiente);
+                    for($i=0;$i<(6-strlen($siguiente));$i++){
+                        $codigo = '0'.$codigo;
+                    }
+                    
+                    $baja = new GuiaBaja();
+                    $baja->remision = $numero;
+                    $baja->interno = $interno;
+                    $baja->numero = $documento->codigo.$anio.$codigo;
+                    $baja->id_sucursal = $idsucursal;
+                    $baja->fecha = $fecha;
+                    $baja->descripcion = $descripcion;
+                    $baja->save();
+                    foreach ($modelos as $modelo){
+                        $productos = $modelo[0];
+                        foreach ($productos as $idproducto =>$serie){
+                            $producto = Producto::find($idproducto);
+                            if($producto->estado=="N"){
+                                if($producto->id_sucursal==$baja->id_sucursal){
+                                    $detalle = new DetalleGuiaBaja();
+                                    $detalle->id_producto = $producto->id;
+                                    $detalle->id_guiabaja = $baja->id;
+                                    $producto->id_sucursal = null;
+                                    $producto->id_area_sucursal = null;
+                                    $producto->estado = "A";
+                                    $producto->save();
+                                    $detalle->save();
+                                }else{
+                                    DB::rollback();
+                                    $sucursal = Sucursal::find($producto->id_sucursal);
+                                    return json_encode(["ok"=>false,"error"=>"La serie ".$producto->serie." se encuentra en otra sucursal: ".$sucursal->nombre]);
+                                }
+                            }else{
+                                DB::rollback();
+                                return json_encode(["ok"=>false,"error"=>"La serie ".$producto->serie." se ha dado de baja"]);
+                            }
+                        }
+                    }
+                    $documento->siguiente = $siguiente+1;
+                    $documento->save();
+                    new Bitacora("baja","nuevo",$baja->numero,$usuario->id);
+                    DB::commit();
+                    $request->session()->put("mensaje","Guardado correctamente");
+                    return json_encode(["ok"=>true,"baja"=>$baja->id]);
+                } 
+                catch (Exception $e) {
+                    DB::rollback();
+                    $error=$e->getMessage();
+                    return json_encode(["ok"=>false,"error"=>$error."-line:".$e->getLine()]);
+                }
+            }else{
+                return json_encode(["ok"=>false,"error"=>"No ha añadido productos a la guia"]);
+            }
+        }
+        else{
+            return json_encode(["ok"=>false,"url"=>"index"]);
+        }
+    }
+    
+    public function Baja(Request $request,  Response $response) {
+        $usuario = $request->session()->get('usuario');
+        if($this->ComprobarUsuario($usuario)){
+            $menuid = 40;
+            if($this->ComprobarPermiso($usuario, $menuid)){
+                $mensaje = $request->session()->get('mensaje');
+                $request->session()->forget('mensaje');
+                $id = $request->input('id');
+                $baja = GuiaBaja::find($id);
+                $detalles = DetalleGuiaBaja::
+                        join("producto","detalle_guiabaja.id_producto","producto.id")
+                        ->join('modelo','producto.id_modelo','modelo.id')
+                        ->join("marca","modelo.id_marca","marca.id")
+                        ->join("tipo_equipo","modelo.id_tipo_equipo","tipo_equipo.id")
+                        ->select("modelo.id","modelo.nombre as nombremodelo","marca.nombre as nombremarca","tipo_equipo.nombre as nombretipoequipo",DB::raw("count(*) as cantidad"))
+                        ->where('detalle_guiabaja.id_guiabaja',$id)
+                        ->groupBy("modelo.id","modelo.nombre","marca.nombre","tipo_equipo.nombre")
+                        ->get();
+                $archivo = Archivo::where("numero",$id)->where("tipo","baja")->where("estado","N")->first();
+                return view('/baja',[
+                    'usuario'=>$usuario,
+                    'mensaje'=>$mensaje,
+                    'baja'=>$baja,
+                    'detalles'=>$detalles,
+                    'archivo'=>$archivo,
+                    'w'=>0
+                ]);
+            }else{
+                $request->session()->put("mensaje","NO TIENE ACCESO A LA VISTA ".Menu::find($menuid)->nombre);
+                return redirect ("/inicio");
+            }
+                
+        }else{
+            return redirect("/index");
+        }
+    }
+    
+    public function BajaSeries(Request $request,  Response $response) {
+        $usuario = $request->session()->get('usuario');
+        if($this->ComprobarUsuario($usuario)){
+            $menuid = 40;
+            if($this->ComprobarPermiso($usuario, $menuid)){
+                $mensaje = $request->session()->get('mensaje');
+                $request->session()->forget('mensaje');
+                $id = $request->input("id");
+                $idbaja = $request->input("b");
+                $producto = DetalleGuiabaja::
+                        join("producto","detalle_guiabaja.id_producto","producto.id")->
+                        join("guiabaja","detalle_guiabaja.id_guiabaja","guiabaja.id")->
+                        join("modelo","producto.id_modelo","modelo.id")->
+                        join("tipo_equipo","modelo.id_tipo_equipo","tipo_equipo.id")->
+                        join("marca","modelo.id_marca","marca.id")->
+                        select("guiabaja.numero","modelo.nombre as nombremodelo","tipo_equipo.nombre as nombretipoequipo","marca.nombre as nombremarca")->
+                        where("modelo.id",$id)->
+                        where("detalle_guiabaja.id_guiabaja",$idbaja)->
+                        first();
+                $detalles = DetalleGuiaBaja::
+                        join("producto","detalle_guiabaja.id_producto","producto.id")->
+                        select("producto.serie")->
+                        where("producto.id_modelo",$id)->where("detalle_guiabaja.id_guiabaja",$idbaja)->orderBy("detalle_guiabaja.id")->get();
+                $existen = count($detalles);
+                return view('/baja-series',[
+                    'usuario'=>$usuario,
+                    'mensaje'=>$mensaje,
+                    'producto'=>$producto,
+                    'detalles'=>$detalles,
+                    'existen'=>$existen,
+                    'w'=>0
+                ]);
+            }else{
+                $request->session()->put("mensaje","NO TIENE ACCESO AL MENÚ ".Menu::find($menuid)->nombre);
+                return redirect ("/inicio");
             }
         }else{
             return redirect("/index");

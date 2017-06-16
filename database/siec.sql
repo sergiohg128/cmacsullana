@@ -264,6 +264,8 @@ create table caso(
 	analisis text,
 	conclusion text,
 	sla integer,
+	casomarca text,
+	id_sucursalorigen integer,
 	id_producto integer,
 	id_tipo_caso integer,
 	id_tipo_solucion integer,
@@ -295,6 +297,7 @@ create table motivo_traslado(
 create table traslado(
 	id serial,
 	numero text,
+	interno text,
 	remision integer,
 	fecha timestamp without time zone default now(),
 	descripcion text,
@@ -339,4 +342,33 @@ create table archivo(
 	fecha timestamp without time zone default now(),
 	estado character default 'N',
 	constraint pk_archivo primary key (id)
+);
+
+create table bitacora(
+	id serial,
+	tabla text,
+	tipo text,
+	accion text,
+	fecha timestamp without time zone default now(),
+	id_usuario integer,
+	constraint pk_bitacora primary key(id)
+);
+
+create table guiabaja(
+	id serial,
+	numero text,
+	interno text,
+	remision integer,
+	fecha timestamp without time zone default now(),
+	descripcion text,
+	id_sucursal integer,
+	estado character default 'N',
+	constraint pk_guiabaja primary key (id)
+);
+
+create table detalle_guiabaja(
+	id serial,
+	id_guiabaja integer,
+	id_producto integer,
+	constraint pk_detalle_guiabaja primary key (id)
 );

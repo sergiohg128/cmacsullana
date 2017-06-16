@@ -107,7 +107,7 @@ function listarmodelos(){
         success: function(a) {
             a = JSON.parse(a);
             var modelos = a.obj;
-            var html = '<label>PRODUCTOS</label><select  id="modelos" style="width: 100%;"><option value="0">TODOS</option>';
+            var html = '<label>PRODUCTOS</label><select name="id_modelo" id="modelos" style="width: 100%;"><option value="0">TODOS</option>';
             $.each(modelos,function (key,modelo){
               html += "<option value='"+modelo.id+"'>"+modelo.nombre+"</option>";  
             });
@@ -1431,45 +1431,6 @@ function registrarcontratodetalle(){
     }
 }
 
-$(".inputserie").on("keyup",function(e){
-   if(e.keyCode==13){
-       var serie = $(this).val();
-       var id = $(this).attr("data-href");
-       if(serie.trim().length>0){
-           $.ajax({
-                type: "GET",
-                url: "agregar-serie",
-                data: {"id":id,"serie":serie},
-                success: function(a) {
-                    a = JSON.parse(a);
-                    if(a.ok){
-                       $('#estado'+id).html("<i class='material-icons green-text'>done</i>");
-                       $("#serie"+id).prop("disabled",true);
-                    }else{
-                        if(a.url==null){
-                            if(a.serie==null){
-                                alerta(a.error,10000);
-                                $('#estado'+id).html("<i class='material-icons red-text'>clear</i>");
-                            }else{
-                                alerta(a.error,10000);
-                                $('#estado'+id).html("<i class='material-icons green-text'>done</i>");
-                                $("#serie"+id).prop("disabled",true);
-                                $("#serie"+id).val(a.serie);
-                            }
-                        }else{
-                            window.location = a.url;
-                        }
-                    }
-                },beforeSend:function(){
-                    $('#estado'+id).html("<div class='row center'><div class='preloader-wrapper small active'><div class='spinner-layer spinner-blue'><div class='circle-clipper left'><div class='circle'></div></div><div class='gap-patch'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div><div class='spinner-layer spinner-red'><div class='circle-clipper left'><div class='circle'></div></div><div class='gap-patch'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div><div class='spinner-layer spinner-yellow'><div class='circle-clipper left'><div class='circle'></div></div><div class='gap-patch'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div><div class='spinner-layer spinner-green'><div class='circle-clipper left'><div class='circle'></div></div><div class='gap-patch'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div></div></div>");
-                }
-            });
-       }else{
-           alerta("Ingrese la serie");
-       }
-   } 
-});
-
 //------------------------CONTRATO-----------------------//
 
 //------------------------COMPRA----------------------//
@@ -1978,96 +1939,62 @@ function mostrarerrorestraslado(errores){
 }
 
 function registrartraslado(){
-    var numero = $('#numero').val();
-    if(numero.trim().length>0){
-        var fecha = $('#fecha').val()
-        if(fecha.length==10){
-            var idsucursal = $('#sucursales').val();
-            if(idsucursal>0){
-                var motivo = $('#motivos').val();
-                if(motivo>0){
-                    var cantidad = 0;
-                    var html = "";
-                    for(var key in detalles){
-                        cantidad++;
-                    }        
-                    if(cantidad>0){
-                        var formData = $("#trasladoform").serialize();
-                        $.ajax({
-                            type: "POST",
-                            url: "traslado",
-                            data: formData,
-                            success: function(a) {
-                                a = JSON.parse(a);
-                                if(a.ok){
-                                    window.location = "traslado?id="+a.traslado;
-                                }else{
-                                    if(a.url==null){
-                                        alerta(a.error,10000);
-                                        $('#divbtnregistrar').html("<a onclick='registrartraslado()' class='btn-large'>GUARDAR<i class='material-icons right'>save</i></a>");
+    var interno = $('#interno').val();
+    if(interno.trim().length>0){
+        var numero = $('#numero').val();
+        if(numero.trim().length>0){
+            var fecha = $('#fecha').val()
+            if(fecha.length==10){
+                var idsucursal = $('#sucursales').val();
+                if(idsucursal>0){
+                    var motivo = $('#motivos').val();
+                    if(motivo>0){
+                        var cantidad = 0;
+                        var html = "";
+                        for(var key in detalles){
+                            cantidad++;
+                        }        
+                        if(cantidad>0){
+                            var formData = $("#trasladoform").serialize();
+                            $.ajax({
+                                type: "POST",
+                                url: "traslado",
+                                data: formData,
+                                success: function(a) {
+                                    a = JSON.parse(a);
+                                    if(a.ok){
+                                        window.location = "traslado?id="+a.traslado;
                                     }else{
-                                        window.location = a.url;
+                                        if(a.url==null){
+                                            alerta(a.error,10000);
+                                            $('#divbtnregistrar').html("<a onclick='registrartraslado()' class='btn-large'>GUARDAR<i class='material-icons right'>save</i></a>");
+                                        }else{
+                                            window.location = a.url;
+                                        }
                                     }
+                                },beforeSend:function(){
+                                    $('#divbtnregistrar').html("<div class='row center'><div class='preloader-wrapper small active'><div class='spinner-layer spinner-blue'><div class='circle-clipper left'><div class='circle'></div></div><div class='gap-patch'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div><div class='spinner-layer spinner-red'><div class='circle-clipper left'><div class='circle'></div></div><div class='gap-patch'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div><div class='spinner-layer spinner-yellow'><div class='circle-clipper left'><div class='circle'></div></div><div class='gap-patch'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div><div class='spinner-layer spinner-green'><div class='circle-clipper left'><div class='circle'></div></div><div class='gap-patch'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div></div></div>");
                                 }
-                            },beforeSend:function(){
-                                $('#divbtnregistrar').html("<div class='row center'><div class='preloader-wrapper small active'><div class='spinner-layer spinner-blue'><div class='circle-clipper left'><div class='circle'></div></div><div class='gap-patch'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div><div class='spinner-layer spinner-red'><div class='circle-clipper left'><div class='circle'></div></div><div class='gap-patch'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div><div class='spinner-layer spinner-yellow'><div class='circle-clipper left'><div class='circle'></div></div><div class='gap-patch'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div><div class='spinner-layer spinner-green'><div class='circle-clipper left'><div class='circle'></div></div><div class='gap-patch'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div></div></div>");
-                            }
-                        });
+                            });
+                        }else{
+                            alerta("Agregue al menos un producto al traslado");
+                        }
                     }else{
-                        alerta("Agregue al menos un producto al traslado");
+                        alerta("Elija un motivo");
                     }
                 }else{
-                    alerta("Elija un motivo");
+                    alerta("Elija una sucursal");
                 }
             }else{
-                alerta("Elija una sucursal");
+                alerta("Ingrese una fecha");
             }
         }else{
-            alerta("Ingrese una fecha");
+            alerta("Ingrese el número de la guia de remisión");
         }
     }else{
-        alerta("Ingrese un número de traslado");
+        alerta("Ingrese el número interno de traslado")
     }
 }
-
-$(".inputserietraslado").on("keyup",function(e){
-   if(e.keyCode==13){
-       var serie = $(this).val();
-       var id = $(this).attr("data-href");
-       if(serie.trim().length>0){
-           $.ajax({
-                type: "GET",
-                url: "transladar-serie",
-                data: {"id":id,"serie":serie},
-                success: function(a) {
-                    a = JSON.parse(a);
-                    if(a.ok){
-                       $('#estado'+id).html("<i class='material-icons green-text'>done</i>");
-                       $("#serie"+id).prop("disabled",true);
-                    }else{
-                        if(a.url==null){
-                            if(a.serie==null){
-                                alerta(a.error,10000);
-                                $('#estado'+id).html("<i class='material-icons red-text'>clear</i>");
-                            }else{
-                                alerta(a.error,10000);
-                                $('#estado'+id).html("<i class='material-icons green-text'>done</i>");
-                                $("#serie"+id).prop("disabled",true);
-                                $("#serie"+id).val(a.serie);
-                            }
-                        }else{
-                            window.location = a.url;
-                        }
-                    }
-                },beforeSend:function(){
-                    $('#estado'+id).html("<div class='row center'><div class='preloader-wrapper small active'><div class='spinner-layer spinner-blue'><div class='circle-clipper left'><div class='circle'></div></div><div class='gap-patch'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div><div class='spinner-layer spinner-red'><div class='circle-clipper left'><div class='circle'></div></div><div class='gap-patch'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div><div class='spinner-layer spinner-yellow'><div class='circle-clipper left'><div class='circle'></div></div><div class='gap-patch'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div><div class='spinner-layer spinner-green'><div class='circle-clipper left'><div class='circle'></div></div><div class='gap-patch'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div></div></div>");
-                }
-            });
-       }else{
-           alerta("Ingrese la serie");
-       }
-   } 
-});
 
 
 //------------------------TRASLADOS-------------------------//
@@ -2219,7 +2146,7 @@ function vermodeloguia(key){
         }else{
             html += "<td>"+serie+"</td>";
         }
-        html += '<td><div id="divbtneliminar5-'+serie+'"><button class="btn red" onclick="eliminardetallecompra('+key+',\''+serie+'\',5)"><i class="material-icons">delete</i></button></div></td>'+
+        html += '<td><div id="divbtneliminar5-'+serie+'"><button class="btn red" onclick="eliminardetalleguia('+key+',\''+serie+'\',5)"><i class="material-icons">delete</i></button></div></td>'+
                 '</tr>';
     });
     $('#modal-filas').html(html);
@@ -2513,7 +2440,16 @@ function elegirtipocaso(){
     $('#info-producto').hide();
     if(tipo==4){
         $('#divsolucion').show();
+        $('#divcasomarca').hide();
+    }else if(tipo==5){
+        $('#divcasomarca').show();
+        $('#divsolucion').hide();
+        $('#tiposolucion').val(0);
+        $('#tiposolucion').material_select('destroy');
+        $('#tiposolucion').material_select();
+        $('#divserie').hide();
     }else{
+        $('#divcasomarca').hide();
         $('#divsolucion').hide();
         $('#tiposolucion').val(0);
         $('#tiposolucion').material_select('destroy');
@@ -2907,17 +2843,16 @@ function fincaso(){
 
 function reportelistarsucursales(id){
     var tipo = $('#tipossucursal'+id).val();
-    var territorio = $('#tiposterritorio'+id).val();
     $.ajax({
         type: "GET",
         url: "sucursales",
-        data: {"modo":"ajax","tipo":tipo,"territorio":territorio},
+        data: {"modo":"ajax","tipo":tipo},
         success: function(a) {
             a = JSON.parse(a);
             if(a.ok){
                 var lista = a.obj;
                 var html = '<label>SUCURSALES</label>'+
-                            '<select name="sucursal" id="sucursales'+id+'" style="width: 100%;">';
+                            '<select name="sucursal" id="sucursales'+id+'" onchange="reportelistarareas(1)" style="width: 100%;">';
                 if(lista.length>0){
                     html += '<option value="0">TODAS</option>';
                     $.each(lista,function (key,sucursal){
@@ -2943,6 +2878,43 @@ function reportelistarsucursales(id){
     });
 }
 
+function reportelistarareas(id){
+    var sucursal = $('#sucursales'+id).val();
+    $.ajax({
+        type: "GET",
+        url: "areas-sucursal",
+        data: {"modo":"ajax","sucursal":sucursal},
+        success: function(a) {
+            a = JSON.parse(a);
+            if(a.ok){
+                var lista = a.obj;
+                var html = '<label>ÁREA</label>'+
+                            '<select name="area" id="areas'+id+'" style="width: 100%;">';
+                if(lista.length>0){
+                    html += '<option value="0">TODAS</option>';
+                    $.each(lista,function (key,area){
+                      html += "<option value='"+area.id+"'>"+area.nombre+"</option>";  
+                    });
+                }else{
+                    html += '<option value="0">NO HAY ÁREAS</option>';
+                }
+                    
+                html += '</select>';
+                $('#divareas'+id).html(html);
+                $('#areas'+id).select2();
+            }else{
+                if(a.url==null){
+                    alerta(a.error,10000);
+                }else{
+                    window.location = a.url;
+                }
+            }
+        },beforeSend:function(){
+            $('#divareas'+id).html("<div class='row center'><div class='preloader-wrapper small active'><div class='spinner-layer spinner-blue'><div class='circle-clipper left'><div class='circle'></div></div><div class='gap-patch'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div><div class='spinner-layer spinner-red'><div class='circle-clipper left'><div class='circle'></div></div><div class='gap-patch'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div><div class='spinner-layer spinner-yellow'><div class='circle-clipper left'><div class='circle'></div></div><div class='gap-patch'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div><div class='spinner-layer spinner-green'><div class='circle-clipper left'><div class='circle'></div></div><div class='gap-patch'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div></div></div>");
+        }
+    });
+}
+
 function reportelistarmodelos(id){
     var marca = $('#marcas'+id).val();
     var tipo = $('#tiposequipo'+id).val();
@@ -2954,7 +2926,7 @@ function reportelistarmodelos(id){
             a = JSON.parse(a);
             var modelos = a.obj;
             var html = '<label>PRODUCTOS</label>\n\
-                    <select  id="modelos'+id+'" style="width: 100%;">';
+                    <select name="modelo" id="modelos'+id+'" style="width: 100%;">';
             if(modelos.length>0){
                 html += '<option value="0">TODOS</option>';
                 $.each(modelos,function (key,modelo){
@@ -2976,3 +2948,316 @@ function reporte(id){
     var formData = $("#reporte"+id).serialize();
     window.open("reporte?"+formData);
 }
+
+
+//---------------------BAJA-----------------------//
+
+function modalsucursalbaja(){
+    $('#modal-bajas').modal('open');
+    $.ajax({
+        type: "GET",
+        url: "sucursales?modo=ajax",
+        success: function(a) {
+            a = JSON.parse(a);
+            if(a.ok){
+                var lista = a.obj;
+                var html = '<label for="sucursalmodalbajas">SUCURSALES</label>'+
+                            '<select id="sucursalmodalbajas" name="sucursal" style="width: 100%;">'+
+                            '<option value="0">ELIJA UNA SUCURSAL</option>';
+                $.each(lista,function (key,sucursal){
+                  html += "<option value='"+sucursal.id+"'>"+sucursal.nombre+"</option>";  
+                });
+                html += '</select>';
+                $('#divmodalsucursalbaja').html(html);
+                $('#sucursalmodalbajas').select2();
+            }else{
+                if(a.url==null){
+                    alerta(a.error,10000);
+                }else{
+                    window.location = a.url;
+                }
+            }
+        },beforeSend:function(){
+            $('#divmodalsucursalbajas').html("<div class='row center'><div class='preloader-wrapper small active'><div class='spinner-layer spinner-blue'><div class='circle-clipper left'><div class='circle'></div></div><div class='gap-patch'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div><div class='spinner-layer spinner-red'><div class='circle-clipper left'><div class='circle'></div></div><div class='gap-patch'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div><div class='spinner-layer spinner-yellow'><div class='circle-clipper left'><div class='circle'></div></div><div class='gap-patch'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div><div class='spinner-layer spinner-green'><div class='circle-clipper left'><div class='circle'></div></div><div class='gap-patch'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div></div></div>");
+        }
+    });
+}
+
+function abrirbajasucursal(){
+    var sucursal = $('#sucursalmodalbajas').val();
+    if(sucursal>0){
+        window.location = "baja-nueva?id="+sucursal;
+    }else{
+        alerta("Elija una sucursal");
+    }
+}
+
+
+
+function buscarseriesbaja(){
+    var tipo = $('#tiposequipo').val();
+    var marca = $('#marcas').val();
+    var modelo = $('#modelos').val();
+    var origen = $('#origen').val();
+    var boton = '<a onclick="buscarseriesbaja()" class="btn green"><i class="material-icons">search</i></a>';
+    $.ajax({
+        type: "GET",
+        url: "series",
+        data: {"modo":"ajax","id_tipo_equipo":tipo,"id_marca":marca,"id_modelo":modelo,"id_origen":origen},
+        success: function(a) {
+            a = JSON.parse(a);
+            if(a.ok){
+                var lista = a.obj;
+                var html = '<label>SERIES</label>'+
+                            '<select id="series" style="width: 100%;">'+
+                            '<option value="0">ELIJA UNA SERIE</option>';
+                $.each(lista,function (key,producto){
+                  html += "<option value='"+producto.id+"'>"+producto.serie+"</option>";  
+                });
+                html += '</select>';
+                $('#divseries').html(html);
+                $('#series').select2();
+                $('#divbtnbuscar').html(boton);
+            }else{
+                if(a.url==null){
+                    alerta(a.error,10000);
+                }else{
+                    window.location = a.url;
+                }
+            }
+        },beforeSend:function(){
+            $('#divbtnbuscar').html("<div class='row center'><div class='preloader-wrapper small active'><div class='spinner-layer spinner-blue'><div class='circle-clipper left'><div class='circle'></div></div><div class='gap-patch'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div><div class='spinner-layer spinner-red'><div class='circle-clipper left'><div class='circle'></div></div><div class='gap-patch'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div><div class='spinner-layer spinner-yellow'><div class='circle-clipper left'><div class='circle'></div></div><div class='gap-patch'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div><div class='spinner-layer spinner-green'><div class='circle-clipper left'><div class='circle'></div></div><div class='gap-patch'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div></div></div>");
+            $('#divseries').html("<div class='row center'><div class='preloader-wrapper small active'><div class='spinner-layer spinner-blue'><div class='circle-clipper left'><div class='circle'></div></div><div class='gap-patch'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div><div class='spinner-layer spinner-red'><div class='circle-clipper left'><div class='circle'></div></div><div class='gap-patch'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div><div class='spinner-layer spinner-yellow'><div class='circle-clipper left'><div class='circle'></div></div><div class='gap-patch'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div><div class='spinner-layer spinner-green'><div class='circle-clipper left'><div class='circle'></div></div><div class='gap-patch'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div></div></div>");
+        }
+    });
+}
+
+function agregardetallebaja(tipo){
+    var cargando = '<div class="preloader-wrapper small active"><div class="spinner-layer spinner-green-only"><div class="circle-clipper left"><div class="circle"></div></div><div class="gap-patch"><div class="circle"></div></div><div class="circle-clipper right"><div class="circle"></div></div></div></div>';
+    var boton = "<a onclick='agregardetallebaja("+tipo+")' class='btn red'><i class='material-icons'>add</i></a>";
+    if(tipo==1){
+        var archivo = document.getElementById("excel");
+        var excel = archivo.files[0];
+        if(excel==undefined){
+            alerta("Ingrese un archivo");
+        }else{
+            if(excel.name.indexOf(".xlsx")!=-1){
+                var formData = new FormData($("#bajaexcelform")[0]);
+                $.ajax({
+                    type: "POST",
+                    url: "baja-detalle",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(a) {
+                        $('#divbtnagregar'+tipo).html(boton);
+                        a = JSON.parse(a);
+                        if(a.ok){
+                           var lista = a.lista;
+                           detalles = lista;
+                           recargarfilasbaja(lista);
+                        }else{
+                            if(a.errores!=null){
+                                mostrarerroresbaja(a.errores);
+                            }else{
+                                window.location = a.url;
+                            }
+                        }
+                    },beforeSend:function(){
+                        $('#divbtnagregar'+tipo).html(cargando);
+                    }
+                });
+            }else{
+                alerta("Suba un archivo excel en formato .xlsx");
+            }
+        }
+    }else if(tipo==2){
+        var serie = $('#seriemanual').val();
+        var origen = $('#origen').val();
+        var token = document.getElementsByName("_token")[0].value;
+        if(serie.trim().length>0){
+            $.ajax({
+                type: "POST",
+                url: "baja-detalle",
+                data: {"serie":serie,"origen":origen,"_token":token,"tipo":tipo},
+                success: function(a) {
+                    $('#divbtnagregar'+tipo).html(boton);
+                    a = JSON.parse(a);
+                    if(a.ok){
+                        var lista = a.lista;
+                        detalles = lista;
+                        recargarfilasbaja(lista);
+                    }else{
+                        if(a.errores!=null){
+                            mostrarerroresbaja(a.errores);
+                        }else{
+                            window.location = a.url;
+                        }
+                    }
+                },beforeSend:function(){
+                    $('#divbtnagregar'+tipo).html(cargando);
+                }
+            });
+        }else{
+            alerta("Ingrese una serie");
+        }
+    }else if(tipo==3){
+        var idproducto = $('#series').val();
+        var origen = $('#origen').val();
+        var token = document.getElementsByName("_token")[0].value;
+        if(idproducto>0){
+            $.ajax({
+                type: "POST",
+                url: "baja-detalle",
+                data: {"id_producto":idproducto,"origen":origen,"_token":token,"tipo":tipo},
+                success: function(a) {
+                    $('#divbtnagregar'+tipo).html(boton);
+                    a = JSON.parse(a);
+                    if(a.ok){
+                        var lista = a.lista;
+                        detalles = lista;
+                        recargarfilasbaja(lista);
+                    }else{
+                        if(a.errores!=null){
+                            mostrarerroresbaja(a.errores);
+                        }else{
+                            window.location = a.url;
+                        }
+                    }
+                },beforeSend:function(){
+                    $('#divbtnagregar'+tipo).html(cargando);
+                }
+            });
+        }else{
+            alerta("Elija una serie");
+        }
+    }
+}
+
+function recargarfilasbaja(lista){
+    alerta("Se agregó las series al detalle");
+    var html = "";
+    $.each(lista,function (key,modelo){
+        html += "<tr>"+
+                    "<td>"+modelo[1]+"</td>"+
+                    "<td>"+modelo[2]+"</td>"+
+                    "<td><button class='btn' onclick='vermodelobaja("+key+")'><i class='material-icons'>input</i></button></td>"+
+                    "<td><div id='divbtneliminar4-"+key+"'><button class='btn red' onclick='eliminardetallebaja("+key+",null,4)'><i class='material-icons'>delete</i></button></div></td>"+
+                "</tr>";
+    });
+    $('#filas').html(html);
+}
+
+function vermodelobaja(key){
+    var modelo = detalles[key];
+    var series = modelo[0];
+    $('#nombre-producto').html(modelo[1]);
+    $('#cantidad-series').html("CANTIDAD: "+modelo[2]);
+    var html = "";
+    $.each(series,function (id,serie){
+        html += "<tr>\n\
+        <td>"+serie+"</td>\n\
+        \n\<td><div id='divbtneliminar5-"+id+"'><button class='btn red' onclick='eliminardetallebaja("+key+","+id+",5)'><i class='material-icons'>delete</i></button></div></td>\n\
+        </tr>";
+    });
+    $('#modal-filas').html(html);
+    $('#modal-series').modal("open");
+}
+
+function eliminardetallebaja(modelo,producto,tipo){
+    var cargando = '<div class="preloader-wrapper small active"><div class="spinner-layer spinner-green-only"><div class="circle-clipper left"><div class="circle"></div></div><div class="gap-patch"><div class="circle"></div></div><div class="circle-clipper right"><div class="circle"></div></div></div></div>';
+    var boton = "<button class='btn red' onclick='eliminardetallebaja("+modelo+","+producto+","+tipo+")'><i class='material-icons'>delete</i></button>";
+    var token = document.getElementsByName("_token")[0].value;
+    $.ajax({
+        type: "POST",
+        url: "baja-detalle",
+        data: {"modelo":modelo,"producto":producto,"_token":token,"tipo":tipo},
+        success: function(a) {
+            if(tipo==4){
+                $('#divbtneliminar'+tipo+'-'+modelo).html(boton);
+            }else if(tipo==5){
+                $('#divbtneliminar'+tipo+'-'+producto).html(boton);
+            }
+            a = JSON.parse(a);
+            if(a.ok){
+                var lista = a.lista;
+                detalles = lista;
+                recargarfilasbaja(lista);
+                $('#modal-series').modal("close");
+            }else{
+                if(a.errores!=null){
+                    mostrarerroresbaja(a.errores);
+                }else{
+                    window.location = a.url;
+                }
+            }
+        },beforeSend:function(){
+            if(tipo==4){
+                $('#divbtneliminar'+tipo+'-'+modelo).html(cargando);
+            }else if(tipo==5){
+                $('#divbtneliminar'+tipo+'-'+producto).html(cargando);
+            }
+        }
+    });
+}
+
+function mostrarerroresbaja(errores){
+    var html = "";
+    $.each(errores,function (key,error){
+        html += "<tr>\n\
+        <td>"+key+"</td>\n\
+        \n\<td>"+error+"</td>\n\
+        </tr>";
+    });
+    $('#modal-filas-errores').html(html);
+    $('#modal-errores').modal("open");
+}
+
+function registrarbaja(){
+    var interno = $('#interno').val();
+    if(interno.trim().length>0){
+        var numero = $('#numero').val();
+        if(numero.trim().length>0){
+            var fecha = $('#fecha').val()
+            if(fecha.length==10){
+                var cantidad = 0;
+                var html = "";
+                for(var key in detalles){
+                    cantidad++;
+                }        
+                if(cantidad>0){
+                    var formData = $("#bajaform").serialize();
+                    $.ajax({
+                        type: "POST",
+                        url: "baja",
+                        data: formData,
+                        success: function(a) {
+                            a = JSON.parse(a);
+                            if(a.ok){
+                                window.location = "baja?id="+a.baja;
+                            }else{
+                                if(a.url==null){
+                                    alerta(a.error,10000);
+                                    $('#divbtnregistrar').html("<a onclick='registrarbaja()' class='btn-large'>GUARDAR<i class='material-icons right'>save</i></a>");
+                                }else{
+                                    window.location = a.url;
+                                }
+                            }
+                        },beforeSend:function(){
+                            $('#divbtnregistrar').html("<div class='row center'><div class='preloader-wrapper small active'><div class='spinner-layer spinner-blue'><div class='circle-clipper left'><div class='circle'></div></div><div class='gap-patch'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div><div class='spinner-layer spinner-red'><div class='circle-clipper left'><div class='circle'></div></div><div class='gap-patch'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div><div class='spinner-layer spinner-yellow'><div class='circle-clipper left'><div class='circle'></div></div><div class='gap-patch'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div><div class='spinner-layer spinner-green'><div class='circle-clipper left'><div class='circle'></div></div><div class='gap-patch'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div></div></div>");
+                        }
+                    });
+                }else{
+                    alerta("Agregue al menos un producto a dar de baja");
+                }
+            }else{
+                alerta("Ingrese una fecha");
+            }
+        }else{
+            alerta("Ingrese el número de la guia de remisión");
+        }
+    }else{
+        alerta("Ingrese el número interno a la guia")
+    }
+}
+//---------------------BAJA-----------------------//

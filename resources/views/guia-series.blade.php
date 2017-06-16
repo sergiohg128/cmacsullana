@@ -49,11 +49,15 @@
                 <tr>
                     <td>{{$w = $w + 1}}</td>
                     <td>{{$producto->serie}}</td>
-                    <td>{{$producto->sucursal()->nombre}}</td>
-                    @if($producto->id_area_sucursal!=null)
-                        <td>{{$producto->areasucursal()->area()->nombre}}</td>
-                    @else
-                        <td>-</td>
+                    @if($producto->estado=="N")
+                        <td>{{$producto->sucursal()->nombre}}</td>
+                        @if($producto->id_area_sucursal!=null)
+                            <td>{{$producto->areasucursal()->area()->nombre}}</td>
+                        @else
+                            <td>-</td>
+                        @endif
+                    @elseif($producto->estado=="A")
+                        <td colspan="2">DADO DE BAJA</td>
                     @endif
                 </tr>
             @empty

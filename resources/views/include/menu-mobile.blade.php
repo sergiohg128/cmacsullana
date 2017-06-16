@@ -9,8 +9,11 @@
               @foreach($usuario->menus as $menu)
                     @if($menu->link!=null)
                         @if($menu->idgrupo==$grupo->id)
-                            <li><a href="{{$menu->link}}" class="waves-effect">{{$menu->nombre}}</a></li>
-                            <div class="divider"></div>
+                            @if($menu->tipo=="J")
+                                <li><a onclick="{{$menu->link}}" class="waves-effect">{{$menu->nombre}}</a></li>
+                            @else
+                                <li><a href="{{$menu->link}}" class="waves-effect">{{$menu->nombre}}</a></li>
+                            @endif
                         @endif
                     @endif
                 @endforeach

@@ -3,13 +3,12 @@
     @include('include.menu-mobile')
     <!--Cuerpo-->
     <div class="row cuerpo">
-      <a onclick="$('#formtraslados').submit()" class="btn-floating btn-large waves-effect left"><i class="material-icons">search</i></a>
-      <a onclick="$('#modal-traslados').modal('open');" class="btn-floating btn-large waves-effect red"><i class="material-icons">local_shipping</i></a>
+      <a onclick="$('#formbajas').submit()" class="btn-floating btn-large waves-effect left"><i class="material-icons">search</i></a>
       <div class="row titulo center">
-        <h4>TRASLADOS</h4>
+        <h4>BAJAS</h4>
       </div>
       <div class="col s10 offset-s1">
-            <form id="formtraslados" action="traslados" method="GET">
+            <form id="formbajas" action="bajas" method="GET">
                 {{ csrf_field() }}
                 <div class="col s12 l4 center">
                     <label for="sucursal">SUCURSAL</label>
@@ -46,28 +45,26 @@
           <thead>
             <th>Número</th>
             <th>Fecha</th>
-            <th>Origen</th>
-            <th>Destino</th>
+            <th>Sucursal</th>
             <th>Ver</th>
           </thead>
           <tbody>
-            @forelse($traslados as $traslado)
+            @forelse($bajas as $baja)
                 <tr>
-                  <td>{{$traslado->numero}}</td>
-                  <td>{{date('d/m/Y',strtotime($traslado->fecha))}}</td>
-                  <td>{{$traslado->sucursalenvia()->nombre}}</td>
-                  <td>{{$traslado->sucursalrecibe()->nombre}}</td>
-                  <td><a href="traslado?id={{$traslado->id}}" class="btn"><i class="material-icons">input</i></a></td>
+                  <td>{{$baja->numero}}</td>
+                  <td>{{date('d/m/Y',strtotime($baja->fecha))}}</td>
+                  <td>{{$baja->sucursal()->nombre}}</td>
+                  <td><a href="baja?id={{$baja->id}}" class="btn"><i class="material-icons">input</i></a></td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="6">No hay traslados</td>
+                    <td colspan="4">No hay bajas</td>
                 </tr>
             @endforelse
           </tbody>
         </table>
         <div class="row center">
-            {{$traslados->appends(['sucursal'=>$idsucursal,'desde'=>$desde,'hasta'=>$hasta])->links()}}
+            {{$bajas->appends(['sucursal'=>$idsucursal,'desde'=>$desde,'hasta'=>$hasta])->links()}}
         </div>
       </div>
     </div>

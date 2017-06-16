@@ -39,14 +39,6 @@
                     <p class="center">SIN SLA</p>
                 @endif
             </div>
-            @if($detalles->restantes>0)
-                <div class="col s12 m4 offset-m4 card fullcol center">
-                    <div class="row titulo center">
-                        <h5>REGISTRAR SERIES RESTANTES</h5>                
-                    </div>
-                    <a href="contrato-sinseries?id={{$detalle->id}}" target="_blank"><button class="btn"><i class="material-icons">input</i></button></a>
-                </div>
-            @endif
         </div>
       <div class="col s10 offset-s1 tabla">
         <table class="centered striped">
@@ -60,7 +52,6 @@
             @forelse($productos as $producto)
                 <tr id="fila{{$producto->id}}">
                   <td>{{$w = $w + 1}}</td>
-                  @if($producto->serie!=null)
                   <td>{{$producto->serie}}</td>
                     <td>
                         <select id="select{{$producto->id}}" onchange="asignararea({{$producto->id}})">
@@ -77,12 +68,7 @@
                         </select>
                     </td>
                     <td class="estadoserie" id="estado{{$producto->id}}"></td>
-                  @else
-                    <td>SIN SERIE</td>
-                    <td></td>
-                    <td class="estadoserie"></td>
-                  @endif
-                  
+                        
                 </tr>
             @empty
                 <tr id="filaempty">

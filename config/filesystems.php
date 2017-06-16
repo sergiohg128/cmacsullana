@@ -62,6 +62,11 @@ return [
             'driver' => 'local',
             'root' => storage_path('app/traslado'),
         ],
+        
+        'baja' => [
+            'driver' => 'local',
+            'root' => storage_path('app/baja'),
+        ],
 
         'public' => [
             'driver' => 'local',

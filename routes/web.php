@@ -80,6 +80,17 @@ Route::get('/trasladar-serie','ControladorEmpresa@transladarserie');
 
 Route::post('/traslado-detalle','ControladorEmpresa@TrasladoDetalle');
 
+Route::get('/bajas','ControladorEmpresa@bajas');
+Route::get('/baja-nueva','ControladorEmpresa@bajanueva');
+Route::post('/baja-detalle','ControladorEmpresa@bajadetalle');
+Route::post('/baja','ControladorEmpresa@bajapost');
+Route::get('/baja','ControladorEmpresa@baja');
+Route::get('/baja-series','ControladorEmpresa@bajaseries');
+
+//BITACORA
+Route::get('/bitacora','ControladorEmpresa@bitacora');
+
+
 //CONTRATOS
 
 Route::get('/proveedores','ControladorContratos@proveedores');
@@ -98,15 +109,12 @@ Route::post('/contrato-sla','ControladorContratos@contratoslapost');
 Route::get('/contratopost','ControladorContratos@contratopost');
 Route::get('/contrato','ControladorContratos@contrato');
 Route::get('/contrato-sinseries','ControladorContratos@contratosinseries');
-Route::get('/contrato-series','ControladorContratos@contratoseries');
 
 Route::get('/guia-nueva','ControladorContratos@guianueva');
 Route::get('/guiapost','ControladorContratos@guiapost');
 Route::get('/guia','ControladorContratos@guia');
 Route::get('/guia-series','ControladorContratos@guiaseries');
 Route::post('/guia-detalle','ControladorContratos@guiadetalle');
-
-Route::get('/agregar-serie','ControladorContratos@agregarserie');
 
 Route::get('/casos','ControladorContratos@casos');
 Route::get('/caso-nuevo','ControladorContratos@casonuevo');
@@ -129,6 +137,9 @@ Route::post('/compra-detalle','ControladorContratos@compradetalle');
 //ARCHIVOS
 Route::get('/descargar-archivo','Controlador@descargararchivo');
 Route::post('/subir-archivo','Controlador@subirarchivo');
+
+Route::get('/descargar-traslado','Controlador@descargartraslado');
+Route::get('/descargar-guia','Controlador@descargarguia');
 
 //REPORTES
 Route::get('/reportes','Controlador@reportes');

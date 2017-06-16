@@ -96,6 +96,29 @@
         <div class="row">
             <div class="col s10 offset-s1">
                 <div class="titulo row center">
+                    <h5>FORMATO GENERADO</h5>
+                </div>
+                <div class="row center">
+                    <form id="reporte5" method="POST">
+                        {{ csrf_field() }}
+                        <input type="hidden" name="id" value="5">
+                        <input type="hidden" name="contrato" value="{{$contrato->id}}">
+                        <div class="col s10 offset-s1 m6 offset-m3 l2 offset-l5">
+                            <select name="reporte" id="reporte5" style="width: 100%;">
+                              <option value="E">EXCEL</option>
+                              <option value="P">PDF</option>
+                            </select>
+                        </div>
+                        <div class="col s12">
+                            <a onclick="reporte(5)" class="btn">GENERAR</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s10 offset-s1">
+                <div class="titulo row center">
                     <h5>ARCHIVO</h5>
                 </div>
                 @if($archivo!=null)

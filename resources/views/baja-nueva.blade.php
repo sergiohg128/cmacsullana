@@ -4,12 +4,12 @@
     <!--Cuerpo-->
     <div class="row cuerpo">
       <div class="row titulo center">
-        <h4>TRASLADO NUEVO</h4>
+        <h4>DAR DE BAJA</h4>
         <h5>DESDE: {{$sucursal->nombre}}</h5>
       </div>
       <div class="row">
             <div class="col s10 offset-s1 m6 offset-m3 center">
-                <form id="trasladoform" method="POST">
+                <form id="bajaform" method="POST">
                     {{ csrf_field() }}
                     <div id="otrosinput"></div>
                     <input type="hidden" name="origen" id="origen" value="{{$sucursal->id}}">
@@ -30,28 +30,6 @@
                         </div>
                     </div>
                     <div class="col s12 input-field">
-                        <select id="sucursales" name="sucursal">
-                            <option value="0">ELIJA UNA SUCURSAL DE DESTINO</option>
-                            @forelse($sucursales as $sucursal)
-                                <option value="{{$sucursal->id}}">{{$sucursal->nombre}}</option>
-                            @empty
-                                <option value="0">NO HAY SUCURSALES</option>
-                            @endforelse
-                          </select>
-                        <label for="sucursales">SUCURSAL</label>
-                      </div>
-                    <div class="col s12 input-field">
-                        <select id="motivos" name="motivo">
-                            <option value="0">ELIJA UN MOTIVO</option>
-                            @forelse($motivos as $motivo)
-                                <option value="{{$motivo->id}}">{{$motivo->nombre}}</option>
-                            @empty
-                                <option value="0">NO HAY MOTIVOS</option>
-                            @endforelse
-                          </select>
-                        <label for="motivos">MOTIVO</label>
-                    </div>
-                    <div class="col s12 input-field">
                         <textarea class="materialize-textarea" name="descripcion" id="descripcion"></textarea>
                         <label for="descripcion">DESCRIPCION</label>
                     </div>
@@ -64,7 +42,7 @@
           </div>
           <div class="row">
               <div class="col s10 offset-s1">
-                  <form id="trasladoexcelform">
+                  <form id="bajaexcelform">
                       {{ csrf_field() }}
                       <input type="hidden" name="origen" value="{{$sucursal->id}}">
                       <input type="hidden" name="tipo" value="1">
@@ -77,7 +55,7 @@
                         </div>
                     </div>
                     <div class="col s12 m6 l1 offset-s1 input-field" id="divbtnagregar1">
-                        <a onclick="agregardetalletraslado(1)" class="btn red"><i class="material-icons">add</i></a>
+                        <a onclick="agregardetallebaja(1)" class="btn red"><i class="material-icons">add</i></a>
                     </div>
                   </form>
             </div>
@@ -92,7 +70,7 @@
                       <label for="seriemanual">SERIE</label>
                     </div>
                     <div class="col s12 m6 l1 offset-s1 input-field" id="divbtnagregar2">
-                        <a onclick="agregardetalletraslado(2)" class="btn red"><i class="material-icons">add</i></a>
+                        <a onclick="agregardetallebaja(2)" class="btn red"><i class="material-icons">add</i></a>
                     </div>
             </div>
           </div>
@@ -129,7 +107,7 @@
                   </select>
               </div>
               <div class="col s12 m6 l1 input-field" id="divbtnbuscar">
-                  <a onclick="buscarseriestraslado()" class="btn green"><i class="material-icons">search</i></a>
+                  <a onclick="buscarseriesbaja()" class="btn green"><i class="material-icons">search</i></a>
               </div>
               <div class="col s12 m6 l11 input-field" id="divseries">
                   <label>SERIES</label>
@@ -138,7 +116,7 @@
                   </select>
               </div>
               <div class="col s12 m6 l1  input-field" id="divbtnagregar3">
-                  <a onclick="agregardetalletraslado(3)" class="btn red"><i class="material-icons">add</i></a>
+                  <a onclick="agregardetallebaja(3)" class="btn red"><i class="material-icons">add</i></a>
               </div>
           </div>
       </div>
@@ -155,10 +133,9 @@
               </tbody>
             </table>  
           </div>
-          
-            <div class="col s12 center input-field" id="divbtnregistrar">
-                <a onclick="registrartraslado()" class="btn-large">GUARDAR<i class="material-icons right">save</i></a>
-            </div>
+        <div class="col s12 center input-field" id="divbtnregistrar">
+            <a onclick="registrarbaja()" class="btn-large">GUARDAR<i class="material-icons right">save</i></a>
+        </div>
       </div>
     </div>
     @include('include.footer')

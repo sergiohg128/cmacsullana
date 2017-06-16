@@ -2323,6 +2323,14 @@ td .select-dropdown {
   padding: 6px;
 }
 
+.filtroreporte {
+  padding-bottom: 15px !important;
+}
+
+.filtroreporte .select2 {
+  margin-top: 0 !important;
+}
+
 .modal {
   width: 90%;
   max-height: 90%;

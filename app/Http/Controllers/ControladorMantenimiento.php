@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use App\Area;
 use App\AreaSucursal;
+use App\Bitacora;
 use App\Caso;
 use App\Contrato;
 use App\Departamento;
@@ -84,12 +85,14 @@ class ControladorMantenimiento extends Controller
             try{
                 $id = $request->input("id");
                 $tabla = $request->input("tabla");
+                $accion = "";
                 if($tabla=="marca"){
                     $dependiente = Modelo::select(DB::raw("count(id) as total"))->where("id_marca",$id)->where("estado","!=","A")->first();
                     if($dependiente->total>0){
                         $error = "No es posible eliminar. Hay ".$dependiente->total." modelos de esta marca";
                     }else{
                         $obj = Marca::find($id);
+                        $accion = $obj->nombre;
                     }
                 }else if($tabla=="tipoequipo"){
                     $dependiente = Modelo::select(DB::raw("count(id) as total"))->where("id_tipo_equipo",$id)->where("estado","!=","A")->first();
@@ -97,6 +100,7 @@ class ControladorMantenimiento extends Controller
                         $error = "No es posible eliminar. Hay ".$dependiente->total." modelos de este tipo";
                     }else{
                         $obj = TipoEquipo::find($id);
+                        $accion = $obj->nombre;
                     }
                 }else if($tabla=="modelo"){
                     $dependiente = Producto::select(DB::raw("count(id) as total"))->where("id_modelo",$id)->where("estado","!=","A")->first();    
@@ -104,6 +108,7 @@ class ControladorMantenimiento extends Controller
                         $error = "No es posible eliminar. Hay ".$dependiente->total." productos de esta modelo";
                     }else{
                         $obj = Modelo::find($id);
+                        $accion = $obj->nombre;
                     }
                 }else if($tabla=="tipousuario"){
                     $dependiente = Usuario::select(DB::raw("count(id) as total"))->where("id_tipo_usuario",$id)->where("estado","!=","A")->first();
@@ -111,6 +116,7 @@ class ControladorMantenimiento extends Controller
                         $error = "No es posible eliminar. Hay ".$dependiente->total." usuarios de esta tipo";
                     }else{
                         $obj = TipoUsuario::find($id);
+                        $accion = $obj->nombre;
                     }
                 }else if($tabla=="zona"){
                     $dependiente = Sucursal::select(DB::raw("count(id) as total"))->where("id_zona",$id)->where("estado","!=","A")->first();
@@ -118,6 +124,7 @@ class ControladorMantenimiento extends Controller
                         $error = "No es posible eliminar. Hay ".$dependiente->total." sucursales de esta zona";
                     }else{
                         $obj = Zona::find($id);
+                        $accion = $obj->nombre;
                     }
                 }else if($tabla=="tipoterritorio"){
                     $dependiente = Sucursal::select(DB::raw("count(id) as total"))->where("id_tipo_territorio",$id)->where("estado","!=","A")->first();
@@ -125,6 +132,7 @@ class ControladorMantenimiento extends Controller
                         $error = "No es posible eliminar. Hay ".$dependiente->total." sucursales de esta zona";
                     }else{
                         $obj = TipoTerritorio::find($id);
+                        $accion = $obj->nombre;
                     }
                 }else if($tabla=="tiposucursal"){
                     $dependiente = Sucursal::select(DB::raw("count(id) as total"))->where("id_tipo_sucursal",$id)->where("estado","!=","A")->first();
@@ -132,17 +140,18 @@ class ControladorMantenimiento extends Controller
                         $error = "No es posible eliminar. Hay ".$dependiente->total." sucursales de esta zona";
                     }else{
                         $obj = TipoSucursal::find($id);
+                        $accion = $obj->nombre;
                     }
                 }else if($tabla=="motivotraslado"){
                     $obj = MotivoTraslado::find($id);
-                }else if($tabla=="permiso"){
-                    $obj = Permiso::find($id);
+                    $accion = $obj->nombre;
                 }else if($tabla=="area"){
                     $dependiente = AreaSucursal::select(DB::raw("count(id) as total"))->where("id_area",$id)->where("estado","!=","A")->first();
                     if($dependiente->total>0){
                         $error = "No es posible eliminar. Hay ".$dependiente->total." sucursales asignadas a esta area";
                     }else{
                         $obj = Area::find($id);
+                        $accion = $obj->nombre;
                     }
                 }else if($tabla=="tecnico"){
                     $dependiente = Caso::select(DB::raw("count(id) as total"))->where("id_tecnico",$id)->where("estado","!=","F")->first();
@@ -150,6 +159,7 @@ class ControladorMantenimiento extends Controller
                         $error = "No es posible eliminar. Hay ".$dependiente->total." casos asignadas a esta técnico pendientes";
                     }else{
                         $obj = Tecnico::find($id);
+                        $accion = $obj->apellidos." ".$obj->nombre;
                     }
                 }
                 if($dependiente->total>0){
@@ -162,6 +172,7 @@ class ControladorMantenimiento extends Controller
                     }
                     $obj->estado = "A";
                     $obj->save();
+                    new Bitacora($tabla,"eliminar",$accion,$usuario->id);
                     DB::commit();
                     $request->session()->put("mensaje", "Eliminado correctamente");
                     return json_encode(["ok"=>true]);
@@ -216,8 +227,10 @@ class ControladorMantenimiento extends Controller
                 $abreviatura = str_replace($quitar, "", $abreviatura);
                 if($modo=="agregar"){
                     $marca = new Marca();
+                    new Bitacora("marca","nuevo",$nombre,$usuario->id);
                 }else if($modo=="editar"){
                     $marca = Marca::find($request->input("id"));
+                    new Bitacora("marca","editar",$marca->nombre." a ".$nombre,$usuario->id);
                 }
                 $marca->nombre = strtoupper($nombre);
                 $marca->abreviatura = strtoupper($abreviatura);
@@ -275,8 +288,10 @@ class ControladorMantenimiento extends Controller
                 
                 if($modo=="agregar"){
                     $tipoequipo = new TipoEquipo();
+                    new Bitacora("tipoequipo","nuevo",$nombre,$usuario->id);
                 }else if($modo=="editar"){
                     $tipoequipo = TipoEquipo::find($request->input("id"));
+                    new Bitacora("tipoequipo","editar",$tipoequipo->nombre." a ".$nombre,$usuario->id);
                 }
                 $tipoequipo->nombre = strtoupper($nombre);
                 $tipoequipo->abreviatura = strtoupper($abreviatura);
@@ -334,8 +349,10 @@ class ControladorMantenimiento extends Controller
                 
                 if($modo=="agregar"){
                     $tipousuario = new TipoUsuario();
+                    new Bitacora("tipousuario","nuevo",$nombre,$usuario->id);
                 }else if($modo=="editar"){
                     $tipousuario = TipoUsuario::find($request->input("id"));
+                    new Bitacora("tipousuario","editar",$tipousuario->nombre." a ".$nombre,$usuario->id);
                 }
                 $tipousuario->nombre = strtoupper($nombre);
                 $tipousuario->save();
@@ -403,10 +420,16 @@ class ControladorMantenimiento extends Controller
                     $permiso->id_tipo_usuario = $tipo;
                     $permiso->id_menu = $id;
                     $permiso->save();
+                    $menu = Menu::find($id);
+                    $tipousuario = TipoUsuario::find($tipo);
+                    new Bitacora("permiso","nuevo","Se agregó el permiso a ".$menu->nombre." al tipo de usuario ".$tipousuario->nombre,$usuario->id);
                 }else{
                     $permiso = Permiso::find($id);
                     $permiso->estado = "A";
                     $permiso->save();
+                    $menu = Menu::find($permiso->id_menu);
+                    $tipousuario = TipoUsuario::find($permiso->id_tipo_usuario);
+                    new Bitacora("permiso","eliminar","Se quitó el permiso a ".$menu->nombre." del tipo de usuario ".$tipousuario->nombre,$usuario->id);
                 }
                 DB::commit();
                 $request->session()->put("mensaje","Guardado correctamente");
@@ -485,8 +508,9 @@ class ControladorMantenimiento extends Controller
                         $apellidos =$request->input("apellidos");
                         $obj->apellidos = $apellidos;
                         $obj->correo = $correo;
-                        $obj->password = "123";
+                        $obj->password = bcrypt("123");
                         $obj->save();
+                        new Bitacora("usuario","nuevo",$apellidos." ".$nombre,$usuario->id);
                         $mensaje = "Guardado correctamente";
                     }else{
                         DB::rollback();
@@ -496,12 +520,13 @@ class ControladorMantenimiento extends Controller
                     $pass = $request->input("pass");
                     $pass2 = $request->input("pass2");
                     $pass3 = $request->input("pass3");
-                    if($usuario->password==$pass){
+                    if(\Hash::check($pass,$usuario->password)){
                         if($pass2==$pass3){
                             $obj = Usuario::find($usuario->id);
-                            $obj->password = $pass2;
-                            $usuario->password = $pass2;
+                            $obj->password = bcrypt($pass2);
+                            $usuario->password = bcrypt($pass2);
                             $obj->save();
+                            new Bitacora("usuario","editar","El usuario ".$obj->apellidos." ".$obj->nombre." cambió su contraseña",$usuario->id);
                             DB::commit();
                             $request->session()->put("usuario",$usuario);
                             $request->session()->put("mensaje","CONTRASEÑA CAMBIADA");
@@ -517,13 +542,17 @@ class ControladorMantenimiento extends Controller
                     $obj = Usuario::find($id);
                     if($modo=="editar"){
                         $obj->id_tipo_usuario = $request->input("tipo");
+                        $tipousuario = TipoUsuario::find($obj->id_tipo_usuario);
                         $mensaje = "Guardado correctamente";
+                        new Bitacora("usuario","editar","Se cambió al tipo de usuario ".$tipousuario->nombre." a ".$obj->apellidos." ".$obj->nombre,$usuario->id);
                     }else if($modo=="eliminar"){
                         $obj->estado = "A";
                         $mensaje = "Eliminado correctamente";
+                        new Bitacora("usuario","eliminar",$obj->apellidos." ".$obj->nombre,$usuario->id);
                     }else if($modo=="restablecer"){
-                        $obj->password = "123";
+                        $obj->password = bcrypt("123");
                         $mensaje = "Contraseña restablecida";
+                        new Bitacora("usuario","editar","Se restableció la contraseña del usuario ".$obj->apellidos." ".$obj->nombre,$usuario->id);
                     }
                     $obj->save();
                 }
@@ -579,8 +608,10 @@ class ControladorMantenimiento extends Controller
                 $descripcion = str_replace($quitar, "", $descripcion);
                 if($modo=="agregar"){
                     $zona = new Zona();
+                    new Bitacora("zona","nuevo",$nombre,$usuario->id);
                 }else if($modo=="editar"){
                     $zona = Zona::find($request->input("id"));
+                    new Bitacora("zona","editar",$zona->nombre." a ".$nombre,$usuario->id);
                 }
                 $zona->nombre = strtoupper($nombre);
                 $zona->abreviatura = strtoupper($descripcion);
@@ -672,8 +703,10 @@ class ControladorMantenimiento extends Controller
                 if($modo=="agregar"){
                     $modelo = new Modelo();
                     $modelo->id_marca = $request->input("marca");
+                    new Bitacora("modelo","nuevo",$nombre,$usuario->id);
                 }else if($modo=="editar"){
-                    $modelo = Modelo::find($request->input("id"));    
+                    $modelo = Modelo::find($request->input("id"));
+                    new Bitacora("modelo","editar",$modelo->nombre." a ".$nombre,$usuario->id);
                 }
                 $modelo->nombre = strtoupper($nombre);
                 $modelo->id_tipo_equipo = $request->input("tipo");
@@ -731,8 +764,10 @@ class ControladorMantenimiento extends Controller
                 $abreviatura = $request->input("abreviatura");
                 if($modo=="agregar"){
                     $area = new Area();
+                    new Bitacora("area","nuevo",$nombre,$usuario->id);
                 }else if($modo=="editar"){
-                    $area = Area::find($request->input("id"));    
+                    $area = Area::find($request->input("id"));
+                    new Bitacora("area","editar",$area->nombre." a ".$nombre,$usuario->id);
                 }
                 $area->nombre = $nombre;
                 $area->abreviatura = $abreviatura;
@@ -755,7 +790,7 @@ class ControladorMantenimiento extends Controller
     public function TiposSucursal(Request $request,  Response $response) {
         $usuario = $request->session()->get('usuario');
         if($this->ComprobarUsuario($usuario)){
-            $menuid = 4;
+            $menuid = 31;
             if($this->ComprobarPermiso($usuario, $menuid)){
                 $mensaje = $request->session()->get('mensaje');
                 $request->session()->forget('mensaje');
@@ -787,8 +822,10 @@ class ControladorMantenimiento extends Controller
                 $nombre = str_replace($quitar, "", $nombre);
                 if($modo=="agregar"){
                     $tiposucursal = new TipoSucursal();
+                    new Bitacora("tiposucursal","nuevo",$nombre,$usuario->id);
                 }else if($modo=="editar"){
                     $tiposucursal = TipoSucursal::find($request->input("id"));
+                    new Bitacora("tiposucursal","editar",$tiposucursal->nombre." a ".$nombre,$usuario->id);
                 }
                 $tiposucursal->nombre = strtoupper($nombre);
                 $tiposucursal->save();
@@ -810,7 +847,7 @@ class ControladorMantenimiento extends Controller
     public function TiposTerritorio(Request $request,  Response $response) {
         $usuario = $request->session()->get('usuario');
         if($this->ComprobarUsuario($usuario)){
-            $menuid = 4;
+            $menuid = 30;
             if($this->ComprobarPermiso($usuario, $menuid)){
                 $mensaje = $request->session()->get('mensaje');
                 $request->session()->forget('mensaje');
@@ -842,8 +879,10 @@ class ControladorMantenimiento extends Controller
                 $nombre = str_replace($quitar, "", $nombre);
                 if($modo=="agregar"){
                     $tipoterritorio = new TipoTerritorio();
+                    new Bitacora("tipoterritorio","nuevo",$nombre,$usuario->id);
                 }else if($modo=="editar"){
                     $tipoterritorio = TipoTerritorio::find($request->input("id"));
+                    new Bitacora("tipoterritorio","editar",$tipoterritorio->nombre." a ".$nombre,$usuario->id);
                 }
                 $tipoterritorio->nombre = strtoupper($nombre);
                 $tipoterritorio->save();

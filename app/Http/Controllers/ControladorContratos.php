@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Archivo;
 use App\Area;
 use App\AreaSucursal;
+use App\Bitacora;
 use App\Caso;
 use App\Contrato;
 use App\Departamento;
@@ -157,6 +158,7 @@ class ControladorContratos extends Controller
                             $proveedor->codigopostal = $codigopostal;
                             $proveedor->save();
                             $request->session()->put("mensaje","Guardado correctamente");
+                            new Bitacora("proveedor","nuevo",$razon,$usuario->id);
                         }
                         DB::commit();
                         return json_encode(["ok"=>true,"obj"=>$proveedor]);
@@ -221,16 +223,18 @@ class ControladorContratos extends Controller
                         $contratos = $contratos->where("id_proveedor",$idproveedor);
                     }
                     if(!empty($desde)){
-                        $contratos = $contratos->where(function($query) use($desde){
-                            $query->where("inicio",">=",$desde)->orWhere("fin",">=",$desde);
-                        });
+//                        $contratos = $contratos->where(function($query) use($desde){
+//                            $query->where("inicio",">=",$desde)->orWhere("fin",">=",$desde);
+//                        });
+                        $contratos = $contratos->where("fecha",">=",$desde);
                     }else{
                         $desde = $anio.'-01-01';
                     }
                     if(!empty($hasta)){
-                        $contratos = $contratos->where(function($query) use($hasta){
-                            $query->where("inicio","<=",$hasta.' 23:59:59')->orWhere("fin","<=",$hasta.' 23:59:59');
-                        });
+                        $contratos = $contratos->where("fecha","<=",$hasta.' 23:59:59');
+//                        $contratos = $contratos->where(function($query) use($hasta){
+//                            $query->where("inicio","<=",$hasta.' 23:59:59')->orWhere("fin","<=",$hasta.' 23:59:59');
+//                        });
                     }else{
                         $hasta = $hoy;
                     }
@@ -258,7 +262,7 @@ class ControladorContratos extends Controller
     public function ContratoNuevo(Request $request,  Response $response) {
         $usuario = $request->session()->get('usuario');
         if($this->ComprobarUsuario($usuario)){
-            $menuid = 17;
+            $menuid = 15;
             if($this->ComprobarPermiso($usuario, $menuid)){
                 $mensaje = $request->session()->get('mensaje');
                 $request->session()->forget('mensaje');
@@ -306,6 +310,7 @@ class ControladorContratos extends Controller
                     $contrato->descripcion = $descripcion;
                     $contrato->tipo = "C";
                     $contrato->save();
+                    new Bitacora("contrato","nuevo",$numero,$usuario->id);
                     DB::commit();
                     $request->session()->put("mensaje","Guardado correctamente");
                     return json_encode(["ok"=>true,"contrato"=>$contrato->id]);
@@ -327,7 +332,7 @@ class ControladorContratos extends Controller
     public function ContratoDetalle(Request $request,  Response $response) {
         $usuario = $request->session()->get('usuario');
         if($this->ComprobarUsuario($usuario)){
-            $menuid = 17;
+            $menuid = 15;
             if($this->ComprobarPermiso($usuario, $menuid)){
                 $mensaje = $request->session()->get('mensaje');
                 $request->session()->forget('mensaje');
@@ -391,6 +396,7 @@ class ControladorContratos extends Controller
                             $sla->save();
                         }
                     }
+                    new Bitacora("contrato","editar","Se agregó los productos del contrato ".$contrato->numero,$usuario->id);
                     DB::commit();
                     $request->session()->put("mensaje","Guardado correctamente");
                     return json_encode(["ok"=>true,"contrato"=>$contrato->id]);
@@ -414,7 +420,7 @@ class ControladorContratos extends Controller
     public function ContratoSla(Request $request,  Response $response) {
         $usuario = $request->session()->get('usuario');
         if($this->ComprobarUsuario($usuario)){
-            $menuid = 17;
+            $menuid = 15;
             if($this->ComprobarPermiso($usuario, $menuid)){
                 $mensaje = $request->session()->get('mensaje');
                 $request->session()->forget('mensaje');
@@ -459,6 +465,11 @@ class ControladorContratos extends Controller
             $contrato = Contrato::find($id);
             DB::beginTransaction();
             try{
+                if($contrato->estado=="S"){
+                    new Bitacora("contrato","editar","Se editó los SLA del contrato ".$contrato->numero,$usuario->id);
+                }else{
+                    new Bitacora("contrato","editar","Se agregó los SLA del contrato ".$contrato->numero,$usuario->id);
+                }
                 $contrato->estado = "S";
                 $contrato->save();
                 for($i=0;$i<count($ids);$i++){
@@ -468,6 +479,7 @@ class ControladorContratos extends Controller
                         $sla->save();
                     }
                 }
+                    
                 DB::commit();
                 $request->session()->put("mensaje","Guardado correctamente");
                 return redirect ("/contrato?id=".$id);
@@ -552,7 +564,7 @@ class ControladorContratos extends Controller
     public function GuiaNueva(Request $request,  Response $response) {
         $usuario = $request->session()->get('usuario');
         if($this->ComprobarUsuario($usuario)){
-            $menuid = 17;
+            $menuid = 13;
             if($this->ComprobarPermiso($usuario, $menuid)){
                 $modelosguia = [];
                 $request->session()->put("modelosguia", $modelosguia);
@@ -612,7 +624,7 @@ class ControladorContratos extends Controller
                     for ($w = 1; $w <= $sheet->getHighestRow(); $w++) {
                         $serie = $sheet->getCell("A".$w)->getFormattedValue();
                         if(strlen(trim($serie))>0){
-                            $existe = Producto::where("serie",$serie)->first();
+                            $existe = Producto::select("id")->where("serie",$serie)->where("estado","N")->first();
                             if($existe==null){
                                 if(!array_key_exists($idmodelo, $modelos)){
                                     $modelo = DetalleContrato::
@@ -634,13 +646,14 @@ class ControladorContratos extends Controller
                                     $modelos[$idmodelo][0][$serie] = $modelos[$idmodelo][0][$serie] + 1;
                                 }
                             }else{
+                                $idexiste = $existe->id;
                                 $existe = Producto::
                                     join("modelo","producto.id_modelo","modelo.id")->
                                     join("marca","modelo.id_marca","marca.id")->
                                     join("tipo_equipo","modelo.id_tipo_equipo","tipo_equipo.id")->
                                     join("sucursal","producto.id_sucursal","sucursal.id")->
                                     select("modelo.nombre as nombremodelo","marca.nombre as nombremarca","tipo_equipo.nombre as nombretipoequipo","sucursal.nombre as nombresucursal")->
-                                    where("serie",$serie)->first();
+                                    where("producto.id",$idexiste)->first();
                                 $errores[$serie] = "La serie se ha registrado anteriormente en el producto: ".$existe->nombretipoequipo." "."$existe->nombremarca"." ".$existe->nombremodelo." y se encuentra en la sucursal ".$existe->nombresucursal;
                             }
                         }
@@ -648,7 +661,7 @@ class ControladorContratos extends Controller
                 }else if($tipo==2){
                     $serie = $request->input("serie");
                     if(strlen(trim($serie))>0){
-                        $existe = Producto::where("serie",$serie)->first();
+                        $existe = Producto::select("id")->where("serie",$serie)->where("estado","N")->first();
                         if($existe==null){
                             if(!array_key_exists($idmodelo, $modelos)){
                                 $modelo = DetalleContrato::
@@ -670,13 +683,14 @@ class ControladorContratos extends Controller
                                 $modelos[$idmodelo][0][$serie] = $modelos[$idmodelo][0][$serie] + 1;
                             }
                         }else{
+                            $idexiste = $existe->id;
                             $existe = Producto::
                                 join("modelo","producto.id_modelo","modelo.id")->
                                 join("marca","modelo.id_marca","marca.id")->
                                 join("tipo_equipo","modelo.id_tipo_equipo","tipo_equipo.id")->
                                 join("sucursal","producto.id_sucursal","sucursal.id")->
                                 select("modelo.nombre as nombremodelo","marca.nombre as nombremarca","tipo_equipo.nombre as nombretipoequipo","sucursal.nombre as nombresucursal")->
-                                where("serie",$serie)->first();
+                                where("producto.id",$idexiste)->first();
                             $errores[$serie] = "La serie se ha registrado anteriormente en el producto: ".$existe->nombretipoequipo." "."$existe->nombremarca"." ".$existe->nombremodelo." y se encuentra en la sucursal ".$existe->nombresucursal;
                         }
                     }else{
@@ -747,15 +761,31 @@ class ControladorContratos extends Controller
                             $productos = $modelo[0];
                             $detalle = DetalleContrato::find($key);
                             foreach($productos as $serie => $cantidad){
-                                $producto = new Producto();
-                                $producto->id_modelo = $detalle->id_modelo;
-                                $producto->id_detalle_contrato = $detalle->id;
-                                $producto->id_sucursal = $guia->id_sucursal;
-                                $producto->id_guia = $guia->id;
-                                $producto->serie = $serie;
-                                $producto->save();
+                                $existeproducto = Producto::select("id")->where("serie",$serie)->where("estado","N")->first();
+                                if($existeproducto==null){
+                                    $producto = new Producto();
+                                    $producto->id_modelo = $detalle->id_modelo;
+                                    $producto->id_detalle_contrato = $detalle->id;
+                                    $producto->id_sucursal = $guia->id_sucursal;
+                                    $producto->id_guia = $guia->id;
+                                    $producto->serie = $serie;
+                                    $producto->save();
+                                }else{
+                                    $producto = Producto::
+                                                join("modelo","producto.id_modelo","modelo.id")->
+                                                join("marca","modelo.id_marca","marca.id")->
+                                                join("tipo_equipo","modelo.id_tipo_equipo","tipo_equipo.id")->
+                                                join("detalle_contrato","producto.id_detalle_contrato","detalle_contrato.id")->
+                                                join("contrato","detalle_contrato.id_contrato","contrato.id")->
+                                                join("guia","producto.id_guia","guia.id")->
+                                                select("modelo.nombre as nombremodelo","marca.nombre as nombremarca","tipo_equipo.nombre as nombretipo","contrato.numero as numerocontrato","guia.numero as numeroguia","guia.fecha as fechaguia")->
+                                                where("producto.id",$existeproducto->id)->first();
+                                    DB::rollback();
+                                    return json_encode(["ok"=>false,"error"=>"La serie ".$serie." ya se ha registrado anteriormente en el producto: ".$producto->nombretipo." ".$producto->nombremarca." ".$producto->nombremodelo." en el contrato ".$producto->numerocontrato." con guia número ".$producto->numeroguia." registrada en la fecha ".date('d/m/Y',strtotime($producto->fechaguia))]);
+                                }
                             }
                         }
+                        new Bitacora("guia","nuevo","Se creó la guia ".$guia->numero. " del contrato ".$contrato->numero,$usuario->id);
                         DB::commit();
                         $modelosguia = [];
                         $request->session()->put("modelosguia", $modelosguia);
@@ -765,23 +795,8 @@ class ControladorContratos extends Controller
                 } 
                 catch (Exception $e) {
                     DB::rollback();
-                    $producto = Producto::
-                            join("modelo","producto.id_modelo","modelo.id")->
-                            join("marca","modelo.id_marca","marca.id")->
-                            join("tipo_equipo","modelo.id_tipo_equipo","tipo_equipo.id")->
-                            join("detalle_contrato","producto.id_detalle_contrato","detalle_contrato.id")->
-                            join("contrato","detalle_contrato.id_contrato","contrato.id")->
-                            join("guia","producto.id_guia","guia.id")->
-                            select("modelo.nombre as nombremodelo","marca.nombre as nombremarca","tipo_equipo.nombre as nombretipo","contrato.numero as numerocontrato","guia.numero as numeroguia","guia.fecha as fechaguia")->
-                            where("serie",$serie)->first();
-                    if($producto!=null){
-                        DB::rollback();
-                        return json_encode(["ok"=>false,"error"=>"La serie ".$serie." ya se ha registrado anteriormente en el producto: ".$producto->nombretipo." ".$producto->nombremarca." ".$producto->nombremodelo." en el contrato ".$producto->numerocontrato." con guia número ".$producto->numeroguia." registrada en la fecha ".date('d/m/Y',strtotime($producto->fechaguia))]);
-                    }else{
-                        DB::rollback();
-                        $error=$e->getMessage();
-                        return json_encode(["ok"=>false,"error"=>$error."-line:".$e->getLine()]);
-                    }
+                    $error=$e->getMessage();
+                    return json_encode(["ok"=>false,"error"=>$error."-line:".$e->getLine()]);
                 }
             }else{
                 DB::rollback();
@@ -794,11 +809,10 @@ class ControladorContratos extends Controller
         }
     }
     
-    
     public function Guia(Request $request,  Response $response) {
         $usuario = $request->session()->get('usuario');
         if($this->ComprobarUsuario($usuario)){
-            $menuid = 18;
+            $menuid = 39;
             if($this->ComprobarPermiso($usuario, $menuid)){
                 $mensaje = $request->session()->get('mensaje');
                 $request->session()->forget('mensaje');
@@ -836,7 +850,7 @@ class ControladorContratos extends Controller
     public function GuiaSeries(Request $request,  Response $response) {
         $usuario = $request->session()->get('usuario');
         if($this->ComprobarUsuario($usuario)){
-            $menuid = 18;
+            $menuid = 39;
             if($this->ComprobarPermiso($usuario, $menuid)){
                 $mensaje = $request->session()->get('mensaje');
                 $request->session()->forget('mensaje');
@@ -849,7 +863,7 @@ class ControladorContratos extends Controller
                         join("marca","modelo.id_marca","marca.id")->
                         select("modelo.nombre as nombremodelo","tipo_equipo.nombre as nombretipoequipo","marca.nombre as nombremarca")->
                         where("detalle_contrato.id",$iddetalle)->first();
-                $productos = Producto::where("id_guia",$idguia)->where("id_detalle_contrato",$iddetalle)->orderBy("serie")->get();
+                $productos = Producto::where("id_guia",$idguia)->where("id_detalle_contrato",$iddetalle)->orderBy("estado","desc")->orderBy("serie")->get();
                 return view('/guia-series',[
                     'usuario'=>$usuario,
                     'mensaje'=>$mensaje,
@@ -867,73 +881,10 @@ class ControladorContratos extends Controller
         }
     }
     
-    public function ContratoSeries(Request $request,  Response $response) {
-        $usuario = $request->session()->get('usuario');
-        if($this->ComprobarUsuario($usuario)){
-            $menuid = 28;
-            if($this->ComprobarPermiso($usuario, $menuid)){
-                $mensaje = $request->session()->get('mensaje');
-                $request->session()->forget('mensaje');
-                $id = $request->input("id");
-                $producto = Producto::
-                        join("detalle_contrato","producto.id_detalle_contrato","detalle_contrato.id")->
-                        join("contrato","detalle_contrato.id_contrato","contrato.id")->
-                        join("modelo","producto.id_modelo","modelo.id")->
-                        join("tipo_equipo","modelo.id_tipo_equipo","tipo_equipo.id")->
-                        join("marca","modelo.id_marca","marca.id")->
-                        select("contrato.numero","modelo.nombre as nombremodelo","tipo_equipo.nombre as nombretipoequipo","marca.nombre as nombremarca")->
-                        where("producto.id_detalle_contrato",$id)->
-                        first();
-                $detalles = Producto::where("id_detalle_contrato",$id)->whereNotNull("serie")->orderBy("id")->get();
-                $existen = count($detalles);
-                return view('/contrato-series',[
-                    'usuario'=>$usuario,
-                    'mensaje'=>$mensaje,
-                    'producto'=>$producto,
-                    'detalles'=>$detalles,
-                    'existen'=>$existen,
-                    'w'=>0
-                ]);
-            }else{
-                $request->session()->put("mensaje","NO TIENE ACCESO AL MENÚ ".Menu::find($menuid)->nombre);
-                return redirect ("/inicio");
-            }
-        }else{
-            return redirect("/index");
-        }
-    }
-    
-    public function AgregarSerie(Request $request,  Response $response) {
-        $usuario = $request->session()->get('usuario');
-        if($this->ComprobarUsuario($usuario)){
-            DB::beginTransaction();
-            try{
-                $producto = Producto::find($request->input("id"));
-                if($producto->serie==null){
-                    $serie = trim($request->input("serie"));
-                    $producto->serie = $serie;
-                    $producto->save();
-                    DB::commit();
-                    return json_encode(["ok"=>true]);
-                }else{
-                    DB::rollback();
-                    return json_encode(["ok"=>false,"error"=>"La serie de este producto ya ha sido registrada anteriormente con serie ".$producto->serie,"serie"=>$producto->serie]);
-                }
-            } 
-            catch (Exception $e) {
-                DB::rollback();
-                return json_encode(["ok"=>false,"error"=>"La serie ya ha sido registrada anteriormente"]);
-            }
-        }
-        else{
-            return json_encode(["ok"=>false,"url"=>"index"]);
-        }
-    }
-    
     public function CompraNueva(Request $request,  Response $response) {
         $usuario = $request->session()->get('usuario');
         if($this->ComprobarUsuario($usuario)){
-            $menuid = 17;
+            $menuid = 23;
             if($this->ComprobarPermiso($usuario, $menuid)){
                 $modeloscompra = [];
                 $request->session()->put("modeloscompra", $modeloscompra);
@@ -990,7 +941,7 @@ class ControladorContratos extends Controller
                     for ($w = 1; $w <= $sheet->getHighestRow(); $w++) {
                         $serie = $sheet->getCell("A".$w)->getFormattedValue();
                         if(strlen(trim($serie))>0){
-                            $existe = Producto::where("serie",$serie)->first();
+                            $existe = Producto::select("id")->where("serie",$serie)->where("estado","N")->first();
                             if($existe==null){
                                 if(!array_key_exists($idmodelo, $modelos)){
                                     $modelo = Modelo::
@@ -1010,21 +961,23 @@ class ControladorContratos extends Controller
                                     $modelos[$idmodelo][0][$serie] = $modelos[$idmodelo][0][$serie] + 1;
                                 }
                             }else{
+                                $idexiste = $existe->id;
                                 $existe = Producto::
                                     join("modelo","producto.id_modelo","modelo.id")->
                                     join("marca","modelo.id_marca","marca.id")->
                                     join("tipo_equipo","modelo.id_tipo_equipo","tipo_equipo.id")->
                                     join("sucursal","producto.id_sucursal","sucursal.id")->
                                     select("modelo.nombre as nombremodelo","marca.nombre as nombremarca","tipo_equipo.nombre as nombretipoequipo","sucursal.nombre as nombresucursal")->
-                                    where("serie",$serie)->first();
+                                    where("producto.id",$idexiste)->first();
                                 $errores[$serie] = "La serie se ha registrado anteriormente en el producto: ".$existe->nombretipoequipo." "."$existe->nombremarca"." ".$existe->nombremodelo." y se encuentra en la sucursal ".$existe->nombresucursal;
                             }
                         }
                     }
-                }else if($tipo==2){
+                }
+                else if($tipo==2){
                     $serie = $request->input("serie");
                     if(strlen(trim($serie))>0){
-                        $existe = Producto::where("serie",$serie)->first();
+                        $existe = Producto::select("id")->where("serie",$serie)->where("estado","N")->first();
                         if($existe==null){
                             if(!array_key_exists($idmodelo, $modelos)){
                                 $modelo = Modelo::
@@ -1043,20 +996,23 @@ class ControladorContratos extends Controller
                             }else{
                                 $modelos[$idmodelo][0][$serie] = $modelos[$idmodelo][0][$serie] + 1;
                             }
-                        }else{
+                        }
+                        else{
+                            $idexiste = $existe->id;
                             $existe = Producto::
                                 join("modelo","producto.id_modelo","modelo.id")->
                                 join("marca","modelo.id_marca","marca.id")->
                                 join("tipo_equipo","modelo.id_tipo_equipo","tipo_equipo.id")->
                                 join("sucursal","producto.id_sucursal","sucursal.id")->
                                 select("modelo.nombre as nombremodelo","marca.nombre as nombremarca","tipo_equipo.nombre as nombretipoequipo","sucursal.nombre as nombresucursal")->
-                                where("serie",$serie)->first();
+                                where("producto.id",$idexiste)->first();
                             $errores[$serie] = "La serie se ha registrado anteriormente en el producto: ".$existe->nombretipoequipo." "."$existe->nombremarca"." ".$existe->nombremodelo." y se encuentra en la sucursal ".$existe->nombresucursal;
                         }
                     }else{
                         $errores["-"] = "No ha ingresado ninguna serie";
                     }
-                }else if($tipo==4){
+                }
+                else if($tipo==4){
                     $modelo = $request->input("modelo");
                     unset($modelos[$modelo]);
                 }else if($tipo==5){
@@ -1115,15 +1071,31 @@ class ControladorContratos extends Controller
                     $detalle->cantidad = count($productos);
                     $detalle->save();
                     foreach($productos as $serie => $cantidad){
-                        $producto = new Producto();
-                        $producto->id_modelo = $detalle->id_modelo;
-                        $producto->id_detalle_contrato = $detalle->id;
-                        $producto->id_sucursal = $guia->id_sucursal;
-                        $producto->id_guia = $guia->id;
-                        $producto->serie = $serie;
-                        $producto->save();
+                        $existeproducto = Producto::select("id")->where("serie",$serie)->where("estado","N")->first();
+                        if($existeproducto==null){
+                            $producto = new Producto();
+                            $producto->id_modelo = $detalle->id_modelo;
+                            $producto->id_detalle_contrato = $detalle->id;
+                            $producto->id_sucursal = $guia->id_sucursal;
+                            $producto->id_guia = $guia->id;
+                            $producto->serie = $serie;
+                            $producto->save();
+                        }else{
+                            DB::rollback();
+                            $producto = Producto::
+                                join("modelo","producto.id_modelo","modelo.id")->
+                                join("marca","modelo.id_marca","marca.id")->
+                                join("tipo_equipo","modelo.id_tipo_equipo","tipo_equipo.id")->
+                                join("detalle_contrato","producto.id_detalle_contrato","detalle_contrato.id")->
+                                join("contrato","detalle_contrato.id_contrato","contrato.id")->
+                                join("guia","producto.id_guia","guia.id")->
+                                select("modelo.nombre as nombremodelo","marca.nombre as nombremarca","tipo_equipo.nombre as nombretipo","contrato.numero as numerocontrato","guia.numero as numeroguia","guia.fecha as fechaguia")->
+                                where("producto.id",$existeproducto->id)->first();
+                            return json_encode(["ok"=>false,"error"=>"La serie ".$serie." ya se ha registrado anteriormente en el producto: ".$producto->nombretipo." ".$producto->nombremarca." ".$producto->nombremodelo." en el contrato ".$producto->numerocontrato." con guia número ".$producto->numeroguia." registrada en la fecha ".date('d/m/Y',strtotime($producto->fechaguia))]);
+                        }
                     }
                 }
+                new Bitacora("compra","nuevo","Se creó una compra con guia ".$guia->numero,$usuario->id);
                 DB::commit();
                 $modelosguia = [];
                 $request->session()->put("modeloscompra", $modelosguia);
@@ -1132,23 +1104,8 @@ class ControladorContratos extends Controller
             } 
             catch (Exception $e) {
                 DB::rollback();
-                $producto = Producto::
-                        join("modelo","producto.id_modelo","modelo.id")->
-                        join("marca","modelo.id_marca","marca.id")->
-                        join("tipo_equipo","modelo.id_tipo_equipo","tipo_equipo.id")->
-                        join("detalle_contrato","producto.id_detalle_contrato","detalle_contrato.id")->
-                        join("contrato","detalle_contrato.id_contrato","contrato.id")->
-                        join("guia","producto.id_guia","guia.id")->
-                        select("modelo.nombre as nombremodelo","marca.nombre as nombremarca","tipo_equipo.nombre as nombretipo","contrato.numero as numerocontrato","guia.numero as numeroguia","guia.fecha as fechaguia")->
-                        where("serie",$serie)->first();
-                if($producto!=null){
-                    DB::rollback();
-                    return json_encode(["ok"=>false,"error"=>"La serie ".$serie." ya se ha registrado anteriormente en el producto: ".$producto->nombretipo." ".$producto->nombremarca." ".$producto->nombremodelo." en el contrato ".$producto->numerocontrato." con guia número ".$producto->numeroguia." registrada en la fecha ".date('d/m/Y',strtotime($producto->fechaguia))]);
-                }else{
-                    DB::rollback();
-                    $error=$e->getMessage();
-                    return json_encode(["ok"=>false,"error"=>$error."-line:".$e->getLine()]);
-                }
+                $error=$e->getMessage();
+                return json_encode(["ok"=>false,"error"=>$error."-line:".$e->getLine()]);
             }
         }
         else{
@@ -1159,7 +1116,7 @@ class ControladorContratos extends Controller
     public function Compra(Request $request,  Response $response) {
         $usuario = $request->session()->get('usuario');
         if($this->ComprobarUsuario($usuario)){
-            $menuid = 18;
+            $menuid = 39;
             if($this->ComprobarPermiso($usuario, $menuid)){
                 $mensaje = $request->session()->get('mensaje');
                 $request->session()->forget('mensaje');
@@ -1176,11 +1133,13 @@ class ControladorContratos extends Controller
                         orderBy("marca.nombre")->
                         orderBy("modelo.nombre")->
                         get();
+                $archivo = Archivo::where("numero",$guia->id)->where("tipo","guia")->where("estado","N")->first();
                 return view('/compra',[
                     'usuario'=>$usuario,
                     'mensaje'=>$mensaje,
                     'detalles'=>$detalles,
                     'guia'=>$guia,
+                    'archivo'=>$archivo,
                     'w'=>0
                 ]);
             }else{
@@ -1224,7 +1183,7 @@ class ControladorContratos extends Controller
     public function CasoNuevo(Request $request,  Response $response) {
         $usuario = $request->session()->get('usuario');
         if($this->ComprobarUsuario($usuario)){
-            $menuid = 15;
+            $menuid = 29;
             if($this->ComprobarPermiso($usuario, $menuid)){
                 $mensaje = $request->session()->get('mensaje');
                 $request->session()->forget('mensaje');
@@ -1260,7 +1219,7 @@ class ControladorContratos extends Controller
                         join("contrato","detalle_contrato.id_contrato","contrato.id")->
                         leftJoin("proveedor","contrato.id_proveedor","proveedor.id")->
                         select("area.nombre as nombrearea","producto.id","producto.id_detalle_contrato","producto.id_modelo","producto.id_sucursal","modelo.nombre as nombremodelo","marca.nombre as nombremarca","tipo_equipo.nombre as nombretipoequipo","sucursal.nombre as nombresucursal","proveedor.razon as nombreproveedor","contrato.numero","contrato.tipo as tipocontrato")->
-                        where("serie",$serie)->first();
+                        where("serie",$serie)->where("producto.estado","N")->first();
                 if($producto!=null){
                     if($producto->tipocontrato=="C"){
                         $producto->sla = $producto->sla();
@@ -1317,6 +1276,7 @@ class ControladorContratos extends Controller
                 $caso->save();
                 $documento->siguiente = $siguiente+1;
                 $documento->save();
+                new Bitacora("caso","nuevo",$caso->numero,$usuario->id);
                 DB::commit();
                 $request->session()->put("mensaje", "Guardado correctamente");
                 return json_encode(["ok"=>true,"caso"=>$caso->id]);
@@ -1421,6 +1381,7 @@ class ControladorContratos extends Controller
                         $caso->estado = "T";
                         $caso->fechat = date("Y-m-d H:i");
                         $caso->save();
+                        new Bitacora("caso","editar","Se asignó técnico al caso ".$caso->numero,$usuario->id);
                         DB::commit();
                         $request->session()->put("mensaje", "Guardado correctamente");
                         return json_encode(["ok"=>true,"caso"=>$caso->id]);
@@ -1456,6 +1417,7 @@ class ControladorContratos extends Controller
                         $caso->analisis = $request->input("analisis");
                         $caso->conclusion = $request->input("conclusion");
                         $caso->id_tipo_caso = $request->input("tipocaso");
+                        $caso->casomarca = $request->input("casomarca");
                         $caso->fechad = date("Y-m-d H:i");
                         $tipocaso = TipoCaso::find($request->input("tipocaso"));
                         $tiposolucion = $request->input("tiposolucion");
@@ -1473,6 +1435,7 @@ class ControladorContratos extends Controller
                             }
                         }
                         $caso->save();
+                        new Bitacora("caso","editar","Se agregó el diagnostico al caso ".$caso->numero,$usuario->id);
                         DB::commit();
                         $request->session()->put("mensaje", "Guardado correctamente");
                         return json_encode(["ok"=>true,"caso"=>$caso->id]);
@@ -1497,11 +1460,10 @@ class ControladorContratos extends Controller
         }
     }
     
-    
     public function Tecnicos(Request $request,  Response $response) {
         $usuario = $request->session()->get('usuario');
         if($this->ComprobarUsuario($usuario)){
-            $menuid = 1;
+            $menuid = 11;
             if($this->ComprobarPermiso($usuario, $menuid)){
                 $mensaje = $request->session()->get('mensaje');
                 $request->session()->forget('mensaje');
@@ -1537,8 +1499,8 @@ class ControladorContratos extends Controller
             $modo = $request->input("modo");
             DB::beginTransaction();
             try{
-                $nombre = $request->input("nombre");
-                $apellidos = $request->input("apellidos");
+                $nombre = strtoupper($request->input("nombre"));
+                $apellidos = strtoupper($request->input("apellidos"));
                 $proveedor = $request->input("proveedor");
                 $quitar = array("'",'"');
                 $nombre = str_replace($quitar, "", $nombre);
@@ -1548,12 +1510,13 @@ class ControladorContratos extends Controller
                 }else if($modo=="editar"){
                     $tecnico = Tecnico::find($request->input("id"));
                 }
-                $tecnico->nombre = strtoupper($nombre);
-                $tecnico->apellidos = strtoupper($apellidos);
+                $tecnico->nombre = $nombre;
+                $tecnico->apellidos = $apellidos;
                 if($proveedor!=null){
                     $tecnico->id_proveedor = $proveedor;
                 }
                 $tecnico->save();
+                new Bitacora("tecnico","nuevo",$apellidos." ".$nombre,$usuario->id);
                 DB::commit();
                 $request->session()->put("mensaje", "Guardado correctamente");
                 return json_encode(["ok"=>true,"obj"=>$tecnico]);
@@ -1682,7 +1645,7 @@ class ControladorContratos extends Controller
                     $sucursal = Sucursal::find($producto->id_sucursal);
                     return json_encode(["ok"=>false,"error"=>"La serie se encuentra en otra sucursal: ".$sucursal->nombre]);
                 }
-                
+                new Bitacora("traslado","nuevo",$traslado->numero,$usuario->id);
                 DB::commit();
                 $request->session()->put("mensaje","Guardado correctamente");
                 return json_encode(["ok"=>true,"traslado"=>$traslado->id]);
@@ -1714,6 +1677,7 @@ class ControladorContratos extends Controller
                 $producto = Producto::find($idproducto);
                 $producto->id_area_sucursal = $productocaso->id_area_sucursal;
                 $producto->save();
+                new Bitacora("caso","editar","Se eligió la serie ".$producto->serie." a reemplazar del caso ".$caso->numero,$usuario->id);
                 DB::commit();
                 $request->session()->put("mensaje","Guardado correctamente");
                 return json_encode(["ok"=>true,"caso"=>$caso->id]);
@@ -1741,6 +1705,7 @@ class ControladorContratos extends Controller
                     $caso->fechaf = date("Y-m-d H:i");
                     $caso->estado = "F";
                     $caso->save();
+                    new Bitacora("caso","editar","Se finalizó el caso ".$caso->numero,$usuario->id);
                     DB::commit();
                     $request->session()->put("mensaje", "Guardado correctamente");
                     return json_encode(["ok"=>true,"caso"=>$caso->id]);
