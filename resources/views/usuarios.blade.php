@@ -1,200 +1,293 @@
-    @include('include.head')
-    @include('include.menu')
-    @include('include.menu-mobile')
-    <!--Cuerpo-->
-    <div class="row cuerpo">
-      <div class="row titulo center">
-        <h5>USUARIOS DE TIPO {{$tipousuario->nombre}}</h5>
-      </div>
-        <div class="row">
-            <a onclick="$('#modal-agregar').modal('open')" class="btn-floating btn-large waves-effect red"><i class="material-icons">add</i></a>
-            <div class="col s10 offset-s1 tabla">
-             <table class="centered striped resp2">
-               <thead>
-                 <th>Nombre</th>
-                 <th>Correo</th>
-                 <th>Editar</th>
-                 <th>Restablecer Contraseña</th>
-                 <!--<th>Desactivar</th>-->
-                 <th>Eliminar</th>
-               </thead>
-               <tbody id="filas">
-                 @forelse($usuarios as $usuariox)
-                    <tr id="fila{{$usuariox->id}}">
-                       <td>{{$usuariox->apellidos}} {{$usuariox->nombre}}</td>
-                       <td>{{$usuariox->correo}}</td>
-                       <td><a onclick="modaleditarusuario({{$usuariox->id}},'{{$usuariox->apellidos}} {{$usuariox->nombre}}','editar')" class="btn green"><i class="material-icons">edit</i></a></td>
-                       <td><a onclick="modaleditarusuario({{$usuariox->id}},'{{$usuariox->apellidos}} {{$usuariox->nombre}}','restablecer')" class="btn"><i class="material-icons">replay</i></a></td>
-                       <!--<td><a onclick="modaldesactivarusuario({{$usuariox->id}},'{{$usuariox->apellidos}} {{$usuariox->nombre}}')" class="btn grey"><i class="material-icons">block</i></a></td>-->
-                       <td><a onclick="modaleditarusuario({{$usuariox->id}},'{{$usuariox->apellidos}} {{$usuariox->nombre}}','eliminar')" class="btn red"><i class="material-icons">delete</i></a></td>
-                     </tr>
-                 @empty
-                     <tr id="filaempty">
-                         <td colspan="6">No hay usuarios</td>
-                     </tr>
-                 @endforelse
-               </tbody>
-             </table>
-             <div class="row center">
-                {{$usuarios->appends(['id'=>$tipousuario->id])->links()}}
-            </div>
-           </div> 
-        </div>
-    </div>
-    @include('include.footer')
+@include('include.head')
+    @include('include.menu-usuario')
+    @include('include.modal-logout')
     
+<!--Cuerpo-->
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <div class="card mb-3">
+            <div class="card-header text-size-ssm"><i class="icon-user-tie mr-2 text-size-ssm"></i>Usuarios</div>
+            <div class="card-body">
+                
+                <!--Search-->
+                    <div>
+                      <form id="formFiltros" action="ajax/listarusuarios?modo=tabla" class="form-inline mb-3" onsubmit="buscar();">
+                        <input class="form-control mr-sm-2 text-size-xm" name="nombre" type="search" placeholder="Buscar..." aria-label="Search">
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="buscar();">Buscar</button>
+                        <button type="button" class="btn btn-success btn-sm" onclick="nuevo();">Nuevo Usuario</button>
+                </form>
+                    </div>
+            <!--End Search-->
 
-    <!--MODAL AGREGAR-->
-<div id="modal-agregar" class="modal">
-  <div class="row">
-    <div class="titulo blue darken-1">
-        <h4 class="center">NUEVO USUARIO</h4>
-    </div>
-  </div>
-  <div class="row">
-        <form id="formagregar"  accept-charset="ISO-8859-1">
-            <div class="col s12 input-field">
-                {{ csrf_field() }}
-                <input type="hidden" name="modo" value="agregar">
-                <input type="hidden" name="tipo" value="{{$tipousuario->id}}">
-                <input type="text" name="nombre" required id="nombre-agregar">
-                <label for="nombre-agregar">NOMBRE</label>
+                <!-- Modal Usuario -->
+                <div class="modal fade bd-example-modal-sm" id="modalUsuarios" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title w-100">Registro de Usuario</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body mx-2">
+                            <div class="text-center">
+                                <div class="icon-object border-primary-300 text-primary-300 mb-4"><i class="icon-reading"></i></div>
+                            </div>
+                            <!-- Formulario Usuario-->
+                            <form id="formMantenimiento" action="mantenimiento/usuarios" onsubmit="validar();return false;">
+                                {{ csrf_field() }}
+                                <input type="hidden" name="modo" id="inptModo">
+                                <input type="hidden" name="id" id="inptId">
+                                <div class="row mb-3">
+                                    <div class="col">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text"><i class="icon-user"></i></div>
+                                            </div>
+                                            <input type="text" class="form-control" name="nombres" id="txtNombre" placeholder="Nombre">
+                                        </div>
+                                    </div>
+                                    <!--div class="col">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text"><i class="icon-user-tie"></i></div>
+                                            </div>
+                                            <input type="text" class="form-control" id="txtCuenta" placeholder="Cuenta">
+                                        </div>
+                                    </div-->
+                                    <div class="col">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text"><i class="icon-user"></i></div>
+                                            </div>
+                                            <input type="text" class="form-control" name="paterno" id="txtPaterno" placeholder="Apellidos Paterno">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text"><i class="icon-user"></i></div>
+                                            </div>
+                                            <input type="text" class="form-control" name="materno" id="txtMaterno" placeholder="Apellido Materno">
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text"><i class="icon-phone"></i></div>
+                                            </div>
+                                            <input type="text" class="form-control" name="celular" id="txtTelefono" placeholder="Telefono">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text"><i class="icon-envelop"></i></div>
+                                            </div>
+                                            <input type="email" class="form-control" name="correo" id="txtCorreo" placeholder="Correo">
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text"><i class="icon-lock"></i></div>
+                                            </div>
+                                            <input type="text" class="form-control" name="password" id="txtClave" placeholder="Clave">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col">
+                                        <div class="input-group" id="divSedeForm">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text"><i class="icon-office"></i></div>
+                                            </div>
+                                            <select class="custom-select" id="selectSede">
+                                                <option selected>Seleccione Sede...</option>
+                                                <option value="1">Chiclayo</option>
+                                                <option value="2">Lima</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="input-group" id="divTipoForm">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text"><i class="icon-user-tie"></i></div>
+                                            </div>
+                                            <select class="custom-select" id="inputGroupSelect01">
+                                                <option selected>Seleccione Tipo...</option>
+                                                <option value="1">Administrador</option>
+                                                <option value="2">Cliente</option>
+                                                <option value="2">Trabajador</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3 divClientes">
+                                    <div class="col">
+                                        <div class="input-group" id="divUniversidadForm">
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="input-group" id="divCarreraForm">
+                                        </div>
+                                    </div>
+                                </div>  
+                                <div class="row mb-3 divClientes">
+                                    <div class="col">
+                                        <div class="input-group" id="divCicloForm">
+                                        </div>
+                                    </div>
+                                    <div class="col"></div>
+                                </div>
+                            </form>
+                            <!-- End Formulario Usuario-->    
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-success" onclick="validar();" id="btnRegistrar">Registrar</button>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Modal Usuario-->
+
+                <div class="table-responsive-lg">
+                    <table class="table text-size-xm">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">N°</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Correo</th>
+                                <th scope="col">Teléfono</th>
+                                <th scope="col">Tipo</th>
+                                <th scope="col">Editar</th>
+                                <th scope="col">Eliminar</th>
+                            </tr>
+                        </thead>
+                        <tbody class="lead text-size-xm" id="tbContenido">
+                        </tbody>
+                    </table>
+                    <div class="row center-block" id="divPagination"></div>
+                </div>
+
             </div>
-            <div class="col s12 input-field">
-                <input type="text" name="apellidos" required id="apellidos-agregar">
-                <label for="apellidos-agregar">APELLIDOS</label>
-            </div>
-            <div class="col s12 input-field">
-                <input type="text" name="correo" required id="correo-agregar">
-                <label for="correo-agregar">CORREO</label>
-            </div>
-        </form>
-  </div>
-    <div class="row center botones">
-        <div class="col s6 center" id="divbtnagregar">
-            <button onclick="usuariopost('agregar')" class="btn-large">GRABAR</button>
-        </div>
-        <div class="col s6 center">
-            <button class="modal-action modal-close btn-large red waves-effect">CERRAR</button>
         </div>
     </div>
 </div>
+<!--End Cuerpo-->
+
+    @include('include.footer')
+<script>
     
-    <!--MODAL EDITAR-->
-<div id="modal-editar" class="modal">
-  <div class="row">
-    <div class="titulo blue darken-1">
-        <h4 class="center">EDITAR</h4>
-        <h5 class="center" id="subtitulo-editar"></h5>
-    </div>
-  </div>
-  <div class="row">
-        <form id="formeditar"  accept-charset="ISO-8859-1">
-            <div class="col s12 input-field">
-                {{ csrf_field() }}
-                <input type="hidden" name="modo" value="editar">
-                <input type="hidden" name="id" id="id-editar">
-            </div>
-            <div class="col s12 input-field">
-                <select name="tipo" required id="tipo-editar">
-                    @forelse($tiposusuario as $tipousuariox)
-                        <option value="{{$tipousuariox->id}}">{{$tipousuariox->nombre}}</option>
-                    @empty
-                        <option value="0" disabled>No hay otros tipos de usuario</option>
-                    @endforelse
-                </select>
-                <label for="tipo-editar">Tipo</label>
-            </div>
-        </form>
-  </div>
-    <div class="row center botones">
-        <div class="col s6 center" id="divbtneditar">
-            <button onclick="usuariopost('editar')" class="btn-large">GRABAR</button>
-        </div>
-        <div class="col s6 center">
-            <button class="modal-action modal-close btn-large red waves-effect">CERRAR</button>
-        </div>
-    </div>
-</div>
+    function buscar(){
+        console.log("BUSCANDO");
+        cargarTabla_JSON('formFiltros','tbContenido','divPagination');
+        return false;
+    }
     
+    function nuevo(){
+        $(".divClientes").hide();
+        $("#inptId").val("");
+        $("#txtNombre").val("");
+        $("#txtCuenta").val("");
+        $("#txtPaterno").val("");
+        $("#txtMaterno").val("");
+        $("#txtClave").val("");
+        $("#txtCorreo").val("");
+        $("#txtTelefono").val("");
+        $("#inptModo").val("N");
+        selectAJAX_JSON("ajax/listarsedes","modo=select","icon-office","id","nombre","divSedeForm","id_sede","slcSede","","","Seleccione Sede...");
+        selectAJAX_JSON("ajax/listartiposusuario","modo=select","icon-user-tie","id","nombre","divTipoForm","id_tipo","slcTipo","","selectTipo('','','');","Seleccione Tipo...");
+        $("#modalUsuarios").modal();
+    }
     
-    <!--MODAL ELIMINAR-->
-<div id="modal-eliminar" class="modal">
-  <div class="row">
-    <div class="titulo blue darken-1">
-        <h4 class="center">ELIMINAR</h4>
-        <h5 class="center" id="subtitulo-eliminar"></h5>
-    </div>
-  </div>
-  <div class="row">
-        <form id="formeliminar"  accept-charset="ISO-8859-1">
-            <div class="col s12 input-field">
-                {{ csrf_field() }}
-                <input type="hidden" name="modo" value="eliminar">
-                <input type="hidden" name="id" id="id-eliminar">
-            </div>
-        </form>
-  </div>
-    <div class="row center botones">
-        <div class="col s6 center" id="divbtneliminar">
-            <button onclick="usuariopost('eliminar')" class="btn-large">Eliminar</button>
-        </div>
-        <div class="col s6 center">
-            <button class="modal-action modal-close btn-large red waves-effect">Cerrar</button>
-        </div>
-    </div>
-</div>
+    function editar(id){
+        $.ajax({
+            type: 'GET',
+            url: "ajax/listarusuarios",
+            data: "id="+id,
+            success: function (data) {
+                data = JSON.parse(data);
+                data = data[0];
+                $(".divClientes").hide();
+                $("#inptId").val(data.id);
+                $("#txtNombre").val(data.nombres);
+                $("#txtCuenta").val(data.cuenta);
+                $("#txtPaterno").val(data.paterno);
+                $("#txtMaterno").val(data.materno);
+                $("#txtClave").val(data.password);
+                $("#txtCorreo").val(data.correo);
+                $("#txtTelefono").val(data.celular);
+                selectAJAX_JSON("ajax/listarsedes","modo=select","icon-office","id","nombre","divSedeForm","id_sede","slcSede",data.id_sede,"","Seleccione Sede...");
+                selectAJAX_JSON("ajax/listartiposusuario","modo=select","icon-user-tie","id","nombre","divTipoForm","id_tipo","slcTipo",data.id_tipo,"selectTipo('"+data.id_universidad+"','"+data.id_carrera+"','"+data.id_ciclo+"')","Seleccione Tipo...","selectTipo('"+data.id_universidad+"','"+data.id_carrera+"','"+data.id_ciclo+"');");
+                $("#inptModo").val("E");
+                $("#modalUsuarios").modal();
+            }
+        });
+    }
     
-    <!--MODAL DESACTIVAR-->
-<div id="modal-desactivar" class="modal">
-  <div class="row">
-    <div class="titulo blue darken-1">
-        <h4 class="center">DESACTIVAR</h4>
-        <h5 class="center" id="subtitulo-desactivar"></h5>
-    </div>
-  </div>
-  <div class="row">
-        <form id="formdesactivar"  accept-charset="ISO-8859-1">
-            <div class="col s12 input-field">
-                {{ csrf_field() }}
-                <input type="hidden" name="modo" value="desactivar">
-                <input type="hidden" name="id" id="id-desactivar">
-            </div>
-        </form>
-  </div>
-    <div class="row center botones">
-        <div class="col s6 center" id="divbtndesactivar">
-            <button onclick="usuariopost('desactivar')" class="btn-large">DESACTIVAR</button>
-        </div>
-        <div class="col s6 center">
-            <button class="modal-action modal-close btn-large red waves-effect">CERRAR</button>
-        </div>
-    </div>
-</div>
+    function eliminar(id){
+        //enviarURL($("#formMantenimiento").prop("action")+'?modo=A','&id='+id,"buscar();");
+        $("#inptId").val(id);
+        $("#inptModo").val("A");
+        AlertaForm("formMantenimiento","¿DESEAS ELIMINAR EL REGISTRO?","","enviarForm('formMantenimiento','xyz');");
+    }
     
-        <!--MODAL ELIMINAR-->
-<div id="modal-restablecer" class="modal">
-  <div class="row">
-    <div class="titulo blue darken-1">
-        <h4 class="center">RESTABLECER CONTRASEÑA</h4>
-        <h5 class="center" id="subtitulo-restablecer"></h5>
-    </div>
-  </div>
-  <div class="row">
-        <form id="formrestablecer"  accept-charset="ISO-8859-1">
-            <div class="col s12 input-field">
-                {{ csrf_field() }}
-                <input type="hidden" name="modo" value="restablecer">
-                <input type="hidden" name="id" id="id-restablecer">
-            </div>
-        </form>
-  </div>
-    <div class="row center botones">
-        <div class="col s6 center" id="divbtnrestablecer">
-            <button onclick="usuariopost('restablecer')" class="btn-large">RESTABLECER</button>
-        </div>
-        <div class="col s6 center">
-            <button class="modal-action modal-close btn-large red waves-effect">CERRAR</button>
-        </div>
-    </div>
-</div>
+    function selectTipo(id_universidad,id_carrera,id_ciclo){
+        console.log("TIPO",id_universidad,id_carrera,id_ciclo);
+        var idtipo = $("#slcTipo").val();
+        if(idtipo == 2){
+            $(".divClientes").show();
+            selectAJAX_JSON("ajax/listaruniversidades","modo=select","icon-office","id","nombre","divUniversidadForm","id_universidad","slcUniversidad",id_universidad,"","Seleccione Universidad...");
+            selectAJAX_JSON("ajax/listarcarreras","modo=select","icon-office","id","nombre","divCarreraForm","id_carrera","slcCarrera",id_carrera,"","Seleccione Carrera...");
+            selectAJAX_JSON("ajax/listarciclos","modo=select","icon-office","id","nombre","divCicloForm","id_ciclo","slcCiclo",id_ciclo,"","Seleccione Ciclo...");
+        }else{
+            $(".divClientes").hide();
+        }
+    }
+    
+    function validar(){
+        if($("#txtNombre").val().toString().trim().length==0){
+            mensajeToast("ERROR","NO HAS LLENADO EL CAMPO NOMBRE");
+            return false;
+        }
+        if($("#txtPaterno").val().toString().trim().length==0){
+            mensajeToast("ERROR","NO HAS LLENADO EL CAMPO APELLIDO PATERNO");
+            return false;
+        }
+        if($("#txtMaterno").val().toString().trim().length==0){
+            mensajeToast("ERROR","NO HAS LLENADO EL CAMPO APELLIDO MATERNO");
+            return false;
+        }
+        if($("#txtTelefono").val().toString().trim().length==0){
+            mensajeToast("ERROR","NO HAS LLENADO EL CAMPO CELULAR");
+            return false;
+        }
+        if($("#txtCorreo").val().toString().trim().length==0){
+            mensajeToast("ERROR","NO HAS LLENADO EL CAMPO CORREO");
+            return false;
+        }
+        if($("#txtClave").val().toString().trim().length==0){
+            mensajeToast("ERROR","NO HAS LLENADO EL CAMPO CLAVE");
+            return false;
+        }
+        if(!($("#slcSede").val()>0)){
+            mensajeToast("ERROR","NO HAS SELECCIONADO ALGUNA SEDE");
+            return false;
+        }
+        if(!($("#slcTipo").val()>0)){
+            mensajeToast("ERROR","NO HAS SELECCIONADO ALGUN TIPO DE USUARIO");
+            return false;
+        }
+        enviarForm("formMantenimiento","btnRegistrar");
+        return false;
+    }
+    
+    buscar();
+    
+</script>

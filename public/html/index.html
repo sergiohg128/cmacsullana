@@ -1,44 +1,463 @@
-<!DOCTYPE html>
-<html lang="es">
+<!doctype html>
+<html lang="en">
   <head>
-    <title>Bodega</title>
+    <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1">
-    <link rel="stylesheet" type="text/css" href="../css/googleicons.css">
-    <link rel="stylesheet" type="text/css" href="../css/materialize.css">
-    <link rel="stylesheet" type="text/css" href="../css/iconos.css">
-    <link rel="stylesheet" type="text/css" href="../css/estilos.css">
-    <link rel="stylesheet" type="text/css" href="../css/sweetalert2.css">
-    <script src="../js/jquery-2.1.4.js"></script>
-    <script src="../js/bin/materialize.js"></script>
-    <script src="../js/sweetalert2.js"></script>
-    <script src="../js/scripts.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="resource/css/bootstrap.min.css">
+    <link rel="stylesheet" href="resource/css/icons/styles.css">
+    <link rel="stylesheet" href="resource/css/core.css">
+    <link rel="stylesheet" href="resource/css/colors.css">
+
+    <title>Thesis Consulting</title>
   </head>
+  <!-- Body -->
   <body>
-    <!--Cuerpo-->
-    <div class="row cuerpo login valign-wrapper center">
-      <div class="col s12 m8 offset-m2 l4 offset-l4 valing center">
-        <div class="row card">
-          <div class="row titulo center">
-            <h5>INGRESAR</h5>
+
+
+    <!-- Modal -->
+    <div class="modal fade bd-example-modal-sm" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title w-100">Inicio de Sesión - #CYSEG</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
           </div>
-          <div class="row">
-            <form action="" method="POST">
-              <div class="input-field col s12">
-                <input id="user" type="text" name="user">
-                <label for="user">Usuario</label>
-              </div>
-              <div class="input-field col s12">
-                <input id="pass" type="password" name="pass">
-                <label for="pass">Contraseña</label>
-              </div>
-              <div class="col s12 center">
-                <button class="btn">INGRESAR</button>
-              </div>
+          <div class="modal-body">
+            <div class="text-center">
+              <div class="icon-object border-primary-300 text-primary-300"><i class="icon-reading"></i></div>
+              <h6 class="lead text-size-sm">Ingresa tus credenciales</h6>
+            </div>
+
+            <form method="POST">
+    
+                <div class="form-group">
+                  <label>Usuario</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text"><i class="icon-user-tie"></i></div>
+                    </div>
+                    <input type="text" class="form-control" id="txtUsuario" placeholder="Usuario">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label>Password</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text"><i class="icon-lock"></i></div>
+                    </div>
+                    <input type="password" class="form-control" id="txtPassword" placeholder="Password">
+                  </div>
+                </div>
+
+                <div class="text-right">
+                  <small><a href="#">¿Olvidaste tu constraseña?</a></small>
+                </div>
+              
             </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            <a class="btn btn-primary" href="ousuario/inicio.html">Ingresar</a>
           </div>
         </div>
       </div>
     </div>
+    <!-- End Modal -->
+
+
+
+    <!-- Header-->
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top border-bottom">
+        <a class="navbar-brand" href="#">GRUPO CYSEG</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navMain" aria-controls="navMain" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navMain">
+          <ul class="smooth-scroll navbar-nav text-size-xm mr-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+              <a class="nav-link" href="index.html">Inicio <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a data-scroll class="nav-link" href="#Nosotros">Nosotros</a>
+            </li>
+            <li class="nav-item">
+              <a data-scroll class="nav-link" href="#Areas">Nuestros Servicios</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link cursor" data-toggle="modal" data-target="#normas" >Normas de Citación</a>
+            </li>
+            <li class="nav-item">
+              <a data-scroll class="nav-link" href="#Sedes">Sedes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="skype.html" target="_blank">Cita Skype</a>
+            </li>
+            <li class="nav-item">
+              <a data-scroll class="nav-link" href="#Contacto">Contáctanos</a>
+            </li>
+             <li class="nav-item">
+              <a class="nav-link" href="#">Trabaja con Nosotros</a>
+            </li>
+          </ul>
+          <form class="form-inline my-2 my-lg-0">
+          <!-- Button modal -->
+                <div>
+                  <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#exampleModal">
+                    Ingresar
+                  </button>
+                </div>
+          <!-- Button modal -->
+          </form>
+        </div>
+      </nav>
+    </header>
+    <!-- End Header -->
+
+
+    <!-- Slide -->
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+      <ol class="carousel-indicators">
+        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+      </ol>
+      <div class="carousel-inner" style="width: 100%;">
+        <div class="carousel-item active" style="background: url(resource/img/slide/graduacion5.jpg); background-size: cover; height:auto; width: 100%;">
+          <div class="parallax-overlay">
+
+            <div class="d-flex flex-column flex-md-row justify-content-center align-items-center">
+              <div class="text-center mtxxl">
+                <div class="container">
+                  <p class="lead text-white text-size-xxlg">#GRUPO CYSEG</p>
+                </div>
+                <p class="text-white lead text-size-xsm p-2">Somos un grupo de profesionales especialistas en ciencias empresariales que brinda servicios de asesoría y consultoría.</p>
+                <a href="#Contacto" class="btn btn-primary m-4 smooth-scroll">Contáctanos</a>
+              </div>
+            </div> 
+           
+          </div>
+        </div>
+
+
+        <div class="carousel-item" style="background: url(resource/img/slide/graduacion2.jpg); background-size: cover; height:auto; width: 100%;">
+          <div class="parallax-overlay">
+
+            <div class="d-flex flex-column flex-md-row justify-content-center align-items-center">
+              <div class="text-center mtxxl">
+                <div class="container">
+                  <p class="lead text-white text-size-xxlg">#GRUPO CYSEG</p>
+                </div>
+                <p class="text-white lead text-size-xsm p-2">Somos un grupo de profesionales especialistas en ciencias empresariales que brinda servicios de asesoría y consultoría.</p>
+                <a href="#Contacto" class="btn btn-primary btn-lg m-4 smooth-scroll">Contáctanos</a>
+              </div>
+            </div> 
+
+          </div>
+        </div>
+      
+
+        <div class="carousel-item" style="background: url(resource/img/slide/graduacion.jpg); background-size: cover; height:auto; width: 100%;">
+          <div class="parallax-overlay">
+
+            <div class="d-flex flex-column flex-md-row justify-content-center align-items-center">
+              <div class="text-center mtxxl">
+                <div class="container">
+                  <p class="lead text-white text-size-xxlg">#GRUPO CYSEG</p>
+                </div>
+                <p class="text-white lead text-size-xsm p-2">Somos un grupo de profesionales especialistas en ciencias empresariales que brinda servicios de asesoría y consultoría.</p>
+                <a href="#Contacto" class="btn btn-primary btn-lg m-4 smooth-scroll">Contáctanos</a>
+              </div>
+            </div> 
+
+          </div>
+        </div>
+
+      </div>
+  
+      <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+    <!-- End Slide -->
+
+
+    <!-- Nosotros -->
+    <section id="Nosotros" class="w-100">
+      <div>
+        <div class="row secondary-background p-10">
+          <div class="col-md-6">
+                <h1 class="text-size-xxlg text-white text-center font-weight-bold">NUESTRA</h1>
+                <h1 class="lead text-size-xxlg text-white text-center">VISION</h1>
+                <p class="text-center text-size-sm text-white m-8">Ser una consultora innovadora consolidada al asesoramiento empresarial e investigación para ser reconocida a nivel regional, teniendo como base el compromiso hacia nuestros clientes.</p> 
+          </div>
+          <div class="form-inline col-md-6 text-center justify-content-center">
+                 <div class="icon-object2 text-center text-white align-niddle"><i class="icon-trophy3"></i></div>
+          </div>
+        </div>
+
+        <div class="row p-10">
+          <div class="form-inline col-md-6 text-center justify-content-center">
+                 <div class="icon-object2 text-center text-p align-niddle"><i class="icon-clipboard2"></i></div>
+          </div>
+          <div class="col-md-6">
+                <h1 class="text-size-xxlg text-p text-center font-weight-bold">NUESTRA</h1>
+                <h1 class="lead text-size-xxlg text-p text-center">MISIÓN</h1>
+                <div class="container">
+                  <p class="text-center text-size-sm text-p m-5">En Grupo CYSEG estamos comprometidos con la investigación en temas empresariales y estudios académicos, ofreciendo una innovación tecnológica con un equipo de especialistas de alta calidad, logrando la satisfacción plena de nuestros clientes para el emprendimiento de su negocio y/o la obtención de su título profesional.</p> 
+                </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- End Nosotros -->
+
+
+    <!-- Nouestras Áreas -->
+    <div id="Areas" class="row secondary-background">
+      <div class="container">
+         <div class="col-md-12 text text-white">
+            <h4 class="lead text-size-lg">Nuestros Servicios</h4>
+         </div>
+      </div>
+    </div>
+    <section  class="areas">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 text-center">
+            <div class="icon-object text-p"><i class="icon-checkmark"></i></div>
+            <h1 class="text-size-lg">ASESORIA DE PREGRADO</h1>
+            <p class="text-size-sm font-weight-light mt-3">Ciencias de la Salud</p>
+            <p class="text-size-sm font-weight-light">Ciencias Empresariales</p>
+            <p class="text-size-sm font-weight-light">Derecho</p>
+          </div>
+          <div class="col-md-4 text-center">
+            <div class="icon-object text-p"><i class="icon-checkmark"></i></div>
+            <h1 class="text-size-lg">ASESORIA DE POSTGRADO</h1>
+            <p class="text-size-sm font-weight-light mt-3">Maestrías Especializadas</p>
+          </div>
+          <div class="col-md-4 text-center">
+            <div class="icon-object text-p"><i class="icon-checkmark"></i></div>
+            <h1 class="text-size-lg">CONSULTORA DE NEGOCIO</h1>
+            <p class="text-size-sm font-weight-light mt-3">Inversión de Negocio</p>
+            <p class="text-size-sm font-weight-light">Estudio de Mercado</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- End Nuestras <div class="col-md-6 mt-5">Áreas -->
+
+
+    <!-- Modal Normas -->
+    <div class="modal fade bd-example-modal-sm" id="normas" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title w-100">Normas de Citación</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <div class="modal-body">
+            <div class="text-center">
+              <div class="icon-object border-primary-300 text-primary-300"><i class="icon-book"></i></div>
+              <h6 class="lead text-size-sm mt-4">Para nuestro mejor desempeño en el trabajo, trabajamos con las siguientes normas de citación.</h6>
+            </div>
+            <div class="container">
+              <div class="row mt-5">
+                    <div class="col-md-6 col-xs-12">
+                       <a href="#"><p class="bg-past1 text-center text-white p-5 nor-hov">APA</p></a>
+                    </div>
+                    <div class="col-md-6 col-xs-12">
+                       <a href="#"><p class="text-center bg-past2 text-white p-5 nor-hov">HARVARD</p></a>
+                    </div>
+              </div>
+
+              <div class="row mtn">
+                    <div class="col-md-6 col-xs-12">
+                       <a href="#"><p class="text-center text-white p-5 bg-past3 nor-hov">ISO 9000</p></a>
+                    </div>
+                    <div class="col-md-6 col-xs-12">
+                       <a href="#"><p class="text-center text-white p-5 bg-past4 nor-hov">VANCOUVER</p></a>
+                    </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Modal Normas -->
+
+
+    <!-- Sedes -->
+    <section id="Sedes" class="sedes" style="background: url(resource/img/slide/graduacion2.jpg) fixed; height:auto;"> 
+      <div class="parallax-over" style="height:auto;">     
+            <div class="container">
+                <div class="text-center">
+                    <h3 class="text-center text-white font-weight-light padding-sm text-size-lg">NUESTRAS SEDES</h3>
+                </div>  
+                <div class="row text-center mt-5">               
+                  <div class="col-md-6 col-xs-12 text-white font-weight-light mt-4">
+                    <h2 class="lead text-size-lg text-white"><i class="icon-location3 text-size-xlg text-primary"></i> Chiclayo</h2>
+                    <p class="mt-4">Pasaje Los Sauces N° 155 4to piso, Urb: Santa Victoria</p>
+                    <p>Telf: (074) 325178 / RPM: #970006017</p>
+                    <p>Correo: investigacionchiclayo@grupoesconsultores.com</p>
+                    <button class="btn btn-outline-primary btn-lg mt-3">Ubícanos</button> 
+                  </div>          
+                  <div class="col-md-6 col-xs-12 text-white font-weight-light mt-4">
+                    <h2 class="lead text-size-lg text-white"><i class="icon-location3 text-size-xlg text-primary"></i> Lima</h2>
+                    <p class="mt-4">Pasaje Los Sauces N° 155 4to piso, Urb: Santa Victoria</p>
+                    <p>Telf: (074) 325178 / RPM: #970006017</p>
+                    <p>Correo: investigacionchiclayo@grupoesconsultores.com</p>
+                    <button class="btn btn-outline-primary btn-lg mt-3 mb-8">Ubícanos</button> 
+                  </div>
+              </div>
+            </div>
+    </section> 
+    <!-- Nuestras Sedes -->
+
+    <!-- Contacto -->
+    <div id="Contacto" class="container-fluid secondary-background">
+            <section class="container py-5">
+              <div class="sec-title text-center">
+              <h3 class="text-uppercase text-center mb-4 pt-5 text-white lead text-size-lg">CONTÁCTO</h3>
+              </div>
+              <div class="sec-title text-center">
+              <p class="lead text-center mb-4 text-white">Para mayor información completa el siguiente formulario y pronto nos comunicaremos contigo.</p>
+              </div>             
+              <div class="sec-title text-center">
+                <form action="" method="POST" accept-charset="ISO-8859-1" class="form-inline flex-column flex-md-row justify-content-center">
+                  <div class="row text-center">
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                      <div class="form-group mx-3 my-3 justify-content-center">
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text"><i class="icon-user-tie"></i></div>
+                            </div>
+                            <input type="text" class="form-control" id="txtNombre" placeholder="Nombre">
+                          </div>
+                      </div>
+                    </div>
+
+
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                      <div class="form-group mx-3 my-3 justify-content-center">
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text"><i class="icon-envelop"></i></div>
+                            </div>
+                            <input type="text" class="form-control" id="txtEmail" placeholder="Email">
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+
+                    <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                      <div class="form-group mx-3 my-3 justify-content-center">
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text"><i class="icon-phone"></i></div>
+                            </div>
+                            <input type="text" class="form-control" id="txtCelular" placeholder="Teléfono">
+                          </div>
+                      </div>
+                    </div>
+
+
+                    <div class="col-md-6 col-sm-12">
+                      <div class="form-group mx-3 my-3 justify-content-center">
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text"><i class="icon-briefcase"></i></div>
+                            </div>
+                            <input type="text" class="form-control" id="txtProfesionak" placeholder="Carrera Profesional">
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                      <div class="form-group mx-3 my-3 justify-content-center">
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text"><i class="icon-office"></i></div>
+                            </div>
+                            <input type="text" class="form-control" id="txtUniversidad" placeholder="Universidad">
+                          </div>
+                      </div>
+                    </div>
+
+
+                    <div class="col-md-6 col-sm-12">
+                      <div class="form-group mx-3 my-3 justify-content-center">
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text"><i class="icon-location4"></i></div>
+                            </div>
+                            <input type="text" class="form-control" id="txtCiudad" placeholder="Ciudad">
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+                </form>
+
+                <div class="row mt-5">
+                    <div class="col-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                      <button class="btn btn-lg btn-outline-light">Enviar</button>
+                    </div>
+                </div>
+
+               </div>
+            </section>
+    </div>
+    <!-- End Contacto -->
+
+
+    <!-- Footer -->
+    <footer class="container-fluid bg-dark">
+      <div class="row text-white py-4 text-white">
+        <div class="col-md-6">
+          <h4 class="lead">#GRUPOCYSEG</h4>
+        </div>
+        <div class="col-md-6">
+          <h4 class="lead">Síguenos</h4>
+          <a href="#"><span class="badge badge-primary">Facebook</span></a>
+          <a href="#"><span class="badge badge-danger">Youtube</span></a>
+          <a href="#"><span class="badge badge-info">Twiter</span></a>
+        </div>
+      </div>
+    </footer>
+    <!-- End Footer -->
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="resource/js/jquery-3.2.1.slim.min.js"></script>
+    <script src="resource/js/popper.min.js"></script>
+    <script src="resource/js/bootstrap.min.js"></script>
+    <script src="resource/js/smooth-scroll.min.js"></script>
+    <script>
+      var scroll =  new  SmoothScroll ('a[href*="#Nosotros"],a[href*="#Areas"],a[href*="#Sedes"],a[href*="#Contacto"]',{
+        speed: 900,
+      });
+    </script>
   </body>
+  <!-- End Body -->
 </html>

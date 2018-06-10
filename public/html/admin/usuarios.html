@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	  <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../resource/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../resource/css/icons/styles.css">
+    <link rel="stylesheet" href="../resource/css/core.css">
+    <link rel="stylesheet" href="../resource/css/colors.css">
+
+    <title>Thesis Consulting</title>
+</head>
+<!-- Body -->
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+	<header>
+
+		<!-- Logout Modal-->
+		<div class="modal fade bd-example-modal-sm" id="ModalLog" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		    <div class="modal-dialog modal-sm" role="document">
+		      <div class="modal-content">
+		        <div class="modal-header">
+		          <h5 class="modal-title" id="exampleModalLabel">#CYSGE</h5>
+		          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+		            <span aria-hidden="true">×</span>
+		          </button>
+		        </div>
+		        <div class="modal-body lead text-size-sm">¿Estás seguro de cerrar sesión?</div>
+		        <div class="modal-footer">
+		          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+		          <a class="btn btn-primary" href="../index.html">Cerrar sesión</a>
+		        </div>
+		      </div>
+		    </div>
+		</div>
+		<!-- End Logout Modal-->
+
+
+		<!-- Modal Usuario -->
+	    <div class="modal fade bd-example-modal-sm" id="modalUsuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	      <div class="modal-dialog modal-lg" role="document">
+	        <div class="modal-content">
+	          <div class="modal-header">
+	            <h5 class="modal-title w-100">Registro de Usuario</h5>
+	            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	              <span aria-hidden="true">&times;</span>
+	            </button>
+	          </div>
+	          <div class="modal-body mx-2">
+
+ 				<div class="text-center">
+             		<div class="icon-object border-primary-300 text-primary-300 mb-4"><i class="icon-reading"></i></div>
+            	</div>
+
+	          	<!-- Formulario Usuario-->
+	          	<form>
+				  <div class="row mb-3">
+				    <div class="col">
+				      	<div class="input-group">
+                    		<div class="input-group-prepend">
+                      			<div class="input-group-text"><i class="icon-user"></i></div>
+                    		</div>
+                    		<input type="text" class="form-control" id="txtNombre" placeholder="Nombre">
+                  		</div>
+				    </div>
+				    <div class="col">
+				      	<div class="input-group">
+                    		<div class="input-group-prepend">
+                      			<div class="input-group-text"><i class="icon-user-tie"></i></div>
+                    		</div>
+                    		<input type="text" class="form-control" id="txtCuenta" placeholder="Cuenta">
+                  		</div>
+				    </div>
+				  </div>
+
+				  <div class="row mb-3">
+				    <div class="col">
+				      	<div class="input-group">
+                    		<div class="input-group-prepend">
+                      			<div class="input-group-text"><i class="icon-user"></i></div>
+                    		</div>
+                    		<input type="text" class="form-control" id="txtPaterno" placeholder="Apellido Paterno">
+                  		</div>
+				    </div>
+				    <div class="col">
+				      	<div class="input-group">
+                    		<div class="input-group-prepend">
+                      			<div class="input-group-text"><i class="icon-lock"></i></div>
+                    		</div>
+                    		<input type="text" class="form-control" id="txtClave" placeholder="Clave">
+                  		</div>
+				    </div>
+				  </div>
+
+				  <div class="row mb-3">
+				    <div class="col">
+				      	<div class="input-group">
+                    		<div class="input-group-prepend">
+                      			<div class="input-group-text"><i class="icon-user"></i></div>
+                    		</div>
+                    		<input type="text" class="form-control" id="txtMaterno" placeholder="Apellido Materno">
+                  		</div>
+				    </div>
+				    <div class="col">
+				      	<div class="input-group">
+                    		<div class="input-group-prepend">
+                      			<div class="input-group-text"><i class="icon-envelop"></i></div>
+                    		</div>
+                    		<input type="email" class="form-control" id="txtCorreo" placeholder="Correo">
+                  		</div>
+				    </div>
+				  </div>
+
+				  <div class="row mb-3">
+				    <div class="col">
+				      	<div class="input-group">
+                    		<div class="input-group-prepend">
+                      			<div class="input-group-text"><i class="icon-phone"></i></div>
+                    		</div>
+                    		<input type="text" class="form-control" id="txtTelefono" placeholder="Telefono">
+                  		</div>
+				    </div>
+				    <div class="col">
+				      	<div class="input-group">
+                    		<div class="input-group-prepend">
+                      			<div class="input-group-text"><i class="icon-office"></i></div>
+                    		</div>
+                    		<select class="custom-select" id="selectSede">
+							    <option selected>Seleccione Sede...</option>
+							    <option value="1">Chiclayo</option>
+							    <option value="2">Lima</option>
+							</select>
+                  		</div>
+				    </div>
+				  </div>
+
+				   <div class="row mb-3">
+				    <div class="col">
+				      	<div class="input-group">
+                    		<div class="input-group-prepend">
+                      			<div class="input-group-text"><i class="icon-user-tie"></i></div>
+                    		</div>
+                    		<select class="custom-select" id="inputGroupSelect01">
+							    <option selected>Seleccione Tipo...</option>
+							    <option value="1">Administrador</option>
+							    <option value="2">Cliente</option>
+							    <option value="2">Trabajador</option>
+							</select>
+                  		</div>
+				    </div>
+				    <div class="col">
+				      	<!-- Add Opción -->
+				    </div>
+				  </div>
+				  
+				</form>
+				<!-- End Formulario Usuario-->
+	          </div>
+	          <div class="modal-footer">
+	            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+	            <a class="btn btn-success" href="#">Registrar</a>
+	          </div>
+	        </div>
+	      </div>
+	    </div>
+    	<!-- End Modal Usuario-->
+
+
+		<!-- Nav-->
+		<nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-primary text-white" id="mainNav">
+		    <a class="navbar-brand text-white" href="inicio.html">GRUPO CYSEG</a>
+		    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+		    <span class="navbar-toggler-icon"></span>
+		    </button>
+
+		    <div class="collapse navbar-collapse" id="navbarResponsive">
+		      <ul class="navbar-nav navbar-sidenav" id="exampleAccordion"> 
+		        <div id="perfil-data" class="text-center">       	       
+		            <img src="../resource/img/vectorProfile.jpg" class="rounded mx-auto d-block"/>
+		            <span class="name lead">Dante Villa</span>
+		        </div>
+
+		        <li class="nav-item">
+		          <a class="nav-link" href="inicio.html">
+		            <i class="icon-folder-upload"></i>
+		            <span class="nav-link-text lead text-size-sm ml-2">Subir Archivo</span>
+		          </a>
+		        </li>
+
+		        <li class="nav-item">
+		          <a class="nav-link" href="usuarios.html">
+		            <i class="icon-user-tie"></i>
+		            <span class="nav-link-text lead text-size-sm ml-2">Usuarios</span>
+		          </a>
+		        </li>
+
+		        <li class="nav-item">
+		          <a class="nav-link" href="oficinas.html">
+		            <i class="icon-office"></i>
+		            <span class="nav-link-text lead text-size-sm ml-2">Sedes</span>
+		          </a>
+		        </li>
+
+		      </ul>
+
+		      <ul class="navbar-nav sidenav-toggler">
+		        <li class="nav-item">
+		          <a class="nav-link text-center" id="sidenavToggler">
+		            <i class="icon-arrow-left22"></i>
+		          </a>
+		        </li>
+		      </ul>
+
+		      <ul class="navbar-nav ml-auto">
+		        <li class="nav-item">
+		          <a class="nav-link text-white" data-toggle="modal" data-target="#ModalLog"><i class="icon-cross"></i> Cerrar Sesión</a>
+		        </li>
+		      </ul>
+
+		    </div>
+		</nav>
+  		<!-- End Nav-->
+
+
+
+  		<!--Cuerpo-->
+	    <div class="content-wrapper">
+	        <div class="container-fluid">
+	            <div class="card mb-3">
+	                <div class="card-header text-size-ssm"><i class="icon-user-tie mr-2 text-size-ssm"></i>Usuarios</div>
+	                <div class="card-body">
+
+	                    <!--Search-->
+	                	<div>
+	                		<form class="form-inline mb-3">
+   								 <input class="form-control mr-sm-2 text-size-xm" type="search" placeholder="Buscar..." aria-label="Search">
+   								 <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalUsuario">Nuevo Usuario</button>
+  							</form>
+	                	</div>
+						<!--End Search-->
+
+						<div class="table-responsive-lg">
+		                	<table class="table text-size-xm">
+							  <thead class="thead-light">
+							    <tr>
+							      <th scope="col">N°</th>
+							      <th scope="col">Nombre</th>
+							      <th scope="col">Cuenta</th>
+							      <th scope="col">Correo</th>
+							      <th scope="col">Teléfono</th>
+							      <th scope="col">Rol</th>
+							      <th scope="col">Sede</th>
+							      <th scope="col">Editar</th>
+							      <th scope="col">Eliminar</th>
+							    </tr>
+							  </thead>
+							  <tbody class="lead text-size-xm">
+							    <tr>
+							      <th scope="row">1</th>
+							      <td>Dante Villa Rodriguez</td>
+							      <td>dantevr</td>
+							      <td>dantevilla006@gmail.com</td>
+							      <td>943382390</td>
+							      <td>Cliente</td>
+							      <td>Chiclayo</td>
+							      <td><img class="icon-t" src="../resource/img/iconos/editar.svg" alt="Descargar"></td>
+							      <td><img class="icon-t" src="../resource/img/iconos/borrar.svg" alt="Eliminar"></td>
+							    </tr>
+							    <tr>
+							      <th scope="row">2</th>
+							      <td>Dante Villa Rodriguez</td>
+							      <td>dantevr</td>
+							      <td>dantevilla006@gmail.com</td>
+							      <td>943382390</td>
+							      <td>Trabajador</td>
+							      <td>Chiclayo</td>
+							      <td><img class="icon-t" src="../resource/img/iconos/editar.svg" alt="Descargar"></td>
+							      <td><img class="icon-t" src="../resource/img/iconos/borrar.svg" alt="Eliminar"></td>
+							    </tr>
+							    <tr>
+							      <th scope="row">3</th>
+							      <td>Dante Villa Rodriguez</td>
+							      <td>dantevr</td>
+							      <td>dantevilla006@gmail.com</td>
+							      <td>943382390</td>
+							      <td>Cliente</td>
+							      <td>Chiclayo</td>
+							      <td><img class="icon-t" src="../resource/img/iconos/editar.svg" alt="Descargar"></td>
+							      <td><img class="icon-t" src="../resource/img/iconos/borrar.svg" alt="Eliminar"></td>
+							    </tr>
+							    <tr>
+							      <th scope="row">4</th>
+							      <td>Dante Villa Rodriguez</td>
+							      <td>dantevr</td>
+							      <td>dantevilla006@gmail.com</td>
+							      <td>943382390</td>
+							      <td>Administrador</td>
+							      <td>Chiclayo</td>
+							      <td><img class="icon-t" src="../resource/img/iconos/editar.svg" alt="Descargar"></td>
+							      <td><img class="icon-t" src="../resource/img/iconos/borrar.svg" alt="Eliminar"></td>
+							    </tr>
+							  </tbody>
+							</table>
+		  				</div>	      
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+    	<!--End Cuerpo-->
+
+
+	</header>
+
+		<!--Footer-->
+	    <footer class="sticky-footer">
+	      <div class="container">
+	        <div class="text-center">
+	          <small>Grupo CYSEG Cosultoría e Investigación Copyright © 2018</small>
+	        </div>
+	      </div>
+	    </footer>
+	    <!--FinFooter-->
+
+		<!-- Optional JavaScript -->
+	    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	    <script src="../resource/js/jquery-3.2.1.slim.min.js"></script>
+	    <script src="../resource/js/popper.min.js"></script>
+	    <script src="../resource/js/bootstrap.min.js"></script>
+	    <script src="../resource/js/nav.js"></script>
+</body>
+<!-- End Body -->
+</html>

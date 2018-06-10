@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="resource/css/bootstrap.min.css">
+    <link rel="stylesheet" href="resource/css/icons/styles.css">
+    <link rel="stylesheet" href="resource/css/core.css">
+    <link rel="stylesheet" href="resource/css/colors.css">
+    <link rel='stylesheet' href="resource/css/fullcalendar.css"/>
+
+    <title>Cita Skype</title>
+  </head>
+  <!-- Body -->
+  <body>
+
+    <!-- Modal -->
+    <div class="modal fade bd-example-modal-sm" id="modalSede" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h6 class="text-center w-100">Seleccione sede para reservar cita</h6>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form method="POST">
+                <div class="form-group">
+                  <label>Seleccione Sede</label>
+                  <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text"><i class="icon-location4 text-primary"></i></div>
+                        </div>
+                        <select class="custom-select" id="selectSede">
+                            <option selected>Seleccionar</option>
+                            <option value="1">Chiclayo</option>
+                            <option value="2">Lima</option>
+                        </select>
+                  </div>
+                </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!-- End Modal -->
+
+
+    <!-- Modal -->
+    <div class="modal fade bd-example-modal-sm" id="modalSkype" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h6 class="text-center w-100">REGISTRAR ASESORIA EN SKYPE</h6>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form method="POST">
+
+                <div class="row">
+                  <div class="form-group col">
+                    <label>Inicio de Fecha</label>
+                    <div class="input-group">
+                              <div class="input-group-prepend">
+                                <div class="input-group-text"><i class="icon-calendar"></i></div>
+                              </div>
+                              <input type="text" class="form-control" id="inicio" placeholder="Fecha" disabled="true">
+                    </div>
+                  </div>
+
+                  <div class="form-group col">
+                    <label>Inicio de Hora</label>
+                    <div class="input-group">
+                              <div class="input-group-prepend">
+                                <div class="input-group-text"><i class="icon-history"></i></div>
+                              </div>
+                              <input type="text" class="form-control" id="hora" placeholder="Hora" disabled="true">
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="form-group">
+                  <label>Nombres</label>
+                  <div class="input-group">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text"><i class="icon-user-tie"></i></div>
+                            </div>
+                            <input type="text" class="form-control" id="txtNombres" placeholder="Nombres Completos">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Apellidos</label>
+                  <div class="input-group">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text"><i class="icon-user-tie"></i></div>
+                            </div>
+                            <input type="text" class="form-control" id="txtpellidos" placeholder="Apellidos Completos">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Celular o Teléfono</label>
+                  <div class="input-group">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text"><i class="icon-phone2"></i></div>
+                            </div>
+                            <input type="text" class="form-control" id="txtTelefobo" placeholder="Numero de celular">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Email</label>
+                  <div class="input-group">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text"><i class="icon-envelop"></i></div>
+                            </div>
+                            <input type="text" class="form-control" id="txtEmail" placeholder="Email">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Tu Skype</label>
+                  <div class="input-group">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text"><i class="icon-skype"></i></div>
+                            </div>
+                            <input type="text" class="form-control" id="txtSkype" placeholder="Skype">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Duración (Horas)</label>
+                  <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text"><i class="icon-history"></i></div>
+                        </div>
+                        <select class="custom-select" id="selectHoras">
+                            <option selected value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+                  </div>
+                </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <a class="btn btn-primary btn-lg" href="#">Reservar</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Modal -->
+
+   <!-- Header-->
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top border-bottom">
+        <a class="navbar-brand" href="#">GRUPO CYSEG</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navMain" aria-controls="navMain" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navMain">
+          <ul class="smooth-scroll navbar-nav text-size-xm mr-auto mt-2 mt-lg-0">
+          </ul>
+          <form class="form-inline my-2 my-lg-0">
+          <!-- Button modal -->
+                <div>
+                  <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalSede">
+                    Cambiar Sede
+                  </button>
+                </div>
+          <!-- Button modal -->
+          </form>
+        </div>
+      </nav>
+    </header>
+    <!-- End Header -->
+
+
+    <!--Section-->
+    <section>
+      <div>
+          <div class="mx-auto d-block" style="background: url(resource/img/skype2.png) no-repeat fixed; height:100vh; width: 100%;">
+          <div class="parallax-overlay2">
+            <div class="d-flex flex-column flex-md-row justify-content-center align-items-center">
+              <div class="text-center mtxl">
+                <div class="container">
+                  <p class="text-white text-size-xxlg">SEPARA TU CITA EN SKYPE</p>
+                </div>
+                <p class="text-white lead text-size-sm">Somos un grupo de profesionales especialistas en ciencias empresariales que brinda servicios de asesoría y consultoría.</p>
+                <a href="#titulo" class="btn btn-primary m-4 smooth-scroll">Cita en Skype</a>
+              </div>
+            </div> 
+          </div>
+        </div>
+      </div>
+    </section>
+    <!--Section-->
+
+
+    <!--FullCalendar-->
+
+    <section>
+      <div class="container">
+        <div class="row flex-column flex-md-row justify-content-center">
+          <div class="text-center my-5">
+            <h4 id="titulo">CHICLAYO HORARIO 09:00 A 13:00 Y 15:00 a 19:00</h4>
+            <p>Debe seleccionar un segmento del horario luego se debera ingresar tus datos personales</p>
+            <h6>PARA UN HORARIO ESPECIAL CONSULTE: <span class="text-primary">930874016</span></h6>
+          </div>
+        </div>
+      </div>
+
+      <div class="container mb-8">
+        <div class="row">
+          <div id="calendar">
+            
+          </div>
+        </div>  
+      </div>
+    </section>
+
+    <!--End FullCalendar-->
+
+
+    <!-- Contacto -->
+    <div id="Contacto" class="container-fluid secondary-background">
+        <section class="container py-5">            
+              <div class="sec-title text-center">
+                <form class="flex-column flex-md-row justify-content-center">
+                  <div class="row text-center">
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="sec-title text-center">
+                            <h4 class="text-uppercase text-center mb-4 pt-5 text-white lead text-size-lg">CONTÁCTANOS</h4>
+                        </div>
+                        <div class="sec-title text-center">
+                            <p class="lead text-center mb-4 text-white">Para mayor información completa el siguiente formulario y pronto nos comunicaremos contigo.</p>
+                        </div> 
+                        <form>
+                          <div class="form-group">
+                                <label for="exampleFormControlInput1" class="text-white">Nombre</label>
+                                <input type="email" class="form-control" id="txtNombre" placeholder="nombre">
+                          </div>
+                          <div class="form-group">
+                                <label for="exampleFormControlInput1" class="text-white">Email</label>
+                                <input type="email" class="form-control" id="txtEmail" placeholder="nombre@example.com">
+                          </div>
+                          <div class="form-group">
+                                <label for="exampleFormControlTextarea1" class="text-white">Mensaje</label>
+                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                          </div>
+                          <div class="row my-4">
+                                <div class="col-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                      <button class="btn btn-lg btn-outline-light">Enviar</button>
+                                </div>
+                          </div>
+                        </form>
+                    </div>
+                    <div class="form-inline col-lg-6 col-md-6 col-sm-12 justify-content-center">                           
+                           <p class="text-size-xl align-middle"><span class="text-size-xlg text-white">#GRUPOCYSEG</span></p>   
+                    </div>
+                  </div>
+                </form>
+              </div>
+        </section>
+    </div>
+    <!-- End Contacto -->
+
+
+    <!-- Footer -->
+    <footer class="container-fluid bg-dark">
+      <div class="row text-white py-4 text-white">
+        <div class="col-md-6">
+          <h4 class="lead">#GRUPOCYSEG</h4>
+        </div>
+        <div class="col-md-6">
+          <h4 class="lead">Síguenos</h4>
+          <a href="#"><span class="badge badge-primary">Facebook</span></a>
+          <a href="#"><span class="badge badge-danger">Youtube</span></a>
+          <a href="#"><span class="badge badge-info">Twiter</span></a>
+        </div>
+      </div>
+    </footer>
+    <!-- End Footer -->
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="resource/js/jquery-3.2.1.slim.min.js"></script>
+    <script src="resource/js/moment.min.js"></script>
+    <script src="resource/js/fullcalendar.js"></script>
+    <script src='resource/js/es.js'></script>
+    <script src="resource/js/bootstrap.min.js"></script>
+    <script src="resource/js/smooth-scroll.min.js"></script>
+
+ 
+    <script>
+      var scroll =  new  SmoothScroll ('a[href*="#titulo"]',{
+        speed: 900,
+      });
+
+      $('#calendar').fullCalendar({
+        minTime: "08:00:00",
+        defaultView: 'agendaWeek',
+        locale: 'es',
+        allDaySlot: false,
+        maxTime: "19:00:00",
+        themeSystem: 'standard',
+        hiddenDays: [0],
+        height:640,
+        dayClick: function(date) {
+          str = date.format();
+          var res = str.split("T");
+          $("#inicio").val(res[0]);
+          $("#hora").val(res[1]);
+          $("#modalSkype").modal();
+        }
+      });
+    </script>
+  </body>
+  <!-- End Body -->
+</html>

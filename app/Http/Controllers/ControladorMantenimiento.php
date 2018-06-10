@@ -5,42 +5,25 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
-use App\Area;
-use App\AreaSucursal;
-use App\Bitacora;
-use App\Caso;
-use App\Contrato;
-use App\Departamento;
-use App\DetalleCaso;
-use App\DetalleContrato;
-use App\DetalleTraslado;
-use App\Distrito;
-use App\Documento;
-use App\Empresa;
-use App\Grupo;
-use App\Guia;
-use App\Marca;
-use App\Menu;
-use App\Modelo;
-use App\MotivoTraslado;
-use App\Pais;
-use App\Permiso;
-use App\Producto;
-use App\Proveedor;
-use App\Provincia;
-use App\Reportes;
-use App\Sla;
-use App\Sucursal;
-use App\Tecnico;
-use App\TipoEquipo;
-use App\TipoSucursal;
-use App\TipoTerritorio;
-use App\TipoUsuario;
-use App\Traslado;
+use App\Cuenta;
+use App\Ciclo;
+use App\Universidad;
+use App\Carrera;
+use App\Pago;
 use App\Usuario;
-use App\Zona;
+use App\Tipo;
+use App\Permiso;
+use App\Menu;
+use App\Proyecto;
+use App\Sede;
+use App\Mensaje;
+use App\Archivo;
+use App\Contenido;
+use App\Staff;
 use Datetime;
 use Exception;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Input;
 
 class ControladorMantenimiento extends Controller
 {
@@ -58,10 +41,10 @@ class ControladorMantenimiento extends Controller
         if($usuario->id==0){
             return FALSE;
         }
-        if($usuario->id_tipo_usuario==null){
+        if($usuario->id_tipo==null){
             return FALSE;
         }
-        if($usuario->id_tipo_usuario==0){
+        if($usuario->id_tipo==0){
             return FALSE;
         }
         return TRUE;
@@ -75,676 +58,20 @@ class ControladorMantenimiento extends Controller
         }
         return false;
     }
-    
-    
-    //MANTENIMIENTO
-    public function EliminarPost(Request $request,  Response $response) {
-        $usuario = $request->session()->get('usuario');
-        if($this->ComprobarUsuario($usuario)){
-            DB::beginTransaction();
-            try{
-                $id = $request->input("id");
-                $tabla = $request->input("tabla");
-                $accion = "";
-                if($tabla=="marca"){
-                    $dependiente = Modelo::select(DB::raw("count(id) as total"))->where("id_marca",$id)->where("estado","!=","A")->first();
-                    if($dependiente->total>0){
-                        $error = "No es posible eliminar. Hay ".$dependiente->total." modelos de esta marca";
-                    }else{
-                        $obj = Marca::find($id);
-                        $accion = $obj->nombre;
-                    }
-                }else if($tabla=="tipoequipo"){
-                    $dependiente = Modelo::select(DB::raw("count(id) as total"))->where("id_tipo_equipo",$id)->where("estado","!=","A")->first();
-                    if($dependiente->total>0){
-                        $error = "No es posible eliminar. Hay ".$dependiente->total." modelos de este tipo";
-                    }else{
-                        $obj = TipoEquipo::find($id);
-                        $accion = $obj->nombre;
-                    }
-                }else if($tabla=="modelo"){
-                    $dependiente = Producto::select(DB::raw("count(id) as total"))->where("id_modelo",$id)->where("estado","!=","A")->first();    
-                    if($dependiente->total>0){
-                        $error = "No es posible eliminar. Hay ".$dependiente->total." productos de esta modelo";
-                    }else{
-                        $obj = Modelo::find($id);
-                        $accion = $obj->nombre;
-                    }
-                }else if($tabla=="tipousuario"){
-                    $dependiente = Usuario::select(DB::raw("count(id) as total"))->where("id_tipo_usuario",$id)->where("estado","!=","A")->first();
-                    if($dependiente->total>0){
-                        $error = "No es posible eliminar. Hay ".$dependiente->total." usuarios de esta tipo";
-                    }else{
-                        $obj = TipoUsuario::find($id);
-                        $accion = $obj->nombre;
-                    }
-                }else if($tabla=="zona"){
-                    $dependiente = Sucursal::select(DB::raw("count(id) as total"))->where("id_zona",$id)->where("estado","!=","A")->first();
-                    if($dependiente->total>0){
-                        $error = "No es posible eliminar. Hay ".$dependiente->total." sucursales de esta zona";
-                    }else{
-                        $obj = Zona::find($id);
-                        $accion = $obj->nombre;
-                    }
-                }else if($tabla=="tipoterritorio"){
-                    $dependiente = Sucursal::select(DB::raw("count(id) as total"))->where("id_tipo_territorio",$id)->where("estado","!=","A")->first();
-                    if($dependiente->total>0){
-                        $error = "No es posible eliminar. Hay ".$dependiente->total." sucursales de esta zona";
-                    }else{
-                        $obj = TipoTerritorio::find($id);
-                        $accion = $obj->nombre;
-                    }
-                }else if($tabla=="tiposucursal"){
-                    $dependiente = Sucursal::select(DB::raw("count(id) as total"))->where("id_tipo_sucursal",$id)->where("estado","!=","A")->first();
-                    if($dependiente->total>0){
-                        $error = "No es posible eliminar. Hay ".$dependiente->total." sucursales de esta zona";
-                    }else{
-                        $obj = TipoSucursal::find($id);
-                        $accion = $obj->nombre;
-                    }
-                }else if($tabla=="motivotraslado"){
-                    $obj = MotivoTraslado::find($id);
-                    $accion = $obj->nombre;
-                }else if($tabla=="area"){
-                    $dependiente = AreaSucursal::select(DB::raw("count(id) as total"))->where("id_area",$id)->where("estado","!=","A")->first();
-                    if($dependiente->total>0){
-                        $error = "No es posible eliminar. Hay ".$dependiente->total." sucursales asignadas a esta area";
-                    }else{
-                        $obj = Area::find($id);
-                        $accion = $obj->nombre;
-                    }
-                }else if($tabla=="tecnico"){
-                    $dependiente = Caso::select(DB::raw("count(id) as total"))->where("id_tecnico",$id)->where("estado","!=","F")->first();
-                    if($dependiente->total>0){
-                        $error = "No es posible eliminar. Hay ".$dependiente->total." casos asignadas a esta técnico pendientes";
-                    }else{
-                        $obj = Tecnico::find($id);
-                        $accion = $obj->apellidos." ".$obj->nombre;
-                    }
-                }
-                if($dependiente->total>0){
-                    return json_encode(["ok"=>false,"error"=>$error]);
-                }else{
-                    if($tabla=="tipousuario"){
-                        if($id==1 || $id == 2){
-                            return json_encode(["ok"=>false,"error"=>"No se puede eliminar este tipo de usuario"]);
-                        }
-                    }
-                    $obj->estado = "A";
-                    $obj->save();
-                    new Bitacora($tabla,"eliminar",$accion,$usuario->id);
-                    DB::commit();
-                    $request->session()->put("mensaje", "Eliminado correctamente");
-                    return json_encode(["ok"=>true]);
-                }
-            } 
-            catch (Exception $e) {
-                DB::rollback();
-                $error=$e->getMessage();
-                return json_encode(["ok"=>false,"error"=>$error."-line:".$e->getLine()]);
-            }
-        }
-        else{
-            return json_encode(["ok"=>false,"url"=>"index"]);
-        }
-    }
-    
-    
-    public function Marcas(Request $request,  Response $response) {
-        $usuario = $request->session()->get('usuario');
-        if($this->ComprobarUsuario($usuario)){
-            $menuid = 1;
-            if($this->ComprobarPermiso($usuario, $menuid)){
-                $mensaje = $request->session()->get('mensaje');
-                $request->session()->forget('mensaje');
-                $marcas = Marca::where('estado','N')->orderBy('nombre')->paginate(10);
-                return view('/marcas',[
-                    'usuario'=>$usuario,
-                    'mensaje'=>$mensaje,
-                    'marcas'=>$marcas,
-                    'w'=>0
-                ]);
-            }else{
-                $request->session()->put("mensaje","NO TIENE ACCESO AL MENÚ ".Menu::find($menuid)->nombre);
-                return redirect ("/inicio");
-            }
-        }else{
-            return redirect("/index");
-        }
-    }
-    
-    public function Marca(Request $request,  Response $response) {
-        $usuario = $request->session()->get('usuario');
-        if($this->ComprobarUsuario($usuario)){
-            $modo = $request->input("modo");
-            DB::beginTransaction();
-            try{
-                $nombre = $request->input("nombre");
-                $abreviatura = $request->input("abreviatura");
-                
-                $quitar = array("'",'"');
-                $nombre = str_replace($quitar, "", $nombre);
-                $abreviatura = str_replace($quitar, "", $abreviatura);
-                if($modo=="agregar"){
-                    $marca = new Marca();
-                    new Bitacora("marca","nuevo",$nombre,$usuario->id);
-                }else if($modo=="editar"){
-                    $marca = Marca::find($request->input("id"));
-                    new Bitacora("marca","editar",$marca->nombre." a ".$nombre,$usuario->id);
-                }
-                $marca->nombre = strtoupper($nombre);
-                $marca->abreviatura = strtoupper($abreviatura);
-                $marca->save();
-                DB::commit();
-                $request->session()->put("mensaje","Guardado correctamente");
-                return json_encode(["ok"=>true,"obj"=>$marca]);
-            } 
-            catch (Exception $e) {
-                DB::rollback();
-                $error=$e->getMessage();
-                return json_encode(["ok"=>false,"error"=>$error."-line:".$e->getLine()]);
-            }
-        }
-        else{
-            return json_encode(["ok"=>false,"url"=>"index"]);
-        }
-    }
-    
-    public function TiposEquipo(Request $request,  Response $response) {
-        $usuario = $request->session()->get('usuario');
-        if($this->ComprobarUsuario($usuario)){
-            $menuid = 3;
-            if($this->ComprobarPermiso($usuario, $menuid)){
-                $mensaje = $request->session()->get('mensaje');
-                $request->session()->forget('mensaje');
-                $tiposequipo = TipoEquipo::where('estado','N')->orderBy('nombre')->paginate(10);
-                return view('/tiposequipo',[
-                    'usuario'=>$usuario,
-                    'mensaje'=>$mensaje,
-                    'tiposequipo'=>$tiposequipo,
-                    'w'=>0
-                ]);
-            }else{
-                $request->session()->put("mensaje","NO TIENE ACCESO AL MENÚ ".Menu::find($menuid)->nombre);
-                return redirect ("/inicio");
-            }
-        }else{
-            return redirect("/index");
-        }
-    }
-    
-    public function TipoEquipo(Request $request,  Response $response) {
-        $usuario = $request->session()->get('usuario');
-        if($this->ComprobarUsuario($usuario)){
-            $modo = $request->input("modo");
-            DB::beginTransaction();
-            try{
-                $nombre = $request->input("nombre");
-                $abreviatura = $request->input("abreviatura");
-                
-                $quitar = array("'",'"');
-                $nombre = str_replace($quitar, "", $nombre);
-                $abreviatura = str_replace($quitar, "", $abreviatura);
-                
-                if($modo=="agregar"){
-                    $tipoequipo = new TipoEquipo();
-                    new Bitacora("tipoequipo","nuevo",$nombre,$usuario->id);
-                }else if($modo=="editar"){
-                    $tipoequipo = TipoEquipo::find($request->input("id"));
-                    new Bitacora("tipoequipo","editar",$tipoequipo->nombre." a ".$nombre,$usuario->id);
-                }
-                $tipoequipo->nombre = strtoupper($nombre);
-                $tipoequipo->abreviatura = strtoupper($abreviatura);
-                $tipoequipo->save();
-                DB::commit();
-                $request->session()->put("mensaje","Guardado correctamente");
-                return json_encode(["ok"=>true,"obj"=>$tipoequipo]);
-            } 
-            catch (Exception $e) {
-                DB::rollback();
-                $error=$e->getMessage();
-                return json_encode(["ok"=>false,"error"=>$error."-line:".$e->getLine()]);
-            }
-        }
-        else{
-            return json_encode(["ok"=>false,"url"=>"index"]);
-        }
-    }
-    
-    public function TiposUsuario(Request $request,  Response $response) {
-        $usuario = $request->session()->get('usuario');
-        if($this->ComprobarUsuario($usuario)){
-            $menuid = 7;
-            if($this->ComprobarPermiso($usuario, $menuid)){
-                $mensaje = $request->session()->get('mensaje');
-                $request->session()->forget('mensaje');
-                $tiposusuario = TipoUsuario::where('estado','N')->orderBy('nombre')->paginate(10);
-                return view('/tiposusuario',[
-                    'usuario'=>$usuario,
-                    'mensaje'=>$mensaje,
-                    'tiposusuario'=>$tiposusuario,
-                    'w'=>0
-                ]);
-            }else{
-                $request->session()->put("mensaje","NO TIENE ACCESO AL MENÚ ".Menu::find($menuid)->nombre);
-                return redirect ("/inicio");
-            }
-        }else{
-            return redirect("/index");
-        }
-    }
-    
-    public function TipoUsuario(Request $request,  Response $response) {
-        $usuario = $request->session()->get('usuario');
-        if($this->ComprobarUsuario($usuario)){
-            $modo = $request->input("modo");
-            DB::beginTransaction();
-            try{
-                $nombre = $request->input("nombre");
-                $abreviatura = $request->input("abreviatura");
-                
-                $quitar = array("'",'"');
-                $nombre = str_replace($quitar, "", $nombre);
-                $abreviatura = str_replace($quitar, "", $abreviatura);
-                
-                if($modo=="agregar"){
-                    $tipousuario = new TipoUsuario();
-                    new Bitacora("tipousuario","nuevo",$nombre,$usuario->id);
-                }else if($modo=="editar"){
-                    $tipousuario = TipoUsuario::find($request->input("id"));
-                    new Bitacora("tipousuario","editar",$tipousuario->nombre." a ".$nombre,$usuario->id);
-                }
-                $tipousuario->nombre = strtoupper($nombre);
-                $tipousuario->save();
-                DB::commit();
-                $request->session()->put("mensaje","Guardado correctamente");
-                return json_encode(["ok"=>true,"obj"=>$tipousuario]);
-            } 
-            catch (Exception $e) {
-                DB::rollback();
-                $error=$e->getMessage();
-                return json_encode(["ok"=>false,"error"=>$error."-line:".$e->getLine()]);
-            }
-        }
-        else{
-            return json_encode(["ok"=>false,"url"=>"index"]);
-        }
-    }
-    
-    public function Permisos(Request $request,  Response $response) {
-        $usuario = $request->session()->get('usuario');
-        if($this->ComprobarUsuario($usuario)){
-            $menuid = 9;
-            if($this->ComprobarPermiso($usuario, $menuid)){
-                $mensaje = $request->session()->get('mensaje');
-                $request->session()->forget('mensaje');
-                $id = $request->Input("id");
-                $tipo = TipoUsuario::find($id);
-                $permisos = Permiso::join("menu","permiso.id_menu","menu.id")
-                        ->join("grupo","menu.id_grupo","grupo.id")
-                        ->select("permiso.*","menu.nombre as nombremenu","grupo.nombre as nombregrupo")
-                        ->where('id_tipo_usuario',$id)->where('permiso.estado','=','N')->orderBy("menu.nombre")->get();
-                $otros = Menu::where('menu.estado','=','N')
-                        ->join("grupo","menu.id_grupo","grupo.id")
-                        ->select("menu.*","grupo.nombre as nombregrupo")
-                        ->whereNotIn('menu.id', function($query) use ($id){
-                    $query->select('id_menu')->from('permiso')->where('id_tipo_usuario','=',$id)->where('estado','N');
-                })->orderBy("menu.nombre")->get();
-                return view('/permisos',[
-                    'usuario'=>$usuario,
-                    'mensaje'=>$mensaje,
-                    'permisos'=>$permisos,
-                    'otros'=>$otros,
-                    'tipo'=>$tipo,
-                    'w'=>0
-                ]);
-            }else{
-                $request->session()->put("mensaje","NO TIENE ACCESO AL MENÚ ".Menu::find($menuid)->nombre);
-                return redirect ("/inicio");
-            }
-        }else{
-            return redirect("/index");
-        }
-    }
-    
-    public function Permiso(Request $request,  Response $response) {
-        $usuario = $request->session()->get('usuario');
-        if($this->ComprobarUsuario($usuario)){
-            $id = $request->input("id");
-            $tipo = $request->input("tipo");
-            $accion = $request->input("accion");
-            DB::beginTransaction();
-            try{
-                if($accion=="agregar"){
-                    $permiso = new Permiso();
-                    $permiso->id_tipo_usuario = $tipo;
-                    $permiso->id_menu = $id;
-                    $permiso->save();
-                    $menu = Menu::find($id);
-                    $tipousuario = TipoUsuario::find($tipo);
-                    new Bitacora("permiso","nuevo","Se agregó el permiso a ".$menu->nombre." al tipo de usuario ".$tipousuario->nombre,$usuario->id);
-                }else{
-                    $permiso = Permiso::find($id);
-                    $permiso->estado = "A";
-                    $permiso->save();
-                    $menu = Menu::find($permiso->id_menu);
-                    $tipousuario = TipoUsuario::find($permiso->id_tipo_usuario);
-                    new Bitacora("permiso","eliminar","Se quitó el permiso a ".$menu->nombre." del tipo de usuario ".$tipousuario->nombre,$usuario->id);
-                }
-                DB::commit();
-                $request->session()->put("mensaje","Guardado correctamente");
-                return redirect("/permisos?id=".$tipo);
-            } 
-            catch (Exception $e) {
-                DB::rollback();
-                $error=$e->getMessage();
-                return json_encode(["ok"=>false,"error"=>$error."-line:".$e->getLine()]);
-            }
-        }
-        else{
-            return json_encode(["ok"=>false,"url"=>"index"]);
-        }
-    }
-    
-    public function Usuarios(Request $request,  Response $response) {
-        $usuario = $request->session()->get('usuario');
-        if($this->ComprobarUsuario($usuario)){
-            $menuid = 8;
-            if($this->ComprobarPermiso($usuario, $menuid)){
-                $mensaje = $request->session()->get('mensaje');
-                $request->session()->forget('mensaje');
-                $id = $request->Input("id");
-                $tipousuario = TipoUsuario::find($id);
-                $tiposusuario = TipoUsuario::where("estado","N")->whereNotIn("id",[$id,2])->get();
-                $usuarios = Usuario::where("estado","N")->where("id_tipo_usuario",$id)->orderBy("apellidos")->orderBy("nombre")->paginate(10);
-                if($id==2){
-                    $proveedores = Proveedor::where("estado","N")->orderBy("razon")->get();
-                    return view('/usuarios2',[
-                        'usuario'=>$usuario,
-                        'mensaje'=>$mensaje,
-                        'usuarios'=>$usuarios,
-                        'tipousuario'=>$tipousuario,
-                        'tiposusuario'=>$tiposusuario,
-                        'proveedores'=>$proveedores,
-                        'w'=>0
-                    ]);
-                }else{
-                    return view('/usuarios',[
-                        'usuario'=>$usuario,
-                        'mensaje'=>$mensaje,
-                        'usuarios'=>$usuarios,
-                        'tipousuario'=>$tipousuario,
-                        'tiposusuario'=>$tiposusuario,
-                        'w'=>0
-                    ]);
-                }
-            }else{
-                $request->session()->put("mensaje","NO TIENE ACCESO AL MENÚ ".Menu::find($menuid)->nombre);
-                return redirect ("/inicio");
-            }
-        }else{
-            return redirect("/index");
-        }
-    }
-    
-    public function Usuario(Request $request,  Response $response) {
-        $usuario = $request->session()->get('usuario');
-        if($this->ComprobarUsuario($usuario)){
-            $modo = $request->input("modo");
-            $mensaje = "";
-            DB::beginTransaction();
-            try{
-                if($modo=="agregar"){
-                    $correo = $request->input("correo");
-                    $anterior = Usuario::where("correo",$correo)->first();
-                    if(empty($anterior)){
-                        $obj = new Usuario();
-                        $obj->id_tipo_usuario = $request->input("tipo");
-                        if($obj->id_tipo_usuario==2){
-                            $obj->id_proveedor = $request->input("id_proveedor");
-                        }
-                        $nombre = $request->input("nombre");
-                        $obj->nombre = $nombre;
-                        $apellidos =$request->input("apellidos");
-                        $obj->apellidos = $apellidos;
-                        $obj->correo = $correo;
-                        $obj->password = bcrypt("123");
-                        $obj->save();
-                        new Bitacora("usuario","nuevo",$apellidos." ".$nombre,$usuario->id);
-                        $mensaje = "Guardado correctamente";
-                    }else{
-                        DB::rollback();
-                        return json_encode(["ok"=>false,"error"=>"La cuenta ya existe, ingrese otra"]);
-                    }
-                }else if($modo=="pass"){
-                    $pass = $request->input("pass");
-                    $pass2 = $request->input("pass2");
-                    $pass3 = $request->input("pass3");
-                    if(\Hash::check($pass,$usuario->password)){
-                        if($pass2==$pass3){
-                            $obj = Usuario::find($usuario->id);
-                            $obj->password = bcrypt($pass2);
-                            $usuario->password = bcrypt($pass2);
-                            $obj->save();
-                            new Bitacora("usuario","editar","El usuario ".$obj->apellidos." ".$obj->nombre." cambió su contraseña",$usuario->id);
-                            DB::commit();
-                            $request->session()->put("usuario",$usuario);
-                            $request->session()->put("mensaje","CONTRASEÑA CAMBIADA");
-                        }else{
-                            $request->session()->put("mensaje","LAS CONTRASEÑAS NUEVAS NO COINCIDEN");
-                        }
-                    }else{
-                        $request->session()->put("mensaje","CONTRASEÑA ACTUAL INCORRECTA");
-                    }
-                    return redirect("/password");
-                }else{
-                    $id = $request->input("id");
-                    $obj = Usuario::find($id);
-                    if($modo=="editar"){
-                        $obj->id_tipo_usuario = $request->input("tipo");
-                        $tipousuario = TipoUsuario::find($obj->id_tipo_usuario);
-                        $mensaje = "Guardado correctamente";
-                        new Bitacora("usuario","editar","Se cambió al tipo de usuario ".$tipousuario->nombre." a ".$obj->apellidos." ".$obj->nombre,$usuario->id);
-                    }else if($modo=="eliminar"){
-                        $obj->estado = "A";
-                        $mensaje = "Eliminado correctamente";
-                        new Bitacora("usuario","eliminar",$obj->apellidos." ".$obj->nombre,$usuario->id);
-                    }else if($modo=="restablecer"){
-                        $obj->password = bcrypt("123");
-                        $mensaje = "Contraseña restablecida";
-                        new Bitacora("usuario","editar","Se restableció la contraseña del usuario ".$obj->apellidos." ".$obj->nombre,$usuario->id);
-                    }
-                    $obj->save();
-                }
-                DB::commit();
-                $request->session()->put("mensaje",$mensaje);
-                return json_encode(["ok"=>true,"obj"=>$obj]);
-            } 
-            catch (Exception $e) {
-                DB::rollback();
-                $error=$e->getMessage();
-                return json_encode(["ok"=>false,"error"=>$error."-line:".$e->getLine()]);
-            }
-        }
-        else{
-            return json_encode(["ok"=>false,"url"=>"index"]);
-        }
-    }
-    
-    public function Zonas(Request $request,  Response $response) {
-        $usuario = $request->session()->get('usuario');
-        if($this->ComprobarUsuario($usuario)){
-            $menuid = 4;
-            if($this->ComprobarPermiso($usuario, $menuid)){
-                $mensaje = $request->session()->get('mensaje');
-                $request->session()->forget('mensaje');
-                $zonas = Zona::where("estado","N")->orderBy('nombre')->paginate(10);
-                return view('/zonas',[
-                    'usuario'=>$usuario,
-                    'mensaje'=>$mensaje,
-                    'zonas'=>$zonas,
-                    'w'=>0
-                ]);
-            }else{
-                $request->session()->put("mensaje","NO TIENE ACCESO AL MENÚ ".Menu::find($menuid)->nombre);
-                return redirect ("/inicio");
-            }
-        }else{
-            return redirect("/index");
-        }
-    }
-    
-    public function Zona(Request $request,  Response $response) {
-        $usuario = $request->session()->get('usuario');
-        if($this->ComprobarUsuario($usuario)){
-            $modo = $request->input("modo");
-            DB::beginTransaction();
-            try{
-                $nombre = $request->input("nombre");
-                $descripcion = $request->input("descripcion");
-                
-                $quitar = array("'",'"');
-                $nombre = str_replace($quitar, "", $nombre);
-                $descripcion = str_replace($quitar, "", $descripcion);
-                if($modo=="agregar"){
-                    $zona = new Zona();
-                    new Bitacora("zona","nuevo",$nombre,$usuario->id);
-                }else if($modo=="editar"){
-                    $zona = Zona::find($request->input("id"));
-                    new Bitacora("zona","editar",$zona->nombre." a ".$nombre,$usuario->id);
-                }
-                $zona->nombre = strtoupper($nombre);
-                $zona->abreviatura = strtoupper($descripcion);
-                $zona->save();
-                DB::commit();
-                $request->session()->put("mensaje","Guardado correctamente");
-                return json_encode(["ok"=>true,"obj"=>$zona]);
-            } 
-            catch (Exception $e) {
-                DB::rollback();
-                $error=$e->getMessage();
-                return json_encode(["ok"=>false,"error"=>$error."-line:".$e->getLine()]);
-            }
-        }
-        else{
-            return json_encode(["ok"=>false,"url"=>"index"]);
-        }
-    }
-    
-    public function Modelos(Request $request,  Response $response) {
-        $usuario = $request->session()->get('usuario');
-        if($this->ComprobarUsuario($usuario)){
-            $modo = $request->input("modo");
-            if($modo=="ajax"){
-                $idmarca = $request->input("id_marca");
-                $idtipo = $request->input("id_tipo_equipo");
-                $modelos = Modelo::where('estado','N');
-                if($idmarca>0){
-                    $modelos = $modelos->where("id_marca",$idmarca);
-                }
-                if($idtipo>0){
-                    $modelos = $modelos->where("id_tipo_equipo",$idtipo);
-                }
-                $modelos = $modelos->orderBy('nombre')->get();
-                return json_encode(["obj"=>$modelos]);
-            }else{
-                $menuid = 2;
-                if($this->ComprobarPermiso($usuario, $menuid)){
-                    $idmarca = $request->input("id_marca");
-                    $idtipoequipo = $request->input("id_tipoequipo");
-                    $modelos = Modelo::where('estado','N');
-                    if($idmarca>0){
-                        $modelos = $modelos->where("id_marca",$idmarca);
-                    }else{
-                        $idmarca = 0;
-                    }
 
-                    if($idtipoequipo>0){
-                        $modelos = $modelos->where("id_tipo_equipo",$idtipoequipo);
-                    }else{
-                        $idtipoequipo = 0;
-                    }
-                    $modelos = $modelos->orderBy('nombre')->paginate(10);
-                    $mensaje = $request->session()->get('mensaje');
-                    $request->session()->forget('mensaje');
-                    $tiposequipo = TipoEquipo::where("estado","N")->orderBy("nombre")->get();
-                    $marcas = Marca::where("estado","N")->orderBy("nombre")->get();
-                    return view('/modelos',[
-                        'usuario'=>$usuario,
-                        'mensaje'=>$mensaje,
-                        'modelos'=>$modelos,
-                        'tiposequipo'=>$tiposequipo,
-                        'marcas'=>$marcas,
-                        'idmarca'=>$idmarca,
-                        'idtipoequipo'=>$idtipoequipo,
-                        'w'=>0
-                    ]);
-                }else{
-                    $request->session()->put("mensaje","NO TIENE ACCESO AL MENÚ ".Menu::find($menuid)->nombre);
-                    return redirect ("/inicio");
-                }   
-            }
-        }else{
-            return redirect("/index");
-        }
-    }
-    
-    public function Modelo(Request $request,  Response $response) {
-        $usuario = $request->session()->get('usuario');
-        if($this->ComprobarUsuario($usuario)){
-            $modo = $request->input("modo");
-            DB::beginTransaction();
-            try{
-                $nombre = $request->input("nombre");
-                
-                $quitar = array("'",'"');
-                $nombre = str_replace($quitar, "", $nombre);
-                
-                if($modo=="agregar"){
-                    $modelo = new Modelo();
-                    $modelo->id_marca = $request->input("marca");
-                    new Bitacora("modelo","nuevo",$nombre,$usuario->id);
-                }else if($modo=="editar"){
-                    $modelo = Modelo::find($request->input("id"));
-                    new Bitacora("modelo","editar",$modelo->nombre." a ".$nombre,$usuario->id);
-                }
-                $modelo->nombre = strtoupper($nombre);
-                $modelo->id_tipo_equipo = $request->input("tipo");
-                $modelo->save();
-                DB::commit();
-                if($modo=="agregar"){
-                    $tipo = TipoEquipo::find($modelo->id_tipo_equipo);
-                    $modelo->nombretipo = $tipo->nombre;
-                }
-                $request->session()->put("mensaje","Guardado correctamente");
-                return json_encode(["ok"=>true,"obj"=>$modelo]);
-            } 
-            catch (Exception $e) {
-                DB::rollback();
-                $error=$e->getMessage();
-                return json_encode(["ok"=>false,"error"=>$error."-line:".$e->getLine()]);
-            }
-        }
-        else{
-            return json_encode(["ok"=>false,"url"=>"index"]);
-        }
-    }
-    
-    public function Areas(Request $request,  Response $response) {
+    public function Usuarios(Request $request,  Response $response) {
         $usuario = $request->session()->get('usuario');
         if($this->ComprobarUsuario($usuario)){
             $menuid = 6;
             if($this->ComprobarPermiso($usuario, $menuid)){
                 $mensaje = $request->session()->get('mensaje');
                 $request->session()->forget('mensaje');
-                $id = $request->input("id");
-                $areas = Area::where('estado','N')->orderBy('nombre')->paginate(10);
-                return view('/areas',[
+                return view('/usuarios',[
                     'usuario'=>$usuario,
                     'mensaje'=>$mensaje,
-                    'areas'=>$areas,
                     'w'=>0
                 ]);
+
             }else{
                 $request->session()->put("mensaje","NO TIENE ACCESO AL MENÚ ".Menu::find($menuid)->nombre);
                 return redirect ("/inicio");
@@ -753,54 +80,111 @@ class ControladorMantenimiento extends Controller
             return redirect("/index");
         }
     }
-    
-    public function Area(Request $request,  Response $response) {
+
+    public function MantenimientoUsuarios(Request $request,  Response $response) {
         $usuario = $request->session()->get('usuario');
-        if($this->ComprobarUsuario($usuario)){
-            $modo = $request->input("modo");
-            DB::beginTransaction();
-            try{
-                $nombre = $request->input("nombre");
-                $abreviatura = $request->input("abreviatura");
-                if($modo=="agregar"){
-                    $area = new Area();
-                    new Bitacora("area","nuevo",$nombre,$usuario->id);
-                }else if($modo=="editar"){
-                    $area = Area::find($request->input("id"));
-                    new Bitacora("area","editar",$area->nombre." a ".$nombre,$usuario->id);
+        DB::beginTransaction();
+        try{
+            if($this->ComprobarUsuario($usuario)){
+                $menuid = 6;
+                if($this->ComprobarPermiso($usuario, $menuid)){
+                    $mensaje = $request->session()->get('mensaje');
+                    $request->session()->forget('mensaje');
+                    $modo = request()->input("modo", "");
+                    $id = request()->input("id", "");
+                    $nombres = request()->input("nombres", "");
+                    $paterno = request()->input("paterno", "");
+                    $materno = request()->input("materno", "");
+                    $celular = request()->input("celular", "");
+                    $password = request()->input("password", "");
+                    $correo = request()->input("correo", "");
+                    $id_sede = request()->input("id_sede", "");
+                    $id_tipo = request()->input("id_tipo", "");
+                    $id_universidad = request()->input("id_universidad", "");
+                    $id_carrera = request()->input("id_carrera", "");
+                    $id_ciclo = request()->input("id_ciclo", "");
+                    if($modo=="N"){
+                        $usuario = new Usuario();
+                        $usuario->nombres = $nombres;
+                        $usuario->paterno = $paterno;
+                        $usuario->materno = $materno;
+                        $usuario->celular = $celular;
+                        $usuario->password = $password;
+                        $usuario->correo = $correo;
+                        $usuario->id_sede = $id_sede;
+                        $usuario->id_tipo = $id_tipo;
+                        if($id_tipo==2){
+                            $usuario->id_universidad = $id_universidad;
+                            $usuario->id_carrera = $id_carrera;
+                            $usuario->id_ciclo = $id_ciclo;
+                        }
+                        $usuario->save();
+                    }elseif($modo=="E"){
+                        $usuario = Usuario::find($id);
+                        $usuario->nombres = $nombres;
+                        $usuario->paterno = $paterno;
+                        $usuario->materno = $materno;
+                        $usuario->celular = $celular;
+                        $usuario->password = $password;
+                        $usuario->correo = $correo;
+                        $usuario->id_sede = $id_sede;
+                        $usuario->id_tipo = $id_tipo;
+                        if($id_tipo==2){
+                            $usuario->id_universidad = $id_universidad;
+                            $usuario->id_carrera = $id_carrera;
+                            $usuario->id_ciclo = $id_ciclo;
+                        }
+                        $usuario->save();
+                    }elseif($modo=="P"){
+                        $usuario = Usuario::find($usuario->id);
+                        $usuario->nombres = $nombres;
+                        $usuario->paterno = $paterno;
+                        $usuario->materno = $materno;
+                        $usuario->password = $password;
+                        $usuario->correo = $correo;
+                        $usuario->save();
+                    }elseif($modo=="A"){
+                        $usuario = Usuario::find($id);
+                        $usuario->estado = "A";
+                        $usuario->save();
+                    }
+                    DB::commit();
+                    return json_encode(array(
+                        "correcto"=>true,
+                        "url"=>"",
+                        "ejecutar"=>"$('#modalUsuarios').modal('hide');buscar();",
+                    ));
+                }else{
+                    throw new Exception("NO TIENE ACCESO AL MENÚ ".Menu::find($menuid)->nombre);
                 }
-                $area->nombre = $nombre;
-                $area->abreviatura = $abreviatura;
-                $area->save();
-                DB::commit();
-                $request->session()->put("mensaje","Guardado correctamente");
-                return json_encode(["ok"=>true,"obj"=>$area]);
-            } 
-            catch (Exception $e) {
-                DB::rollback();
-                $error=$e->getMessage();
-                return json_encode(["ok"=>false,"error"=>$error."-line:".$e->getLine()]);
+            }else{
+                throw new Exception("INICIA SESION PRIMERO");
             }
-        }
-        else{
-            return json_encode(["ok"=>false,"url"=>"index"]);
+        } catch (Exception $e){
+            DB::rollback();
+            return json_encode(array(
+                "correcto"=>false,
+                "error"=>$e->getMessage(),
+                "file"=>$e->getFile(),
+                "line"=>$e->getLine(),
+            ));
         }
     }
-    
-    public function TiposSucursal(Request $request,  Response $response) {
+
+    public function Mantenimiento(Request $request,  Response $response) {
         $usuario = $request->session()->get('usuario');
         if($this->ComprobarUsuario($usuario)){
-            $menuid = 31;
+            $menuid = 15;
             if($this->ComprobarPermiso($usuario, $menuid)){
                 $mensaje = $request->session()->get('mensaje');
                 $request->session()->forget('mensaje');
-                $tipossucursal = TipoSucursal::where("estado","N")->orderBy('nombre')->paginate(10);
-                return view('/tipossucursal',[
+
+                return view('/mantenimiento',[
                     'usuario'=>$usuario,
                     'mensaje'=>$mensaje,
-                    'tipossucursal'=>$tipossucursal,
                     'w'=>0
                 ]);
+
             }else{
                 $request->session()->put("mensaje","NO TIENE ACCESO AL MENÚ ".Menu::find($menuid)->nombre);
                 return redirect ("/inicio");
@@ -809,55 +193,305 @@ class ControladorMantenimiento extends Controller
             return redirect("/index");
         }
     }
-    
-    public function TipoSucursal(Request $request,  Response $response) {
+
+    public function Cuentas(Request $request,  Response $response) {
         $usuario = $request->session()->get('usuario');
         if($this->ComprobarUsuario($usuario)){
-            $modo = $request->input("modo");
-            DB::beginTransaction();
-            try{
-                $nombre = $request->input("nombre");
-                
-                $quitar = array("'",'"');
-                $nombre = str_replace($quitar, "", $nombre);
-                if($modo=="agregar"){
-                    $tiposucursal = new TipoSucursal();
-                    new Bitacora("tiposucursal","nuevo",$nombre,$usuario->id);
-                }else if($modo=="editar"){
-                    $tiposucursal = TipoSucursal::find($request->input("id"));
-                    new Bitacora("tiposucursal","editar",$tiposucursal->nombre." a ".$nombre,$usuario->id);
-                }
-                $tiposucursal->nombre = strtoupper($nombre);
-                $tiposucursal->save();
-                DB::commit();
-                $request->session()->put("mensaje","Guardado correctamente");
-                return json_encode(["ok"=>true,"obj"=>$tiposucursal]);
-            } 
-            catch (Exception $e) {
-                DB::rollback();
-                $error=$e->getMessage();
-                return json_encode(["ok"=>false,"error"=>$error."-line:".$e->getLine()]);
-            }
-        }
-        else{
-            return json_encode(["ok"=>false,"url"=>"index"]);
-        }
-    }
-    
-    public function TiposTerritorio(Request $request,  Response $response) {
-        $usuario = $request->session()->get('usuario');
-        if($this->ComprobarUsuario($usuario)){
-            $menuid = 30;
+            $menuid = 1;
             if($this->ComprobarPermiso($usuario, $menuid)){
                 $mensaje = $request->session()->get('mensaje');
                 $request->session()->forget('mensaje');
-                $tiposterritorio = TipoTerritorio::where("estado","N")->orderBy('nombre')->paginate(10);
-                return view('/tiposterritorio',[
+                return view('/cuentas',[
                     'usuario'=>$usuario,
                     'mensaje'=>$mensaje,
-                    'tiposterritorio'=>$tiposterritorio,
                     'w'=>0
                 ]);
+
+            }else{
+                $request->session()->put("mensaje","NO TIENE ACCESO AL MENÚ ".Menu::find($menuid)->nombre);
+                return redirect ("/inicio");
+            }
+        }else{
+            return redirect("/index");
+        }
+    }
+
+    public function MantenimientoCuentas(Request $request,  Response $response) {
+        $usuario = $request->session()->get('usuario');
+        DB::beginTransaction();
+        try{
+            if($this->ComprobarUsuario($usuario)){
+                $menuid = 1;
+                if($this->ComprobarPermiso($usuario, $menuid)){
+                    $mensaje = $request->session()->get('mensaje');
+                    $request->session()->forget('mensaje');
+                    $modo = request()->input("modo", "");
+                    $id = request()->input("id", "");
+                    $nombre = request()->input("nombre", "");
+                    $numero = request()->input("numero", "");
+                    if($modo=="N"){
+                        $cuenta = new Cuenta();
+                        $cuenta->nombre = $nombre;
+                        $cuenta->numero = $numero;
+                        $cuenta->save();
+                    }elseif($modo=="E"){
+                        $cuenta = Cuenta::find($id);
+                        $cuenta->nombre = $nombre;
+                        $cuenta->numero = $numero;
+                        $cuenta->save();
+                    }elseif($modo=="A"){
+                        $cuenta = Cuenta::find($id);
+                        $cuenta->estado = "A";
+                        $cuenta->save();
+                    }
+                    DB::commit();
+                    return json_encode(array(
+                        "correcto"=>true,
+                        "url"=>"",
+                        "ejecutar"=>"$('#modalCuentas').modal('hide');buscar();",
+                    ));
+                }else{
+                    throw new Exception("NO TIENE ACCESO AL MENÚ ".Menu::find($menuid)->nombre);
+                }
+            }else{
+                throw new Exception("INICIA SESION PRIMERO");
+            }
+        } catch (Exception $e){
+            DB::rollback();
+            return json_encode(array(
+                "correcto"=>false,
+                "error"=>$e->getMessage(),
+                "file"=>$e->getFile(),
+                "line"=>$e->getLine(),
+            ));
+        }
+    }
+
+    public function Ciclos(Request $request,  Response $response) {
+        $usuario = $request->session()->get('usuario');
+        if($this->ComprobarUsuario($usuario)){
+            $menuid = 2;
+            if($this->ComprobarPermiso($usuario, $menuid)){
+                $mensaje = $request->session()->get('mensaje');
+                $request->session()->forget('mensaje');
+                $ciclos = Ciclo::where("estado","N")->orderBy("nombre")->get();
+                return view('/ciclos',[
+                    'usuario'=>$usuario,
+                    'mensaje'=>$mensaje,
+                    'ciclos'=>$ciclos,
+                    'w'=>0
+                ]);
+
+            }else{
+                $request->session()->put("mensaje","NO TIENE ACCESO AL MENÚ ".Menu::find($menuid)->nombre);
+                return redirect ("/inicio");
+            }
+        }else{
+            return redirect("/index");
+        }
+    }
+
+    public function MantenimientoCiclos(Request $request,  Response $response) {
+        $usuario = $request->session()->get('usuario');
+        DB::beginTransaction();
+        try{
+            if($this->ComprobarUsuario($usuario)){
+                $menuid = 2;
+                if($this->ComprobarPermiso($usuario, $menuid)){
+                    $mensaje = $request->session()->get('mensaje');
+                    $request->session()->forget('mensaje');
+                    $modo = request()->input("modo", "");
+                    $id = request()->input("id", "");
+                    $nombre = request()->input("nombre", "");
+                    if($modo=="N"){
+                        $ciclo = new Ciclo();
+                        $ciclo->nombre = $nombre;
+                        $ciclo->save();
+                    }elseif($modo=="E"){
+                        $ciclo = Ciclo::find($id);
+                        $ciclo->nombre = $nombre;
+                        $ciclo->save();
+                    }elseif($modo=="A"){
+                        $ciclo = Ciclo::find($id);
+                        $ciclo->estado = "A";
+                        $ciclo->save();
+                    }
+                    DB::commit();
+                    return json_encode(array(
+                        "correcto"=>true,
+                        "url"=>"",
+                        "ejecutar"=>"$('#modalCiclos').modal('hide');buscar();",
+                    ));
+                }else{
+                    throw new Exception("NO TIENE ACCESO AL MENÚ ".Menu::find($menuid)->nombre);
+                }
+            }else{
+                throw new Exception("INICIA SESION PRIMERO");
+            }
+        } catch (Exception $e){
+            DB::rollback();
+            return json_encode(array(
+                "correcto"=>false,
+                "error"=>$e->getMessage(),
+                "file"=>$e->getFile(),
+                "line"=>$e->getLine(),
+            ));
+        }
+    }
+
+    public function Universidades(Request $request,  Response $response) {
+        $usuario = $request->session()->get('usuario');
+        if($this->ComprobarUsuario($usuario)){
+            $menuid = 3;
+            if($this->ComprobarPermiso($usuario, $menuid)){
+                $mensaje = $request->session()->get('mensaje');
+                $request->session()->forget('mensaje');
+                return view('/universidades',[
+                    'usuario'=>$usuario,
+                    'mensaje'=>$mensaje,
+                    'w'=>0
+                ]);
+
+            }else{
+                $request->session()->put("mensaje","NO TIENE ACCESO AL MENÚ ".Menu::find($menuid)->nombre);
+                return redirect ("/inicio");
+            }
+        }else{
+            return redirect("/index");
+        }
+    }
+
+    public function MantenimientoUniversidades(Request $request,  Response $response) {
+        $usuario = $request->session()->get('usuario');
+        DB::beginTransaction();
+        try{
+            if($this->ComprobarUsuario($usuario)){
+                $menuid = 3;
+                if($this->ComprobarPermiso($usuario, $menuid)){
+                    $mensaje = $request->session()->get('mensaje');
+                    $request->session()->forget('mensaje');
+                    $modo = request()->input("modo", "");
+                    $id = request()->input("id", "");
+                    $nombre = request()->input("nombre", "");
+                    if($modo=="N"){
+                        $universidad = new Universidad();
+                        $universidad->nombre = $nombre;
+                        $universidad->save();
+                    }elseif($modo=="E"){
+                        $universidad = Universidad::find($id);
+                        $universidad->nombre = $nombre;
+                        $universidad->save();
+                    }elseif($modo=="A"){
+                        $universidad = Universidad::find($id);
+                        $universidad->estado = "A";
+                        $universidad->save();
+                    }
+                    DB::commit();
+                    return json_encode(array(
+                        "correcto"=>true,
+                        "url"=>"",
+                        "ejecutar"=>"$('#modalUniversidades').modal('hide');buscar();",
+                    ));
+                }else{
+                    throw new Exception("NO TIENE ACCESO AL MENÚ ".Menu::find($menuid)->nombre);
+                }
+            }else{
+                throw new Exception("INICIA SESION PRIMERO");
+            }
+        } catch (Exception $e){
+            DB::rollback();
+            return json_encode(array(
+                "correcto"=>false,
+                "error"=>$e->getMessage(),
+                "file"=>$e->getFile(),
+                "line"=>$e->getLine(),
+            ));
+        }
+    }
+
+    public function Carreras(Request $request,  Response $response) {
+        $usuario = $request->session()->get('usuario');
+        if($this->ComprobarUsuario($usuario)){
+            $menuid = 4;
+            if($this->ComprobarPermiso($usuario, $menuid)){
+                $mensaje = $request->session()->get('mensaje');
+                $request->session()->forget('mensaje');
+                return view('/carreras',[
+                    'usuario'=>$usuario,
+                    'mensaje'=>$mensaje,
+                    'w'=>0
+                ]);
+
+            }else{
+                $request->session()->put("mensaje","NO TIENE ACCESO AL MENÚ ".Menu::find($menuid)->nombre);
+                return redirect ("/inicio");
+            }
+        }else{
+            return redirect("/index");
+        }
+    }
+
+    public function MantenimientoCarreras(Request $request,  Response $response) {
+        $usuario = $request->session()->get('usuario');
+        DB::beginTransaction();
+        try{
+            if($this->ComprobarUsuario($usuario)){
+                $menuid = 4;
+                if($this->ComprobarPermiso($usuario, $menuid)){
+                    $mensaje = $request->session()->get('mensaje');
+                    $request->session()->forget('mensaje');
+                    $modo = request()->input("modo", "");
+                    $id = request()->input("id", "");
+                    $nombre = request()->input("nombre", "");
+                    if($modo=="N"){
+                        $carrera = new Carrera();
+                        $carrera->nombre = $nombre;
+                        $carrera->save();
+                    }elseif($modo=="E"){
+                        $carrera = Carrera::find($id);
+                        $carrera->nombre = $nombre;
+                        $carrera->save();
+                    }elseif($modo=="A"){
+                        $carrera = Carrera::find($id);
+                        $carrera->estado = "A";
+                        $carrera->save();
+                    }
+                    DB::commit();
+                    return json_encode(array(
+                        "correcto"=>true,
+                        "url"=>"",
+                        "ejecutar"=>"$('#modalCarreras').modal('hide');buscar();",
+                    ));
+                }else{
+                    throw new Exception("NO TIENE ACCESO AL MENÚ ".Menu::find($menuid)->nombre);
+                }
+            }else{
+                throw new Exception("INICIA SESION PRIMERO");
+            }
+        } catch (Exception $e){
+            DB::rollback();
+            return json_encode(array(
+                "correcto"=>false,
+                "error"=>$e->getMessage(),
+                "file"=>$e->getFile(),
+                "line"=>$e->getLine(),
+            ));
+        }
+    }
+
+    public function Tipos(Request $request,  Response $response) {
+        $usuario = $request->session()->get('usuario');
+        if($this->ComprobarUsuario($usuario)){
+            $menuid = 7;
+            if($this->ComprobarPermiso($usuario, $menuid)){
+                $mensaje = $request->session()->get('mensaje');
+                $request->session()->forget('mensaje');
+                return view('/tipos',[
+                    'usuario'=>$usuario,
+                    'mensaje'=>$mensaje,
+                    'w'=>0
+                ]);
+
             }else{
                 $request->session()->put("mensaje","NO TIENE ACCESO AL MENÚ ".Menu::find($menuid)->nombre);
                 return redirect ("/inicio");
@@ -867,38 +501,404 @@ class ControladorMantenimiento extends Controller
         }
     }
     
-    public function TipoTerritorio(Request $request,  Response $response) {
+    public function MantenimientoTipos(Request $request,  Response $response) {
         $usuario = $request->session()->get('usuario');
-        if($this->ComprobarUsuario($usuario)){
-            $modo = $request->input("modo");
-            DB::beginTransaction();
-            try{
-                $nombre = $request->input("nombre");
-                
-                $quitar = array("'",'"');
-                $nombre = str_replace($quitar, "", $nombre);
-                if($modo=="agregar"){
-                    $tipoterritorio = new TipoTerritorio();
-                    new Bitacora("tipoterritorio","nuevo",$nombre,$usuario->id);
-                }else if($modo=="editar"){
-                    $tipoterritorio = TipoTerritorio::find($request->input("id"));
-                    new Bitacora("tipoterritorio","editar",$tipoterritorio->nombre." a ".$nombre,$usuario->id);
+        DB::beginTransaction();
+        try{
+            if($this->ComprobarUsuario($usuario)){
+                $menuid = 7;
+                if($this->ComprobarPermiso($usuario, $menuid)){
+                    $mensaje = $request->session()->get('mensaje');
+                    $request->session()->forget('mensaje');
+                    $modo = request()->input("modo", "");
+                    $id = request()->input("id", "");
+                    $nombre = request()->input("nombre", "");
+                    if($modo=="N"){
+                        $tipo = new Tipo();
+                        $tipo->nombre = $nombre;
+                        $tipo->save();
+                    }elseif($modo=="E"){
+                        $tipo = Tipo::find($id);
+                        $tipo->nombre = $nombre;
+                        $tipo->save();
+                    }elseif($modo=="A"){
+                        $tipo = Tipo::find($id);
+                        $tipo->estado = "A";
+                        $tipo->save();
+                    }
+                    DB::commit();
+                    return json_encode(array(
+                        "correcto"=>true,
+                        "url"=>"",
+                        "ejecutar"=>"$('#modalTipoUsuario').modal('hide');buscar();",
+                    ));
+                }else{
+                    throw new Exception("NO TIENE ACCESO AL MENÚ ".Menu::find($menuid)->nombre);
                 }
-                $tipoterritorio->nombre = strtoupper($nombre);
-                $tipoterritorio->save();
-                DB::commit();
-                $request->session()->put("mensaje","Guardado correctamente");
-                return json_encode(["ok"=>true,"obj"=>$tipoterritorio]);
-            } 
-            catch (Exception $e) {
-                DB::rollback();
-                $error=$e->getMessage();
-                return json_encode(["ok"=>false,"error"=>$error."-line:".$e->getLine()]);
+            }else{
+                throw new Exception("INICIA SESION PRIMERO");
             }
-        }
-        else{
-            return json_encode(["ok"=>false,"url"=>"index"]);
+        } catch (Exception $e){
+            DB::rollback();
+            return json_encode(array(
+                "correcto"=>false,
+                "error"=>$e->getMessage(),
+                "file"=>$e->getFile(),
+                "line"=>$e->getLine(),
+            ));
         }
     }
+
+    public function Permisos(Request $request,  Response $response) {
+        $usuario = $request->session()->get('usuario');
+        if($this->ComprobarUsuario($usuario)){
+            $menuid = 8;
+            if($this->ComprobarPermiso($usuario, $menuid)){
+                $mensaje = $request->session()->get('mensaje');
+                $request->session()->forget('mensaje');
+                $id_tipo = request()->input("id_tipo");
+                $tipo = Tipo::find($id_tipo);
+                $menus = Menu::where("estado","<>","A")
+                        ->select("*")
+                        ->selectRaw("(SELECT pe.id as id_permiso FROM permiso pe WHERE pe.estado<>'A' AND pe.id_menu = menu.id AND pe.id_tipo = $id_tipo)")
+                        ->get();
+                return view('/permisos',[
+                    'usuario'=>$usuario,
+                    'mensaje'=>$mensaje,
+                    'tipo'=>$tipo,
+                    'menus'=>$menus,
+                    'w'=>0
+                ]);
+
+            }else{
+                $request->session()->put("mensaje","NO TIENE ACCESO AL MENÚ ".Menu::find($menuid)->nombre);
+                return redirect ("/inicio");
+            }
+        }else{
+            return redirect("/index");
+        }
+    }
+
+    public function MantenimientoPermisos(Request $request,  Response $response) {
+        $usuario = $request->session()->get('usuario');
+        DB::beginTransaction();
+        try{
+            if($this->ComprobarUsuario($usuario)){
+                $menuid = 8;
+                if($this->ComprobarPermiso($usuario, $menuid)){
+                    $mensaje = $request->session()->get('mensaje');
+                    $request->session()->forget('mensaje');
+                    $modo = request()->input("modo", "");
+                    $id_tipo = request()->input("id_tipo", "");
+                    $id = request()->input("id", "");
+                    if($modo=="N"){
+                        $permiso = new Permiso();
+                        $permiso->id_tipo = $id_tipo;
+                        $permiso->id_menu = $id;
+                        $permiso->save();
+                    }elseif($modo=="E"){
+                        $permiso = Permiso::find($id);
+                        $permiso->id_tipo = $id_tipo;
+                        $permiso->save();
+                    }elseif($modo=="A"){
+                        $permiso = Permiso::find($id);
+                        $permiso->estado = "A";
+                        $permiso->save();
+                    }
+                    DB::commit();
+                    return json_encode(array(
+                        "correcto"=>true,
+                        "url"=>"",
+                        "ejecutar"=>"location.reload();",
+                    ));
+                }else{
+                    throw new Exception("NO TIENE ACCESO AL MENÚ ".Menu::find($menuid)->nombre);
+                }
+            }else{
+                throw new Exception("INICIA SESION PRIMERO");
+            }
+        } catch (Exception $e){
+            DB::rollback();
+            return json_encode(array(
+                "correcto"=>false,
+                "error"=>$e->getMessage(),
+                "file"=>$e->getFile(),
+                "line"=>$e->getLine(),
+            ));
+        }
+    }
+
+    public function Sedes(Request $request,  Response $response) {
+        $usuario = $request->session()->get('usuario');
+        if($this->ComprobarUsuario($usuario)){
+            $menuid = 10;
+            if($this->ComprobarPermiso($usuario, $menuid)){
+                $mensaje = $request->session()->get('mensaje');
+                $request->session()->forget('mensaje');
+                return view('/sedes',[
+                    'usuario'=>$usuario,
+                    'mensaje'=>$mensaje,
+                    'w'=>0
+                ]);
+
+            }else{
+                $request->session()->put("mensaje","NO TIENE ACCESO AL MENÚ ".Menu::find($menuid)->nombre);
+                return redirect ("/inicio");
+            }
+        }else{
+            return redirect("/index");
+        }
+    }
+
+    public function MantenimientoSedes(Request $request,  Response $response) {
+        $usuario = $request->session()->get('usuario');
+        DB::beginTransaction();
+        try{
+            if($this->ComprobarUsuario($usuario)){
+                $menuid = 10;
+                if($this->ComprobarPermiso($usuario, $menuid)){
+                    $mensaje = $request->session()->get('mensaje');
+                    $request->session()->forget('mensaje');
+                    $modo = request()->input("modo", "");
+                    $id = request()->input("id", "");
+                    $nombre = request()->input("nombre", "");
+                    $direccion = request()->input("direccion", "");
+                    $telefono = request()->input("telefono", "");
+                    $correo = request()->input("correo", "");
+                    if($modo=="N"){
+                        $sede = new Sede();
+                        $sede->nombre = $nombre;
+                        $sede->direccion = $direccion;
+                        $sede->correo = $correo;
+                        $sede->telefono = $telefono;
+                        $sede->save();
+                    }elseif($modo=="E"){
+                        $sede = Sede::find($id);
+                        $sede->nombre = $nombre;
+                        $sede->direccion = $direccion;
+                        $sede->correo = $correo;
+                        $sede->telefono = $telefono;
+                        $sede->save();
+                    }elseif($modo=="A"){
+                        $sede = Sede::find($id);
+                        $sede->estado = "A";
+                        $sede->save();
+                    }
+                    DB::commit();
+                    return json_encode(array(
+                        "correcto"=>true,
+                        "url"=>"",
+                        "ejecutar"=>"$('#modalSede').modal('hide');buscar();",
+                    ));
+                }else{
+                    throw new Exception("NO TIENE ACCESO AL MENÚ ".Menu::find($menuid)->nombre);
+                }
+            }else{
+                throw new Exception("INICIA SESION PRIMERO");
+            }
+        } catch (Exception $e){
+            DB::rollback();
+            return json_encode(array(
+                "correcto"=>false,
+                "error"=>$e->getMessage(),
+                "file"=>$e->getFile(),
+                "line"=>$e->getLine(),
+            ));
+        }
+    }
+
+    public function Contenido(Request $request,  Response $response) {
+        $usuario = $request->session()->get('usuario');
+        if($this->ComprobarUsuario($usuario)){
+            $menuid = 13;
+            if($this->ComprobarPermiso($usuario, $menuid)){
+                $mensaje = $request->session()->get('mensaje');
+                $request->session()->forget('mensaje');
+                return view('/contenido',[
+                    'usuario'=>$usuario,
+                    'mensaje'=>$mensaje,
+                    'w'=>0
+                ]);
+
+            }else{
+                $request->session()->put("mensaje","NO TIENE ACCESO AL MENÚ ".Menu::find($menuid)->nombre);
+                return redirect ("/inicio");
+            }
+        }else{
+            return redirect("/index");
+        }
+    }
+
+    public function MantenimientoContenidos(Request $request,  Response $response) {
+        $usuario = $request->session()->get('usuario');
+        DB::beginTransaction();
+        try{
+            if($this->ComprobarUsuario($usuario)){
+                $menuid = 13;
+                if($this->ComprobarPermiso($usuario, $menuid)){
+                    $mensaje = $request->session()->get('mensaje');
+                    $request->session()->forget('mensaje');
+                    $modo = request()->input("modo", "");
+                    $id = request()->input("id", "");
+                    $nombre = request()->input("nombre", "");
+                    $valor = request()->input("valor", "");
+                    $valor3 = request()->input("valor3", "");
+                    $tipo = request()->input("tipo", "");
+                    $archivo = $request->file("archivo");
+                    if($modo=="N"){
+                        $contenido = new Contenido();
+                        $contenido->nombre = $nombre;
+                        $contenido->valor = $valor;
+                        $contenido->tipo = $tipo;
+                        $contenido->save();
+                    }elseif($modo=="E"){
+                        $contenido = Contenido::find($id);
+                        $contenido->nombre = $nombre;
+                        if($tipo=="1"){
+                            $contenido->valor = $valor;
+                        }else if($tipo=="2"){
+                            $ext = $archivo->getClientOriginalExtension();
+                            \Storage::disk('contenidos')->put("contenido_".$contenido->id.".".$ext,  \File::get($archivo));
+                            $contenido->valor = "contenido_".$contenido->id.".".$ext;
+                        }else{
+                            $contenido->valor = $valor3;
+                        }
+                        $contenido->save();
+                    }
+                    DB::commit();
+                    return json_encode(array(
+                        "correcto"=>true,
+                        "url"=>"",
+                        "ejecutar"=>"$('#modalContenidos').modal('hide');buscar();",
+                    ));
+                }else{
+                    throw new Exception("NO TIENE ACCESO AL MENÚ ".Menu::find($menuid)->nombre);
+                }
+            }else{
+                throw new Exception("INICIA SESION PRIMERO");
+            }
+        } catch (Exception $e){
+            DB::rollback();
+            return json_encode(array(
+                "correcto"=>false,
+                "error"=>$e->getMessage(),
+                "file"=>$e->getFile(),
+                "line"=>$e->getLine(),
+            ));
+        }
+    }
+
+    public function Perfil(Request $request,  Response $response) {
+        $usuario = $request->session()->get('usuario');
+        if($this->ComprobarUsuario($usuario)){
+            $menuid = 14;
+            if($this->ComprobarPermiso($usuario, $menuid)){
+                $mensaje = $request->session()->get('mensaje');
+                $request->session()->forget('mensaje');
+                return view('/perfil',[
+                    'usuario'=>$usuario,
+                    'mensaje'=>$mensaje,
+                    'w'=>0
+                ]);
+
+            }else{
+                $request->session()->put("mensaje","NO TIENE ACCESO AL MENÚ ".Menu::find($menuid)->nombre);
+                return redirect ("/inicio");
+            }
+        }else{
+            return redirect("/index");
+        }
+    }
+
+
+    public function Staffs(Request $request,  Response $response) {
+        $usuario = $request->session()->get('usuario');
+        if($this->ComprobarUsuario($usuario)){
+            $menuid = 17;
+            if($this->ComprobarPermiso($usuario, $menuid)){
+                $mensaje = $request->session()->get('mensaje');
+                $request->session()->forget('mensaje');
+                return view('/staff',[
+                    'usuario'=>$usuario,
+                    'mensaje'=>$mensaje,
+                    'w'=>0
+                ]);
+
+            }else{
+                $request->session()->put("mensaje","NO TIENE ACCESO AL MENÚ ".Menu::find($menuid)->nombre);
+                return redirect ("/inicio");
+            }
+        }else{
+            return redirect("/index");
+        }
+    }
+
+    public function MantenimientoStaff(Request $request,  Response $response) {
+        $usuario = $request->session()->get('usuario');
+        DB::beginTransaction();
+        try{
+            if($this->ComprobarUsuario($usuario)){
+                $menuid = 10;
+                if($this->ComprobarPermiso($usuario, $menuid)){
+                    $mensaje = $request->session()->get('mensaje');
+                    $request->session()->forget('mensaje');
+                    $modo = request()->input("modo", "");
+                    $id = request()->input("id", "");
+                    $nombre = request()->input("nombre", "");
+                    $cargo = request()->input("cargo", "");
+                    $orden = request()->input("orden", "");
+                    $archivo = $request->file("archivo");
+                    if($modo=="N"){
+                        $staff = new Staff();
+                        $staff->nombre = $nombre;
+                        $staff->cargo = $cargo;
+                        $staff->orden = $orden;
+                        $staff->save();
+                        if($archivo!=null){
+                            $ext = $archivo->getClientOriginalExtension();
+                            \Storage::disk('staff')->put($staff->id.".".$ext,  \File::get($archivo));
+                            $staff->extension = $ext;
+                        }
+                        $staff->save();
+                    }elseif($modo=="E"){
+                        $staff = Staff::find($id);
+                        $staff->nombre = $nombre;
+                        $staff->cargo = $cargo;
+                        $staff->orden = $orden;
+                        if($archivo!=null){
+                            $ext = $archivo->getClientOriginalExtension();
+                            \Storage::disk('staff')->put($id.".".$ext,  \File::get($archivo));
+                            $staff->extension = $ext;
+                        }
+                        
+                        $staff->save();
+                    }elseif($modo=="A"){
+                        $staff = Staff::find($id);
+                        $staff->estado = "A";
+                        $staff->save();
+                    }
+                    DB::commit();
+                    return json_encode(array(
+                        "correcto"=>true,
+                        "url"=>"",
+                        "ejecutar"=>"$('#modalStaffs').modal('hide');buscar();",
+                    ));
+                }else{
+                    throw new Exception("NO TIENE ACCESO AL MENÚ ".Menu::find($menuid)->nombre);
+                }
+            }else{
+                throw new Exception("INICIA SESION PRIMERO");
+            }
+        } catch (Exception $e){
+            DB::rollback();
+            return json_encode(array(
+                "correcto"=>false,
+                "error"=>$e->getMessage(),
+                "file"=>$e->getFile(),
+                "line"=>$e->getLine(),
+            ));
+        }
+    }
+
 }
     

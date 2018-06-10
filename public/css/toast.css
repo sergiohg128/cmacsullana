@@ -1,0 +1,132 @@
+#toast-container {
+  display: block;
+  position: fixed;
+  z-index: 10000;
+}
+
+@media only screen and (max-width: 600px) {
+  #toast-container {
+    min-width: 100%;
+    bottom: 0%;
+    max-height: 90%;
+    overflow-y: auto;
+  }
+}
+
+@media only screen and (min-width: 601px) and (max-width: 992px) {
+  #toast-container {
+    left: 15%;
+    top: 5%;
+    width: 70%;
+    max-height: 90%;
+    overflow-y: auto;
+  }
+}
+
+@media only screen and (min-width: 993px) {
+  #toast-container {
+    top: 10%;
+    right: 25%;
+    width: 50%;
+    max-height: 90%;
+    overflow-y: auto;
+  }
+}
+
+.toast {
+  border-radius: 2px;
+  top: 0;
+  width: auto;
+  clear: both;
+  margin-top: 10px;
+  position: relative;
+  max-width: 100%;
+  height: auto;
+  min-height: 48px;
+  line-height: 1.5em;
+  word-break: break-all;
+  background-color: #323232;
+  padding: 10px 25px;
+  font-size: 1.1rem;
+  font-weight: 300;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.toast .btn, .toast .btn-flat {
+  margin: 0;
+  margin-left: 3rem;
+}
+
+.toast.rounded {
+  border-radius: 24px;
+}
+
+@media only screen and (max-width: 600px) {
+  .toast {
+    width: 100%;
+    border-radius: 0;
+  }
+}
+
+@media only screen and (min-width: 601px) and (max-width: 992px) {
+  .toast {
+    float: left;
+  }
+}
+
+@media only screen and (min-width: 993px) {
+  .toast {
+    float: right;
+  }
+}
+
+.toast{
+    margin-top: 0px;
+    background-color: #183546;
+    color: white;
+}
+
+.toastHeader{
+    margin: 0px;
+    padding: 10px;
+    border-bottom-style: solid;
+    border-bottom-color: #023C7F;
+}
+
+.toastHeader h2{
+    font-weight: 900;
+    font-size: 1.2rem;
+    color: white;
+    margin: 0px;
+}
+
+.toastContent{
+    padding: 0px 20px 5px 20px;
+    margin: 0px;
+}
+
+.toastContent p{
+    color: white;
+    word-break: break-word;
+}
+
+.btnToastAceptar{
+    margin-left: 0px;
+    background-color: #4caf50;
+}
+
+.btnToastAceptar:hover{
+    background-color: #1b5e20;
+}
+
+.btnToastCancelar{
+    margin-left: 0px;
+    background-color: #f44336;
+}
+
+.btnToastCancelar:hover{
+    background-color: #b71c1c;
+}

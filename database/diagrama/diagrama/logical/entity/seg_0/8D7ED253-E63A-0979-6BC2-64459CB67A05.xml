@@ -1,0 +1,57 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="8D7ED253-E63A-0979-6BC2-64459CB67A05" name="CICLO">
+<createdBy>sergi</createdBy>
+<createdTime>2018-04-22 20:04:24 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="458F4DB6-16FC-AC6E-BE2F-01014863FEA2" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="id" id="AB0F84B1-0E29-B5B0-2A37-49231F44E5E1">
+<createdBy>sergi</createdBy>
+<createdTime>2018-04-22 20:04:28 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="458F4DB6-16FC-AC6E-BE2F-01014863FEA2" value="true"/>
+</engineerTo>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="nombre" id="55E29461-1C9E-3252-65F0-A2BDDC20FE31">
+<createdBy>sergi</createdBy>
+<createdTime>2018-04-22 20:04:31 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="458F4DB6-16FC-AC6E-BE2F-01014863FEA2" value="true"/>
+</engineerTo>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="10C323C3-C51A-F40C-576B-E11D59D701CF" name="CICLO PK">
+<createdBy>sergi</createdBy>
+<createdTime>2018-04-22 20:04:30 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="458F4DB6-16FC-AC6E-BE2F-01014863FEA2" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>AB0F84B1-0E29-B5B0-2A37-49231F44E5E1</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

@@ -1,101 +1,50 @@
-    
-    <script src="js/jquery-2.1.4.js"></script>
-    <script src="js/bin/materialize.js"></script>
-    <script src="js/sweetalert2.js"></script>
-    <script src="js/stacktable.js"></script>
-    <script src="js/select2.full.js"></script>
+       <!-- Footer -->
+    <footer class="container-fluid bg-dark">
+      <div class="row text-white py-4 text-white">
+        <div class="col-md-6">
+          <h4 class="lead">#GRUPOCYSEG</h4>
+        </div>
+        <div class="col-md-6">
+          <h4 class="lead">© 2018 Copyright</h4>
+        </div>
+      </div>
+    </footer>
+    <!-- End Footer -->
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="js/jquery-3.3.1.js"></script>
+    <script src="js/moment.min.js"></script>
+    <script src="js/fullcalendar.js"></script>
+    <script src='js/es.js'></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/smooth-scroll.min.js"></script>
+    <script src="js/toasts.js"></script>
     <script src="js/scripts.js"></script>
-    @if($mensaje!=null)
-        <script>
-            alerta("{{$mensaje}}",5000);
-        </script>
-    @endif
-        <!--MODAL NUEVA GUIA-->
-        <div id="modal-nuevaguia" class="modal">
-            <div class="row">
-              <div class="titulo blue darken-1">
-                  <h4 class="center">ELEGIR CONTRATO</h4>
-              </div>
-            </div>
-            <div class="row">
-                <div class="col s12 center" id="divproveedornuevaguia">
-                    <label for="proveedornuevaguia">PROVEEDORES</label>
-                    <select id="proveedornuevaguia" name="proveedor" style="width: 100%;" onchange="elegirproveedornuevaguia(this)">
-
-                    </select>
-                </div>
-                <div class="col s12 center" id="divcontratonuevaguia">
-                    <label for="contratonuevaguia">CONTRATOS</label>
-                    <select id="contratonuevaguia" name="contrato" style="width: 100%;" onchange="elegirproveedornuevaguia(this)">
-
-                    </select>
-                </div>
-            </div>
-            <div class="row center botones" style="margin-top: 25px;">
-                <div class="col s6 center">
-                    <button onclick="nuevaguia()" class="btn-large">IR</button>
-                </div>
-                <div class="col s6 center">
-                    <button class="modal-action modal-close btn-large red waves-effect">CERRAR</button>
-                </div>
-            </div>
-        </div>
-        
-        
     
-            <!--MODAL ELEGIR SUCURSAL-->
-        <div id="modal-traslados" class="modal">
-          <div class="row">
-            <div class="titulo blue darken-1">
-                <h4 class="center">ELEGIR SUCURSAL</h4>
-            </div>
-          </div>
-          <div class="row">
-                <div class="col s12 center" id="divmodalsucursaltraslado">
-                    <label for="sucursalmodaltraslados">SUCURSAL</label>
-                    <select id="sucursalmodaltraslados" name="sucursal" style="width: 100%;">
+    <script>
+      var scroll =  new  SmoothScroll ('a[href*="#titulo"]',{
+        speed: 900,
+      });
 
-                    </select>
-                </div>
-          </div>
-            <div class="row center botones" style="margin-top: 25px;">
-                <div class="col s6 center">
-                    <button onclick="abrirtrasladosucursal()" class="btn-large">IR</button>
-                </div>
-                <div class="col s6 center">
-                    <button class="modal-action modal-close btn-large red waves-effect">CERRAR</button>
-                </div>
-            </div>
-        </div>
-            
-              <!--MODAL ELEGIR SUCURSAL-->
-        <div id="modal-bajas" class="modal">
-          <div class="row">
-            <div class="titulo blue darken-1">
-                <h4 class="center">ELEGIR SUCURSAL</h4>
-            </div>
-          </div>
-          <div class="row">
-                <div class="col s12 center" id="divmodalsucursalbaja">
-                    <label for="sucursalmodalbajas">SUCURSAL</label>
-                    <select id="sucursalmodalbajas" name="sucursal" style="width: 100%;">
-
-                    </select>
-                </div>
-          </div>
-            <div class="row center botones" style="margin-top: 25px;">
-                <div class="col s6 center">
-                    <button onclick="abrirbajasucursal()" class="btn-large">IR</button>
-                </div>
-                <div class="col s6 center">
-                    <button class="modal-action modal-close btn-large red waves-effect">CERRAR</button>
-                </div>
-            </div>
-        </div>
-        <script>
-            $('#proveedornuevaguia').select2();
-            $('#contratonuevaguia').select2();
-            $('#sucursalmodaltraslados').select2();
-        </script>
-    </body>
+      $('#calendar').fullCalendar({
+        minTime: "08:00:00",
+        defaultView: 'agendaWeek',
+        locale: 'es',
+        allDaySlot: false,
+        maxTime: "19:00:00",
+        themeSystem: 'standard',
+        hiddenDays: [0],
+        height:640,
+        dayClick: function(date) {
+          str = date.format();
+          var res = str.split("T");
+          $("#inicio").val(res[0]);
+          $("#hora").val(res[1]);
+          $("#modalSkype").modal();
+        }
+      });
+    </script>
+  </body>
+  <!-- End Body -->
 </html>

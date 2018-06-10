@@ -48,24 +48,22 @@ return [
             'root' => storage_path('app'),
         ],
 
-        'contrato' => [
+        'archivo' => [
             'driver' => 'local',
-            'root' => storage_path('app/contrato'),
+            'root' => storage_path('app/archivo'),
+            'visibility' => 'public',
         ],
-        
-        'guia' => [
+
+        'contenidos' => [
             'driver' => 'local',
-            'root' => storage_path('app/guia'),
+            'root' => public_path('app/contenidos'),
+            'visibility' => 'public',
         ],
-        
-        'traslado' => [
+
+        'staff' => [
             'driver' => 'local',
-            'root' => storage_path('app/traslado'),
-        ],
-        
-        'baja' => [
-            'driver' => 'local',
-            'root' => storage_path('app/baja'),
+            'root' => public_path('app/staff'),
+            'visibility' => 'public',
         ],
 
         'public' => [

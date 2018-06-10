@@ -1,0 +1,125 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="E107582A-5818-39F9-390A-9410BA0C82BF" name="PAGO">
+<createdBy>sergi</createdBy>
+<createdTime>2018-04-23 05:09:10 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="458F4DB6-16FC-AC6E-BE2F-01014863FEA2" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="id" id="5443BE24-57B6-2A10-6E4F-1A3F8FB5E572">
+<createdBy>sergi</createdBy>
+<createdTime>2018-04-23 05:09:15 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="458F4DB6-16FC-AC6E-BE2F-01014863FEA2" value="true"/>
+</engineerTo>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="monto acordado" id="3762773E-7495-0D12-3EB8-FFA6E291E303">
+<createdBy>sergi</createdBy>
+<createdTime>2018-04-23 05:09:18 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="458F4DB6-16FC-AC6E-BE2F-01014863FEA2" value="true"/>
+</engineerTo>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="monto pagado" id="BD96A48C-3ED2-283A-BA24-D3F34C01CA39">
+<createdBy>sergi</createdBy>
+<createdTime>2018-04-23 05:22:01 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="458F4DB6-16FC-AC6E-BE2F-01014863FEA2" value="true"/>
+</engineerTo>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="cuenta" id="8E7FE278-D1A0-3839-0CAD-E477B0A6CE8D">
+<createdBy>sergi</createdBy>
+<createdTime>2018-04-23 05:09:23 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="458F4DB6-16FC-AC6E-BE2F-01014863FEA2" value="true"/>
+</engineerTo>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="fecha" id="D2EBFE82-1ED2-5E27-125A-37874EC4AA2E">
+<createdBy>sergi</createdBy>
+<createdTime>2018-04-23 05:09:31 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="458F4DB6-16FC-AC6E-BE2F-01014863FEA2" value="true"/>
+</engineerTo>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="id1" id="22B8DB0E-574F-235D-A8FD-134819434298">
+<createdBy>sergi</createdBy>
+<createdTime>2018-04-23 05:09:42 UTC</createdTime>
+<generatorID>D0550C3A-DD5F-3C65-8369-B604BAC6F0BF</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="458F4DB6-16FC-AC6E-BE2F-01014863FEA2" value="true"/>
+</engineerTo>
+<referedAttribute>C442C496-E42B-6498-0ABA-D76465A67C8C</referedAttribute>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="id2" id="8BD4D2A3-BCA6-404E-4E93-C2A36E4ACEBE">
+<createdBy>sergi</createdBy>
+<createdTime>2018-04-23 05:12:33 UTC</createdTime>
+<generatorID>C76594B6-328C-B9E6-FCE6-6295F93A0852</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="458F4DB6-16FC-AC6E-BE2F-01014863FEA2" value="true"/>
+</engineerTo>
+<referedAttribute>DD0ECDE8-2AF6-03F0-457A-25B4BB6C8E7B</referedAttribute>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="estado" id="746C5491-7F77-DBE8-4F02-AB69D40EAE09">
+<createdBy>sergi</createdBy>
+<createdTime>2018-04-23 05:12:38 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="458F4DB6-16FC-AC6E-BE2F-01014863FEA2" value="true"/>
+</engineerTo>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="CA4130F9-4BCE-B888-4651-0DF14B03FA35" name="PAGO PK">
+<createdBy>sergi</createdBy>
+<createdTime>2018-04-23 05:09:18 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="458F4DB6-16FC-AC6E-BE2F-01014863FEA2" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>5443BE24-57B6-2A10-6E4F-1A3F8FB5E572</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

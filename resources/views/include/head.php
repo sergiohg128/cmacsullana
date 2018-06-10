@@ -1,15 +1,19 @@
-<!DOCTYPE html>
-<html lang="es">
+<!doctype html>
+<html lang="en">
   <head>
-    <title>SISGIEC</title>
+    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1">
-    <link rel="stylesheet" type="text/css" href="css/googleicons.css">
-    <link rel="stylesheet" type="text/css" href="css/materialize.css">
-    <link rel="stylesheet" type="text/css" href="css/iconos.css">
-    <link rel="stylesheet" type="text/css" href="css/estilos.css">
-    <link rel="stylesheet" type="text/css" href="css/sweetalert2.css">
-    <link rel="stylesheet" type="text/css" href="css/stacktable.css">
-    <link href="css/select2.css" rel="stylesheet" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/icons/styles.css">
+    <link rel="stylesheet" href="css/core.css">
+    <link rel="stylesheet" href="css/colors.css">
+    <link rel='stylesheet' href="css/fullcalendar.css"/>
+    <link rel='stylesheet' href="css/toast.css"/>
+    <link rel='stylesheet' href="css/styles.css"/>
+    <title>Thesis Consulting</title>
   </head>
+  <!-- Body -->
   <body>

@@ -1,0 +1,803 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"id_concepto",
+				"id_concepto_tipo_concepto"
+			],
+			[
+				"id_afec",
+				"id_afectacion_concepto"
+			],
+			[
+				"id_concep",
+				"id_concepto_trabajador"
+			],
+			[
+				"id_traba",
+				"id_trabajador_obra"
+			],
+			[
+				"list",
+				"list-style"
+			],
+			[
+				"id_logro",
+				"id_logro_usuario"
+			],
+			[
+				"marin",
+				"margin-top"
+			],
+			[
+				"clas",
+				"class\tAttr"
+			],
+			[
+				"padd",
+				"padding"
+			],
+			[
+				"margin",
+				"margin"
+			],
+			[
+				"styl",
+				"style\tAttr"
+			],
+			[
+				"sty",
+				"style\tAttr"
+			],
+			[
+				"id",
+				"id_parametro"
+			],
+			[
+				"predic",
+				"predict_prices"
+			],
+			[
+				"lis",
+				"list-style"
+			],
+			[
+				"list-s",
+				"list-style-position"
+			],
+			[
+				"jus",
+				"justify"
+			],
+			[
+				"margi",
+				"margin-top"
+			],
+			[
+				"mar",
+				"margin-top"
+			],
+			[
+				"border",
+				"border-radius"
+			],
+			[
+				"back",
+				"background-image"
+			],
+			[
+				"wid",
+				"width"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "/C/xampp/htdocs/comercial-impresion/cado/cado.php",
+			"settings":
+			{
+				"buffer_size": 9518,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "",
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Windows",
+				"name": "Xdebug Context",
+				"read_only": true,
+				"scratch": true
+			}
+		},
+		{
+			"contents": "",
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Windows",
+				"name": "Xdebug Watch",
+				"read_only": true,
+				"scratch": true
+			}
+		},
+		{
+			"contents": "",
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Windows",
+				"name": "Xdebug Stack",
+				"read_only": true,
+				"scratch": true
+			}
+		},
+		{
+			"contents": "=> C:\\xampp\\htdocs\\planilla\\app\\Http\\Controllers\\ControladorMantenimiento.php\n\t|+| 125\n",
+			"settings":
+			{
+				"buffer_size": 87,
+				"line_ending": "Windows",
+				"name": "Xdebug Breakpoint",
+				"read_only": true,
+				"scratch": true
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 129.0,
+		"last_filter": "install",
+		"selected_items":
+		[
+			[
+				"install",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 648.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/C/xampp/htdocs/comercial"
+	],
+	"file_history":
+	[
+		"/C/xampp/htdocs/comercial/cnf.sublime-project",
+		"/C/xampp/htdocs/planilla/cnf.sublime-project",
+		"/C/xampp/htdocs/planilla/app/Http/Controllers/ControladorMantenimiento.php",
+		"/C/Users/sergi/AppData/Local/Temp/scp16296/etc/apache2/apache2.conf",
+		"/C/Users/sergi/AppData/Roaming/Sublime Text 3/Packages/Xdebug Client/Xdebug.sublime-settings",
+		"/C/Users/sergi/AppData/Roaming/Sublime Text 3/Packages/User/Xdebug.sublime-settings",
+		"/C/Users/sergi/Downloads/prestashop_1.7.2.2/index.php",
+		"/C/xampp/htdocs/servicios/nusoap/lib/nusoap.php",
+		"/C/xampp/htdocs/servicios/vista/wsGuiaVenta.php",
+		"/C/xampp/htdocs/planilla/database/planilla.sql",
+		"/C/Users/sergi/Documents/U/tesis/avance.txt",
+		"/C/Users/sergi/Desktop/tareas.txt",
+		"/C/Users/sergi/Desktop/planillas.txt",
+		"/C/xampp/htdocs/planilla/.env",
+		"/C/xampp/htdocs/TecniMotors/app/Reportes.php",
+		"/C/xampp/htdocs/transito/app/Reportes.php",
+		"/C/Users/sergi/AppData/Local/Temp/scp37602/etc/apache2/apache2.conf",
+		"/C/xampp/htdocs/transito/public/js/scripts.js",
+		"/C/xampp/htdocs/guesa/public/js/scripts.js",
+		"/C/xampp/htdocs/transito/app/Http/Controllers/ControladorGeneral.php",
+		"/C/xampp/htdocs/comercial/routes/web.php",
+		"/C/xampp/htdocs/cmacsullana1/database/siec.sql",
+		"/C/xampp/htdocs/planilla/app/wspide.php",
+		"/C/Users/sergi/Documents/Github/UniversityGo/universitygo.sql",
+		"/C/xampp/htdocs/radar/database/Script.sql",
+		"/C/Users/sergi/Desktop/editorial.txt",
+		"/C/Users/sergi/AppData/Local/Temp/scp34484/var/lib/tomcat7/webapps/Selgestiun/WEB-INF/jsp/cif/asignarjurado.jsp",
+		"/C/Users/sergi/AppData/Local/Temp/scp51371/var/lib/tomcat7/webapps/University/WEB-INF/jsp/estudiante/rapida.jsp",
+		"/C/Users/sergi/AppData/Local/Temp/scp37489/var/lib/tomcat7/webapps/Selgestiun/resources/js/mensaje.js",
+		"/C/Users/sergi/AppData/Local/Temp/scp35873/var/lib/tomcat7/webapps/Selgestiun/resources/js/javascript.js",
+		"/C/Users/sergi/Documents/canciones/mi primer millon.txt",
+		"/C/Users/sergi/Documents/canciones/arroyito.txt",
+		"/C/Users/sergi/AppData/Local/Temp/scp36693/var/lib/tomcat7/webapps/Selgestiun/resources/js/javascriptsistema.js",
+		"/C/Users/sergi/AppData/Local/Temp/scp33176/var/lib/tomcat7/webapps/Selgestiun/WEB-INF/jsp/cif/pendientesalumno.jsp",
+		"/C/Users/sergi/AppData/Local/Temp/scp22209/var/lib/tomcat7/webapps/University/WEB-INF/jsp/estudiante/rapida.jsp",
+		"/C/Users/sergi/AppData/Local/Temp/scp42717/var/lib/tomcat7/webapps/University/WEB-INF/jsp/estudiante/rapidapremium.jsp",
+		"/C/Users/sergi/Desktop/pregunta7.txt",
+		"/C/Users/sergi/Desktop/pregunta5",
+		"/C/xampp/htdocs/transito/app/Http/Controllers/ControladorPersonal.php",
+		"/C/xampp/htdocs/transito/resources/views/personal/campanas.blade.php",
+		"/C/Users/sergi/AppData/Local/Temp/scp09870/var/www/html/cmacsullana/resources/views/bitacora.blade.php",
+		"/C/xampp/htdocs/sisgiec-landingpage/includes/modal-ingresar.jade",
+		"/C/xampp/htdocs/sisgiec-landingpage/sass/estilos.scss",
+		"/C/xampp/htdocs/sisgiec-landingpage/sass/includes/_sisgiec.scss",
+		"/C/xampp/htdocs/sisgiec-landingpage/includes/menu.jade",
+		"/C/xampp/htdocs/transito/routes/web.php",
+		"/C/Users/sergi/Documents/Github/transito/routes/web.php",
+		"/C/Users/sergi/Desktop/costas.sql",
+		"/C/xampp/htdocs/sissanpablo/app/Http/Controllers/CategoriaopcionmenuController.php",
+		"/C/Users/sergi/Documents/Github/transito/app/Http/Controllers/ControladorCaja.php",
+		"/C/Users/sergi/Documents/Github/transito/app/Http/Controllers/ControladorGeneral.php",
+		"/C/xampp/htdocs/radar/.gitignore",
+		"/C/Users/sergi/Documents/Github/radar/.gitignore",
+		"/C/Users/sergi/Documents/Github/transito/app/Http/Controllers/ControladorReportes.php",
+		"/C/Users/sergi/Desktop/reporte.sql",
+		"/C/Users/sergi/Desktop/fechas.sql",
+		"/C/xampp/htdocs/TecniMotors/resources/views/admin/productos.blade.php",
+		"/C/xampp/htdocs/transito/app/Licencia.php",
+		"/C/xampp/htdocs/transito/resources/views/include/cabecera_general.blade.php",
+		"/C/xampp/htdocs/transito/resources/views/cajero/caja-reportes.blade.php",
+		"/C/Users/sergi/AppData/Local/Temp/scp00349/var/lib/tomcat7/webapps/University/WEB-INF/jsp/institucion/pregunta.jsp",
+		"/C/Users/sergi/AppData/Local/Microsoft/Windows/INetCache/IE/041EFCIB/iid[1].txt",
+		"/C/Users/sergi/Documents/U/tesis/radar/config/database.php",
+		"/C/Users/sergi/Documents/U/tesis/radar/.env",
+		"/C/Users/sergi/Documents/U/tesis/radar/app/Licencia.php",
+		"/C/Users/sergi/AppData/Local/Temp/scp19702/var/lib/tomcat7/webapps/University/WEB-INF/jsp/admin/logros.jsp",
+		"/C/Users/sergi/AppData/Local/Temp/scp19245/var/lib/tomcat7/webapps/University/WEB-INF/jsp/institucion/pregunta.jsp",
+		"/C/Users/sergi/AppData/Local/Temp/scp41838/var/lib/tomcat7/webapps/University/WEB-INF/jsp/institucion/reporte.jsp",
+		"/C/Users/sergi/AppData/Local/Temp/scp40668/var/lib/tomcat7/webapps/University/WEB-INF/jsp/institucion/reportes.jsp",
+		"/C/Users/sergi/AppData/Local/Temp/scp26684/var/lib/tomcat7/webapps/University/WEB-INF/jsp/admin/logros.jsp",
+		"/C/Users/sergi/AppData/Local/Temp/scp28590/var/lib/tomcat7/webapps/Selgestiun/WEB-INF/applicationContext.xml",
+		"/C/Users/sergi/AppData/Local/Temp/scp57385/var/lib/tomcat7/webapps/ROOT/index.html",
+		"/C/xampp/htdocs/transito/routes-2/web.php",
+		"/C/Users/sergi/Documents/Github/UniversityGo/actualizacion.sql",
+		"/C/Users/sergi/AppData/Local/Temp/scp31904/var/lib/tomcat7/webapps/University/WEB-INF/jsp/includes/mobile-menu-estudiante.jsp",
+		"/C/Users/sergi/AppData/Local/Temp/scp30211/var/lib/tomcat7/webapps/University/WEB-INF/jsp/includes/menu-estudiante.jsp",
+		"/C/Users/sergi/Downloads/Reunion-17-08-2017.txt",
+		"/C/Users/sergi/Documents/Github/UniversityGo/.gitignore",
+		"/C/Users/sergi/Documents/Github/transito/app/Http/Controllers/ControladorPersonal.php",
+		"/C/Users/sergi/Desktop/act.sql",
+		"/C/Users/sergi/Documents/Github/transito/app/Http/Controllers/ControladorImpresora.php",
+		"/C/Users/sergi/Documents/Github/transito/app/Reportes.php",
+		"/C/Users/sergi/Documents/Github/transito/app/Http/Controllers/ControladorAdministrador.php",
+		"/C/Users/sergi/Documents/Github/transito/app/Http/Controllers/ControladorPapeletas.php",
+		"/C/Users/sergi/Documents/Github/transito/app/Http/Controllers/ControladorGerente.php",
+		"/C/xampp/htdocs/transito/app/Http/Controllers/ControladorCaja.php",
+		"/C/xampp/htdocs/transito/resources/views/personal/notificaciones-especievalorada.blade.php",
+		"/C/Users/sergi/Documents/Github/transito/resources/views/personal/notificaciones-especievalorada.blade.php",
+		"/C/Users/sergi/Documents/Github/transito/formatos/restantes.txt",
+		"/C/Users/sergi/Documents/Github/UniversityGo/web/WEB-INF/jsp/institucion/pregunta.jsp",
+		"/C/Users/sergi/Documents/Github/UniversityGo/web/WEB-INF/jsp/institucion/reporte.jsp",
+		"/C/xampp/htdocs/transito/app/Http/Controllers/antiguos/ControladorPapeletas.php",
+		"/C/xampp/htdocs/transito/app/Http/Controllers/antiguos/ControladorPersonal.php",
+		"/C/xampp/htdocs/transito/composer.json",
+		"/C/xampp/htdocs/transito/artisan",
+		"/C/Users/sergi/Desktop/Nueva carpeta/Acceso.php",
+		"/C/Users/sergi/AppData/Local/Temp/scp34334/var/lib/tomcat7/webapps/resultados/index.html",
+		"/C/Users/sergi/AppData/Local/Temp/scp35374/var/lib/tomcat7/webapps/resultados/index.html",
+		"/C/Users/sergi/Desktop/actualizacion.sql",
+		"/C/Users/sergi/Desktop/1.txt",
+		"/C/Users/sergi/Downloads/Neptuno/Neptuno/ventas.sql",
+		"/C/Users/sergi/Desktop/1",
+		"/C/xampp/htdocs/cmacsullana1/resources/views/modelos.blade.php",
+		"/C/Users/sergi/Downloads/face.pl",
+		"/C/xampp/htdocs/cmacsullana1/app/Http/Controllers/ControladorContratos.php",
+		"/C/Users/sergi/Downloads/prolog_sudoku/sudoku.pl",
+		"/C/Python27/plot_label_propagation_digits_active_learning.py",
+		"/C/xampp/htdocs/transito/resources/views/general/nosoportado.blade.php",
+		"/C/Users/sergi/Documents/NetBeansProjects/Laberiento/src/laberiento/Laberiento.java",
+		"/C/xampp/htdocs/transito/.env",
+		"/C/xampp/htdocs/transito5/resources/views/cajero/caja-reportes.blade.php",
+		"/C/xampp/htdocs/transito5/resources/views/personal/licencias-reportes.blade.php",
+		"/C/xampp/htdocs/transito/app/NumeroTexto.php",
+		"/C/xampp/htdocs/transito6/resources/views/personal/licencias-reportes.blade.php",
+		"/C/Users/sergi/Downloads/met.txt",
+		"/C/xampp/htdocs/guesa/database/guesa.sql",
+		"/C/Users/sergi/Documents/Github/UniversityGo/nbproject/genfiles.properties",
+		"/C/Users/sergi/Documents/Github/UniversityGo/nbproject/private/private.properties",
+		"/C/Users/sergi/Documents/Github/UniversityGo/nbproject/ant-deploy.xml",
+		"/C/Users/sergi/Documents/Github/UniversityGo/nbproject/build-impl.xml",
+		"/C/Users/sergi/Documents/Github/UniversityGo/nbproject/hoola.txt",
+		"/C/xampp/htdocs/servicios/controlador/contGuia.php",
+		"/C/xampp/htdocs/sissanpablo/sanpablo.sql",
+		"/C/xampp/htdocs/sissanpablo/.env",
+		"/C/xampp/htdocs/sissanpablo/app/Http/Controllers/AreaController.php",
+		"/C/Users/sergi/AppData/Local/Temp/Rar$DIa0.985/.env",
+		"/C/Users/sergi/AppData/Local/Temp/Rar$DIa0.991/.env",
+		"/C/Users/sergi/Downloads/codigo.txt"
+	],
+	"find":
+	{
+		"height": 43.0
+	},
+	"find_in_files":
+	{
+		"height": 117.0,
+		"where_history":
+		[
+			"C:\\xampp\\htdocs\\sisgiec-landingpage\\sass\\includes"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"ArregloDeEstructuras",
+			"setfont('a",
+			"setfont",
+			"\"",
+			"alerta",
+			"success",
+			"estado",
+			"reemplazar",
+			"provincia",
+			"departamento",
+			"#frm",
+			"frmJurado",
+			"@",
+			"tipos de equipo",
+			"p.subtitulo",
+			"cuerpodesktop",
+			"subtitulo",
+			"li",
+			"li \n                                            a(href=\"#1\")",
+			"gerente/con",
+			"\"",
+			"vehiculo2",
+			"\"",
+			"ControladorPapeletas",
+			"id_Tramite_referencia",
+			"Concesion",
+			"$especie_valorada->observacion_anulacion = $observacion_anulacion;",
+			"\"",
+			"LA FECHA DE IMPOS",
+			"LA FECHA DE IMPOR",
+			"\"",
+			"meses",
+			"$vehiculo->tarjeta_propiedad_vehiculo = $numero_tarjeta;",
+			"PoliciaFormularioPost",
+			"label",
+			"phar",
+			"\"",
+			"ConcesionRenovacion",
+			"LOW",
+			"HIGH",
+			"estadoalarma",
+			"AM",
+			"int ",
+			"delay",
+			"poner_Hrs()",
+			"formato();",
+			"ponerMin();",
+			"NumeroTex",
+			"bookman",
+			"Version",
+			"$total = round($total,2);",
+			"$total",
+			"ODEBRE",
+			"option",
+			"subcategoria",
+			"true",
+			"'I'",
+			"Fpdf::Output",
+			"\"",
+			"desde",
+			"'/impresora/nueva-licencia-imprimirpdf'",
+			"'/cajero/caja-reportes'",
+			"'/personal/concesiones-reportes'",
+			"'/personal/licencia-reporte'",
+			"'/personal/licencia-reportes'",
+			"'/personal/licencias-reportes'",
+			"'/personal/campanareporte'",
+			"6",
+			"center",
+			"h1",
+			"$.each",
+			"detalles",
+			"unidad",
+			"pedido",
+			"TipoMovimiento",
+			"count(",
+			"5",
+			"25",
+			"26",
+			"crear",
+			"marca",
+			"marca(",
+			"Playlist",
+			"Dealer",
+			"Modelayout",
+			"Dealer",
+			"Modelayout",
+			"Usuario(Re",
+			"Usuario",
+			"password",
+			"img/",
+			"char_length",
+			"cantidad",
+			"movimiento",
+			"manager_staff",
+			"manager_start",
+			"thisPin",
+			"Reportes(Re",
+			"cargarcombo",
+			"Login",
+			"iniciomenu",
+			"a(href=\"\" target=\"_blank\")",
+			"p ",
+			"ul ",
+			"p ",
+			".col.s12.m6.iniciomenu.card.cardsinpadding\n                                        .col.s12",
+			"MÓDULO",
+			".s10.offset-s1.card.fullcol.cardsinpadding",
+			"s10.offset-s1.",
+			".s10.offset-s1.card.",
+			"s10.offset-s1",
+			"numero",
+			"email",
+			"nombre",
+			".divider",
+			"col.s12.m6.l4.",
+			".col.s12.m6.l4",
+			"#",
+			".col.s12.m6.l4",
+			"   ",
+			"COLOR",
+			"64px",
+			".waves-effect",
+			"-facebook",
+			"facebook",
+			"email",
+			"circle",
+			"modelos1"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"",
+			"concepto",
+			"afectacion",
+			"trabajador",
+			"concepto",
+			"tipo_concepto",
+			"concepto",
+			"trabajador_obra",
+			"parentesco",
+			"trabajador",
+			"obra",
+			"distrito",
+			"sistema_pensiones",
+			"tipo_trabajador",
+			"trabajador",
+			"cargo",
+			"banco",
+			"empresa",
+			"empresas",
+			"distrito",
+			"reemplazar",
+			"provincia",
+			"",
+			"HIGH",
+			"LOW",
+			"",
+			"centro",
+			"h2",
+			"6",
+			"Layout",
+			"ModeLayout",
+			"DetailModeLayout",
+			"i"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/C/xampp/htdocs/comercial-impresion/cado/cado.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 9518,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1645,
+								1645
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 2094.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 1,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Xdebug Client/Xdebug.tmLanguage",
+							"word_wrap": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Xdebug Client/Xdebug.tmLanguage",
+							"word_wrap": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 3,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Xdebug Client/Xdebug.tmLanguage",
+							"word_wrap": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 87,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								87,
+								87
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Xdebug Client/Xdebug.tmLanguage",
+							"word_wrap": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 33.0
+	},
+	"input":
+	{
+		"height": 40.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				2,
+				1
+			],
+			[
+				0,
+				1,
+				1,
+				2
+			],
+			[
+				1,
+				1,
+				2,
+				2
+			]
+		],
+		"cols":
+		[
+			0.0,
+			0.5,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			0.7,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.xdebug":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "cnf.sublime-project",
+	"replace":
+	{
+		"height": 62.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+		"xdebug":
+		{
+			"restore_index":
+			{
+			},
+			"restore_layout":
+			{
+				"cells":
+				[
+					[
+						0,
+						0,
+						1,
+						1
+					]
+				],
+				"cols":
+				[
+					0.0,
+					1.0
+				],
+				"rows":
+				[
+					0.0,
+					1.0
+				]
+			}
+		}
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 314.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

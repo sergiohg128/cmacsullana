@@ -1,0 +1,103 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="DF44E021-4F0B-6B12-44F0-185D1B3E871B" name="MENSAJE">
+<createdBy>sergi</createdBy>
+<createdTime>2018-04-23 04:08:46 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="458F4DB6-16FC-AC6E-BE2F-01014863FEA2" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="id" id="1E0E1AC1-3EDC-A59B-B9F8-DE727EE7C3F1">
+<createdBy>sergi</createdBy>
+<createdTime>2018-04-23 04:08:54 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="458F4DB6-16FC-AC6E-BE2F-01014863FEA2" value="true"/>
+</engineerTo>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="titulo" id="0C0C9546-BC62-93A8-B3E4-F6368B56B533">
+<createdBy>sergi</createdBy>
+<createdTime>2018-04-23 04:08:58 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="458F4DB6-16FC-AC6E-BE2F-01014863FEA2" value="true"/>
+</engineerTo>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="contenido" id="E25055F7-2EF1-6A22-EFFC-1890B5741B44">
+<createdBy>sergi</createdBy>
+<createdTime>2018-04-23 04:09:27 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="458F4DB6-16FC-AC6E-BE2F-01014863FEA2" value="true"/>
+</engineerTo>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="id1" id="BFBC030E-281F-A13C-C60D-77843117CDA0">
+<createdBy>sergi</createdBy>
+<createdTime>2018-04-23 04:09:53 UTC</createdTime>
+<generatorID>B9FA0C49-FECA-833E-54DE-658453F1D4E6</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="458F4DB6-16FC-AC6E-BE2F-01014863FEA2" value="true"/>
+</engineerTo>
+<referedAttribute>68AED723-C10F-ED3E-8E8B-723F5DED2B40</referedAttribute>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="fecha" id="0AA6E4FB-531D-D7EB-EF97-8CC96A5F9623">
+<createdBy>sergi</createdBy>
+<createdTime>2018-04-23 04:11:17 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="458F4DB6-16FC-AC6E-BE2F-01014863FEA2" value="true"/>
+</engineerTo>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="id2" id="BDC3D904-59CB-9BAE-5B97-BF0C092D184C">
+<createdBy>sergi</createdBy>
+<createdTime>2018-04-23 04:11:37 UTC</createdTime>
+<generatorID>663B7ED0-D461-D71E-EED2-DE6492B934AB</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="458F4DB6-16FC-AC6E-BE2F-01014863FEA2" value="true"/>
+</engineerTo>
+<referedAttribute>C442C496-E42B-6498-0ABA-D76465A67C8C</referedAttribute>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="ABE8C9DA-FF47-DD86-60E6-DA97D7A3D1F3" name="MENSAJE PK">
+<createdBy>sergi</createdBy>
+<createdTime>2018-04-23 04:08:57 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>diagrama</ownerDesignName>
+<engineerTo>
+<item key="458F4DB6-16FC-AC6E-BE2F-01014863FEA2" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>1E0E1AC1-3EDC-A59B-B9F8-DE727EE7C3F1</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>
